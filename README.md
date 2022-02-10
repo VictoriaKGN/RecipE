@@ -1,4 +1,6 @@
-# Digital Cookbook
+# Digital Cookbook Vision Statement
+## title 
+Recip-E
 ## Summary
 The Recip-E app will allow users to create and manage a digital cookbook on their personal devices. The app’s main purpose is to replace all other recipe sources, such as index cards, cookbooks, and modern technologies, for chefs of every skill level and age range.
 Users will be able to see a list of ingredients, necessary steps, and a picture, if available. Recip-E will allow users to add recipes by writing their own or receiving a shared recipe from another user. Additionally, a few existing default recipes will be available when users begin. Correspondingly, users will be able to remove recipes, including the default recipes, in the same idea that people decide to retire old, outdated cookbooks.
