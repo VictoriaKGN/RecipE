@@ -7,7 +7,7 @@ Specifically, Recip-E users will be able to see a list of ingredients, necessary
 
 Undoubtedly, users will want to use this app because it provides easy access to all of their recipes in one convenient and centralized place. It will save them the trouble of aimlessly flipping through multiple cookbooks or other sources, making meal planning and entertaining easier. In addition, the app will be a handy quick reference for professional chefs or home cooks who want to double-check an ingredient or step. Recip-E is also the perfect go to for beginners who are starting from scratch and have no idea on where to begin with a recipe.
 
-Furthermore, the portability of Recip-E allows users to record recipes wherever they are and whenever they like. For instance, at Grandma’s house, on a road trip with friends, or even just jotting down an idea for a new recipe as a person is getting ready for bed. 
+Furthermore, the portability of Recip-E allows users to record recipes on the go wherever they are and whenever they like. For instance, at Grandma’s house, on a road trip with friends, or even just jotting down an idea for a new recipe as a person is getting ready for bed. 
 
 Beyond the kitchen, Recip-E will help users downsize their paper cookbook collection by digitizing their recipes. This can also help preserve family recipes for future generations. To add to that, digitization allows for faster and easier sharing of recipes, instead of making a hard copy or taking a picture of a recipe. Recip-E is the perfect alternative for people who prefer digital over hard copies. I mean who wants to keep hundreds of physical copies in this modern age? Moreover, the app is even eco-friendly in that it allows people to go paper-free. 
 
