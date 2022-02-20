@@ -1,4 +1,4 @@
-package com.example.recip_e;
+package com.comp3350.recip_e;
 
 import org.junit.Test;
 

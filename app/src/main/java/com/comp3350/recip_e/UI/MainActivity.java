@@ -1,6 +1,7 @@
-package com.example.recip_e;
+package com.comp3350.recip_e.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.comp3350.recip_e.R;
 
 import android.os.Bundle;
 
