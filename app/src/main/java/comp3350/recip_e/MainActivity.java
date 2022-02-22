@@ -1,8 +1,10 @@
-package com.example.recip_e;
+package comp3350.recip_e;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.recip_e.R;
 
 public class MainActivity extends AppCompatActivity {
 
