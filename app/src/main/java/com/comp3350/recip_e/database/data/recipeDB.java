@@ -64,12 +64,14 @@ public class recipeDB implements recipeManager{
 
         }
     }
-    private void addHelper(JSONObject value,JSONObject key,int recipeId, String name, String ingre, String direction,int serving){
+    private void addHelper(JSONObject value,JSONObject key,int recipeId, String name, String ingre,
+                           String direction,int serving,String cover){
 
         value.put("name",name);
         value.put("ingredients",ingre);
         value.put("direction",direction);
         value.put("serving",serving);
+        value.put("cover",cover);
 
         key.put(""+recipeId,value);
 
@@ -77,7 +79,7 @@ public class recipeDB implements recipeManager{
     }
 
     //add a new recipe to the fake database
-    public boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving){
+    public boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving,String cover){
         JSONObject value=new JSONObject();
 
         JSONObject key=jsonReader();
@@ -85,7 +87,7 @@ public class recipeDB implements recipeManager{
         if(key.get(""+recipeId)!=null) {
             return false;
         }
-        addHelper(value, key, recipeId, name, ingre, direction, serving);
+        addHelper(value, key, recipeId, name, ingre, direction, serving,cover);
         System.out.println("exit try-catch.\n");
 
         return true;
@@ -102,6 +104,17 @@ public class recipeDB implements recipeManager{
             return true;
         }
         return false;
+    }
+
+    public String getCoverPic(int recipeId){
+        String tempPath="src/main/asset/recipeCover/";
+        JSONObject recipes=jsonReader();
+        if(recipes.get(""+recipeId)!=null){
+          String cover=(String)getValue(recipeId).get("cover");
+          tempPath+=cover;
+        }
+
+         return tempPath;
     }
 }
 

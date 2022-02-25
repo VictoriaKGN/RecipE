@@ -7,12 +7,15 @@ public interface recipeManager {
     //get the ingredients of a recipe
     String getIngredients(int recipeId);
 
-    //get directions of a recipe
+    //get directions/introductions of a recipe.
     String getDirection(int recipeId);
 
-    //add a new recipe to the fake database
-    boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving);
+    //add a new recipe to the fake database( local json file)
+    boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving,String cover);
 
-    //delete a current recipe from fake database
+    //delete a current recipe from fake database.
     boolean delRecipe(int recipeId);
+
+    //return the path of the local picture depends on the Id, for Iter-1 is one pic each recipe.
+    String getCoverPic(int recipeId);
 }
