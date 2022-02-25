@@ -55,6 +55,11 @@ public class recipeDB implements recipeManager{
 
         return (String)getValue(recipeId).get("directions");
     }
+
+    public String getServing(int recipeId){
+
+        return (String)getValue(recipeId).get("serving");
+    }
     private void jsonWriter(JSONObject object){
 
         try (FileWriter file = new FileWriter(path)) {

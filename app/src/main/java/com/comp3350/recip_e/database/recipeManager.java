@@ -10,6 +10,9 @@ public interface recipeManager {
     //get directions/introductions of a recipe.
     String getDirection(int recipeId);
 
+    //get the serving size of a recipe
+    String getServing(int recipeId);
+
     //add a new recipe to the fake database( local json file)
     boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving,String cover);
 
