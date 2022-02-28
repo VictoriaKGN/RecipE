@@ -1,6 +1,11 @@
 package com.comp3350.recip_e.database;
 
+import com.comp3350.recip_e.object.Recipe;
+
 public interface recipeManager {
+    //get the whole recipe information.
+    Recipe getRecipe(int recipeId);
+
     //get the name of a recipe
     String getRecipeName(int recipeId);
 
@@ -12,6 +17,12 @@ public interface recipeManager {
 
     //get the serving size of a recipe
     String getServing(int recipeId);
+
+    //get the prep time of a recipe
+    String getPrepTime(int recipeId);
+
+    //get the cook time of a recipe
+    String getCookTime(int recipeId);
 
     //add a new recipe to the fake database( local json file)
     boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving,String cover);

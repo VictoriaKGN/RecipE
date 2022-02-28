@@ -1,6 +1,7 @@
 package com.comp3350.recip_e.database.data;
 
 import com.comp3350.recip_e.database.recipeManager;
+import com.comp3350.recip_e.object.Recipe;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,7 +17,21 @@ public class recipeDB implements recipeManager{
        path=filePath;
     }
 
-   private JSONObject jsonReader(){
+    //as required, return a object that contain certain information of a recipe
+    @Override
+    public Recipe getRecipe(int recipeId) {
+
+        String name=getRecipeName(recipeId);
+        String ingre=getIngredients(recipeId);
+        String direction=getDirection(recipeId);
+        int serving= Integer.parseInt(getServing(recipeId));
+        int prep=Integer.parseInt(getPrepTime(recipeId));
+        int cook=Integer.parseInt(getCookTime(recipeId));
+
+        return new Recipe(name,ingre,direction,serving,prep,cook);
+    }
+
+    private JSONObject jsonReader(){
         JSONObject jsob=null;
         try {
 
@@ -56,10 +71,22 @@ public class recipeDB implements recipeManager{
         return (String)getValue(recipeId).get("directions");
     }
 
+    @Override
     public String getServing(int recipeId){
 
         return (String)getValue(recipeId).get("serving");
     }
+
+    @Override
+    public String getPrepTime(int recipeId){
+        return (String)getValue(recipeId).get("prep");
+    }
+
+    @Override
+    public String getCookTime(int recipeId) {
+        return (String)getValue(recipeId).get("cook");
+    }
+
     private void jsonWriter(JSONObject object){
 
         try (FileWriter file = new FileWriter(path)) {
