@@ -23,7 +23,7 @@ public class RecipeTest {
         int serv = 4;
         int prep = 5;
         int cook = 20;
-        File pic = new File("../../../../../../main/assets/images/pic.jpg");
+        String pic = "../../../../../../main/assets/images/pic.jpg";
 
         System.out.println("Testing Recipe creation");
 
