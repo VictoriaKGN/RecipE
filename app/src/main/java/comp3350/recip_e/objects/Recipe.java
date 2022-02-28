@@ -13,7 +13,7 @@ public class Recipe {
     private String name;
     private String ingredients;
     private String instructions;
-    private File picture;
+    private String picture; // Filepath
     private int servings; //portions
     private int prepTime; //in minutes
     private int cookTime; //in minutes
@@ -36,7 +36,7 @@ public class Recipe {
 
     //with picture
     public Recipe(String newName, String newIngredients, String newInstructions, int serve,
-                                                            int prep, int cook, File picFile) {
+                                                            int prep, int cook, String picFile) {
 
         id = nextID;
         name = newName;
@@ -78,7 +78,7 @@ public class Recipe {
         return cookTime;
     }
 
-    public File getPicture() {
+    public String getPicture() {
         return picture;
     }
 
