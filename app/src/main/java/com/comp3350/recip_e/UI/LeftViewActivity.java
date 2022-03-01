@@ -2,12 +2,16 @@ package com.comp3350.recip_e.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.comp3350.recip_e.R;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LeftViewActivity extends AppCompatActivity {
 
@@ -70,5 +74,33 @@ public class LeftViewActivity extends AppCompatActivity {
     {
         Intent rIntent = new Intent(LeftViewActivity.this, LeftEditActivity.class);
         LeftViewActivity.this.startActivity(rIntent);
+    }
+
+    public void deleteRecipe_click(View view)
+    {
+        TextView text = findViewById(R.id.recipe_name);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(LeftViewActivity.this);
+        builder.setTitle("Discard Recipe?");
+        builder.setMessage("Are you sure you want to discard " + text.getText() + "? The recipe will be lost. ");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() { // user likes to proceed with the deletion
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                Toast.makeText(LeftViewActivity.this, "Recipe deleted...", Toast.LENGTH_SHORT).show();
+                // TODO: send the confirmation to logic layer
+
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() { // user does not want to proceed with the deletion
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(LeftViewActivity.this, "Recipe was restored...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.show();
     }
 }
