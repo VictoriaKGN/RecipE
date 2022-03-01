@@ -4,7 +4,7 @@ import com.comp3350.recip_e.object.Recipe;
 
 public interface recipeManager {
     //get the whole recipe information.
-    Recipe getRecipe(int recipeId);
+    Recipe getRecipe(int recipeId,boolean withPic);
 
     //get the name of a recipe
     String getRecipeName(int recipeId);

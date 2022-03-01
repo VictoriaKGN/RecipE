@@ -19,7 +19,7 @@ public class recipeDB implements recipeManager{
 
     //as required, return a object that contain certain information of a recipe
     @Override
-    public Recipe getRecipe(int recipeId) {
+    public Recipe getRecipe(int recipeId, boolean withpic) {
 
         String name=getRecipeName(recipeId);
         String ingre=getIngredients(recipeId);
@@ -27,8 +27,15 @@ public class recipeDB implements recipeManager{
         int serving= Integer.parseInt(getServing(recipeId));
         int prep=Integer.parseInt(getPrepTime(recipeId));
         int cook=Integer.parseInt(getCookTime(recipeId));
+        Recipe wholeRecipe;
+        if(withpic){
+            String picPath=getCoverPic(recipeId);
+            wholeRecipe= new Recipe(name,ingre,direction,serving,prep,cook,picPath);
+        }else {
+            wholeRecipe=new Recipe(name,ingre,direction,serving,prep,cook);
+        }
 
-        return new Recipe(name,ingre,direction,serving,prep,cook);
+        return wholeRecipe;
     }
 
     private JSONObject jsonReader(){
