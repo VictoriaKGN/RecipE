@@ -90,7 +90,7 @@ public class LeftEditActivity extends AppCompatActivity {
             {
                 Toast.makeText(LeftEditActivity.this, "Changes discarded...", Toast.LENGTH_SHORT).show();
                 // TODO: send the confirmation to logic layer
-
+                finish();
 
             }
         });
