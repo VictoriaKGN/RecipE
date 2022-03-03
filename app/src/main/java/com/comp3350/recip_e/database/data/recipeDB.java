@@ -21,18 +21,19 @@ public class recipeDB implements recipeManager{
     @Override
     public Recipe getRecipe(int recipeId, boolean withpic) {
 
-        String name=getRecipeName(recipeId);
-        String ingre=getIngredients(recipeId);
-        String direction=getDirection(recipeId);
-        int serving= Integer.parseInt(getServing(recipeId));
-        int prep=Integer.parseInt(getPrepTime(recipeId));
-        int cook=Integer.parseInt(getCookTime(recipeId));
+        String name = getRecipeName(recipeId);
+        String ingre = getIngredients(recipeId);
+        String direction = getDirection(recipeId);
+        int serving = Integer.parseInt(getServing(recipeId));
+        int prep = Integer.parseInt(getPrepTime(recipeId));
+        int cook = Integer.parseInt(getCookTime(recipeId));
+
         Recipe wholeRecipe;
-        if(withpic){
-            String picPath=getCoverPic(recipeId);
-            wholeRecipe= new Recipe(name,ingre,direction,serving,prep,cook,picPath);
-        }else {
-            wholeRecipe=new Recipe(name,ingre,direction,serving,prep,cook);
+        if (withpic) {
+            String picPath = getCoverPic(recipeId);
+            wholeRecipe = new Recipe(name, ingre, direction, serving, prep, cook, picPath);
+        } else {
+            wholeRecipe = new Recipe(name, ingre, direction, serving, prep, cook);
         }
 
         return wholeRecipe;
@@ -75,23 +76,23 @@ public class recipeDB implements recipeManager{
     //get directions of a recipe
     public String getDirection(int recipeId){
 
-        return (String)getValue(recipeId).get("directions");
+        return (String)getValue(recipeId).get("direction");
     }
 
     @Override
     public String getServing(int recipeId){
 
-        return (String)getValue(recipeId).get("serving");
+        return "" + getValue(recipeId).get("serving");
     }
 
     @Override
     public String getPrepTime(int recipeId){
-        return (String)getValue(recipeId).get("prep");
+        return "" + getValue(recipeId).get("prep");
     }
 
     @Override
     public String getCookTime(int recipeId) {
-        return (String)getValue(recipeId).get("cook");
+        return "" + getValue(recipeId).get("cook");
     }
 
     private void jsonWriter(JSONObject object){
@@ -104,12 +105,14 @@ public class recipeDB implements recipeManager{
         }
     }
     private void addHelper(JSONObject value,JSONObject key,int recipeId, String name, String ingre,
-                           String direction,int serving,String cover){
+                           String direction,int serving,int prep, int cook, String cover){
 
         value.put("name",name);
         value.put("ingredients",ingre);
         value.put("direction",direction);
         value.put("serving",serving);
+        value.put("prep", prep);
+        value.put("cook", cook);
         value.put("cover",cover);
 
         key.put(""+recipeId,value);
@@ -118,7 +121,7 @@ public class recipeDB implements recipeManager{
     }
 
     //add a new recipe to the fake database
-    public boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving,String cover){
+    public boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving, int prep, int cook, String cover){
         JSONObject value=new JSONObject();
 
         JSONObject key=jsonReader();
@@ -126,7 +129,7 @@ public class recipeDB implements recipeManager{
         if(key.get(""+recipeId)!=null) {
             return false;
         }
-        addHelper(value, key, recipeId, name, ingre, direction, serving,cover);
+        addHelper(value, key, recipeId, name, ingre, direction, serving, prep, cook, cover);
         System.out.println("exit try-catch.\n");
 
         return true;
