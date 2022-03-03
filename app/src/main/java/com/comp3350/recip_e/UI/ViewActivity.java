@@ -83,7 +83,7 @@ public class ViewActivity extends AppCompatActivity {
     // set the picture of the recipe if there is one
     public void setPicture(Drawable picture)
     {
-        ImageView pic = findViewById(R.id.picture);
+        ImageView pic = findViewById(R.id.recipe_pic);
         pic.setBackground(picture);
     }
 
@@ -97,8 +97,8 @@ public class ViewActivity extends AppCompatActivity {
     // set the instructions of the recipe
     public void setInstructions(String ins)
     {
-        //TextView text = findViewById(R.id.instructions);
-        //text.setText(ins)
+        TextView text = findViewById(R.id.instructions);
+        text.setText(ins);
     }
 
     // ********************************** button clicks ***************************************
@@ -115,10 +115,17 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     // change flipper view
-    public void changeRightView_click(View view)
+    public void changeToRightView_click(View view)
     {
         ViewFlipper flipper = findViewById(R.id.view_flipper);
         flipper.showNext();
+    }
+
+    // changes the view to the left side
+    public void changeToLeftView_click(View view)
+    {
+        ViewFlipper flipper = findViewById(R.id.view_flipper);
+        flipper.showPrevious();
     }
 
     // double check with the user if they want to proceed with the deletion, and if so, send a signal to logic layer

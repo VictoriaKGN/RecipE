@@ -7,4 +7,5 @@
     <string name="minutes"> min</string>
     <string name="ingredients">Ingredients</string>
     <string name="save">Save</string>
+    <string name="instructions">Instructions</string>
 </resources>
