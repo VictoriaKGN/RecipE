@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class recipeDB implements recipeManager{
     private String path;
+    //constructor, save the json file path.
     public recipeDB(String filePath){
        path=filePath;
     }
@@ -120,7 +121,7 @@ public class recipeDB implements recipeManager{
        jsonWriter(key);
     }
 
-    //add a new recipe to the fake database
+    //add a new recipe to the fake database, return a Recipe object
     public Recipe addRecipe( String name, String ingre, String direction,int serving, int prep, int cook, String cover){
         JSONObject value=new JSONObject();
         int recipeId=0;
@@ -134,12 +135,12 @@ public class recipeDB implements recipeManager{
                 break;
             }
         }
-
+        String coverPath="src/main/asset/recipeCover/"+cover;
         addHelper(value, key,recipeId, name, ingre, direction, serving, prep, cook, cover);
 
         //        System.out.println("exit try-catch.\n");
 
-        return new Recipe(name,ingre,direction,serving,prep,cook,cover);
+        return new Recipe(name,ingre,direction,serving,prep,cook,coverPath);
     }
 
     //delete a current recipe from fake database
@@ -155,15 +156,18 @@ public class recipeDB implements recipeManager{
         return false;
     }
 
+    //Keep the fixed path prefix, find the corresponding image by id and return the full path or empty path
     public String getCoverPic(int recipeId){
         String tempPath="src/main/asset/recipeCover/";
         JSONObject recipes=jsonReader();
+
         if(recipes.get(""+recipeId)!=null){
           String cover=(String)getValue(recipeId).get("cover");
           tempPath+=cover;
+          return tempPath;
         }
 
-         return tempPath;
+        return "No such pic.";
     }
 }
 

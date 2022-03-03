@@ -24,7 +24,7 @@ public interface recipeManager {
     //get the cook time of a recipe
     String getCookTime(int recipeId);
 
-    //add a new recipe to the fake database( local json file)
+    //add a new recipe to the fake database( local json file), will return a Recipe Object.
     Recipe addRecipe(String name, String ingre, String direction,int serving, int prep, int cook, String cover);
 
     //delete a current recipe from fake database.
