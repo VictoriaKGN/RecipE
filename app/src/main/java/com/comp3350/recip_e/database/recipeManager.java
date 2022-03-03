@@ -25,7 +25,7 @@ public interface recipeManager {
     String getCookTime(int recipeId);
 
     //add a new recipe to the fake database( local json file)
-    boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving, int prep, int cook, String cover);
+    Recipe addRecipe(String name, String ingre, String direction,int serving, int prep, int cook, String cover);
 
     //delete a current recipe from fake database.
     boolean delRecipe(int recipeId);

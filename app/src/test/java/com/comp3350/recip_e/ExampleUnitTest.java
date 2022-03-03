@@ -37,7 +37,7 @@ public class ExampleUnitTest {
                 "Heat butter and olive oil in a large heavy skillet over medium heat. Saute chicken until golden brown, about 6 minutes on each side. Sprinkle with 2 teaspoons garlic powder and lime juice. " +
                 "Cook 5 minutes more, stirring frequently to coat evenly with sauce.\n";
         String cover="HoneyLimeChicken.jpeg";
-        db.addRecipe(2,"Spicy Garlic Lime Chicken",ingre,dir,4, 5, 20,cover);
+        db.addRecipe("Spicy Garlic Lime Chicken",ingre,dir,4, 5, 20,cover);
     }
 
 }

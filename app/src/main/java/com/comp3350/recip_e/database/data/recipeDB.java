@@ -121,18 +121,25 @@ public class recipeDB implements recipeManager{
     }
 
     //add a new recipe to the fake database
-    public boolean addRecipe(int recipeId, String name, String ingre, String direction,int serving, int prep, int cook, String cover){
+    public Recipe addRecipe( String name, String ingre, String direction,int serving, int prep, int cook, String cover){
         JSONObject value=new JSONObject();
+        int recipeId=0;
 
         JSONObject key=jsonReader();
-
-        if(key.get(""+recipeId)!=null) {
-            return false;
+        for (int i = recipeId; i <Integer.MAX_VALUE ; i++) {
+            if(key.get(""+i)!=null) {
+                i++;
+            }else {
+                recipeId=i;
+                break;
+            }
         }
-        addHelper(value, key, recipeId, name, ingre, direction, serving, prep, cook, cover);
-        System.out.println("exit try-catch.\n");
 
-        return true;
+        addHelper(value, key,recipeId, name, ingre, direction, serving, prep, cook, cover);
+
+        //        System.out.println("exit try-catch.\n");
+
+        return new Recipe(name,ingre,direction,serving,prep,cook,cover);
     }
 
     //delete a current recipe from fake database
