@@ -58,7 +58,7 @@ public class recipeDBTest {
     }
 
     @Test
-    public void getRecipe() //casting exception in getServing causes failure
+    public void getRecipe()
     {
         assertNotNull("should retrieve a recipe without a picture", db.getRecipe(1, false));
         assertNotNull("should retrieve a recipe with a picture", db.getRecipe(2, true));
@@ -85,19 +85,19 @@ public class recipeDBTest {
     @Test
     public void getServing()
     {
-        assertTrue("servings should match", "4".equals(db.getServing(1))); //not working because of casting exception in class
+        assertTrue("servings should match", "4".equals(db.getServing(1)));
     }
 
     @Test
     public void getPrepTime()
     {
-        assertTrue("prep time should be the same", "5".equals(db.getPrepTime(1))); //prep time not stored when adding recipes
+        assertTrue("prep time should be the same", "5".equals(db.getPrepTime(1)));
     }
 
     @Test
     public void getCookTime()
     {
-        assertTrue("cook time should be the same", "20".equals(db.getCookTime(1))); //cook time not stored when adding recipes
+        assertTrue("cook time should be the same", "20".equals(db.getCookTime(1)));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class recipeDBTest {
     {
         assertFalse("should not add a recipe with an ID that already exists", db.addRecipe(1, "testRecipe","stuff","do stuff with stuff", 0, 0,0, "not a picture of stuff"));
         assertTrue("should add a recipe", db.addRecipe(10, "testRecipe","stuff","do stuff with stuff", 0, 0, 0, "not a picture of stuff"));
-        assertNotNull("should be able to access added recipes", db.getRecipe(10, false)); //fails due to casting exception in getRecipe
+        assertNotNull("should be able to access added recipes", db.getRecipe(10, false));
         assertFalse("should not add a duplicate recipe", db.addRecipe(10, "testRecipe","stuff","do stuff with stuff", 0, 0, 0, "not a picture of stuff"));
 
         db.delRecipe(10);
