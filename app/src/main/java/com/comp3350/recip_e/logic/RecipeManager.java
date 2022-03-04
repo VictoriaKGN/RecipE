@@ -36,7 +36,8 @@ public class RecipeManager {
      *
      * @param recipe The recipe to add
      */
-    public void addRecipe(Recipe recipe) {
+    public void addRecipe(Recipe recipe) throws InvalidRecipeException {
+        RecipeValidator.validate(recipe);
         database.addRecipe(recipe);
     }
 
