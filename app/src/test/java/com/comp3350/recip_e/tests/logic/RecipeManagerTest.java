@@ -24,10 +24,10 @@ public class RecipeManagerTest {
     public void testGetRecipe() {
         // TODO Needs hardcoded test data
         System.out.println("\nStarting testGetRecipe\n");
-        Recipe recipe = recipeManager.getRecipe(0); // TODO Change id when database has test data
+        Recipe recipe = recipeManager.getRecipe(0);
 
         assertNotNull(recipe);
-        assertEquals(recipe.getID(), 0); // TODO Change id when database has test data
+        assertEquals(recipe.getID(), 0);
 
         System.out.println("Finished testGetRecipe");
     }
