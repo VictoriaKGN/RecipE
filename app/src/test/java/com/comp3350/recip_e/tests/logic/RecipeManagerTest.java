@@ -1,13 +1,13 @@
-package comp3350.recip_e.tests.logic;
+package com.comp3350.recip_e.tests.logic;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import comp3350.recip_e.logic.InvalidRecipeException;
-import comp3350.recip_e.logic.RecipeManager;
-import comp3350.recip_e.objects.Recipe;
+import com.comp3350.recip_e.logic.InvalidRecipeException;
+import com.comp3350.recip_e.logic.RecipeManager;
+import com.comp3350.recip_e.objects.Recipe;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package comp3350.recip_e.logic;
+package com.comp3350.recip_e.logic;
 
 public class InvalidRecipeException extends RuntimeException {
 

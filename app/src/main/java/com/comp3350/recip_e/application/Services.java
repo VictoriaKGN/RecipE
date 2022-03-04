@@ -1,4 +1,4 @@
-package comp3350.recip_e.application;
+package com.comp3350.recip_e.application;
 
 import com.comp3350.recip_e.database.recipeManager;
 import com.comp3350.recip_e.database.data.recipeDB;

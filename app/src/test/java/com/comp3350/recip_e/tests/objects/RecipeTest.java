@@ -1,8 +1,8 @@
-package comp3350.recip_e.tests.objects;
+package com.comp3350.recip_e.tests.objects;
 
 import org.junit.Test;
 
-import comp3350.recip_e.objects.Recipe;
+import com.comp3350.recip_e.objects.Recipe;
 
 import static org.junit.Assert.*;
 

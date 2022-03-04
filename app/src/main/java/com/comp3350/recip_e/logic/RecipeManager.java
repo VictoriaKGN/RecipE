@@ -1,10 +1,10 @@
-package comp3350.recip_e.logic;
+package com.comp3350.recip_e.logic;
 
-import comp3350.recip_e.application.Services;
+import com.comp3350.recip_e.application.Services;
 
 import com.comp3350.recip_e.database.recipeManager;
 
-import comp3350.recip_e.objects.Recipe;
+import com.comp3350.recip_e.objects.Recipe;
 
 public class RecipeManager {
     private recipeManager database;

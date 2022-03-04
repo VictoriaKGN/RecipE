@@ -1,4 +1,4 @@
-package comp3350.recip_e.application;
+package com.comp3350.recip_e.application;
 
 import androidx.appcompat.app.AppCompatActivity;
 

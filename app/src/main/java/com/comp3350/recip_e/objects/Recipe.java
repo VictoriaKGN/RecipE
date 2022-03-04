@@ -1,6 +1,4 @@
-package comp3350.recip_e.objects;
-
-import java.util.Objects;
+package com.comp3350.recip_e.objects;
 
 
 public class Recipe {
