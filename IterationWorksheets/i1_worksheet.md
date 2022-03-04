@@ -49,4 +49,6 @@ At the time of writing, Group 8 did not have a lot of material to look at for ma
 Agile Planning
 --------------
 
-Our team planned the workload accordingly and did not suffer any major setbacks for Iteration 1, and thus did not have to push any planned features to Iteration 2. There was discussion about whether "Viewing a recipe" should allow a user to switch between two recipes after completing "Add a recipe," however, it was decided that this would be considered scope creep on the planned Iteration 2 feature of "Browse recipes." Thus, the user can view a recipe when the app is first launched, but after adding their own recipe, they can only view the newly added one.
+We ended up pushing [one user story](https://code.cs.umanitoba.ca/winter-2022-a02/group-7/digital-cookbook/-/issues/15) to Iteration 2. We also waited until the last day to merge all our material and ran into more issues than expected. We will definitely be pushing to a shared branch earlier for Iteration 2.
+
+There was discussion about whether "Viewing a recipe" should allow a user to switch between two recipes after completing "Add a recipe," however, it was decided that this would be considered scope creep on the planned Iteration 2 feature of "Browse recipes." Thus, the user can view a recipe when the app is first launched, but after adding their own recipe, they can only view the newly added one.

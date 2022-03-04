@@ -24,10 +24,10 @@ public class RecipeManagerTest {
     public void testGetRecipe() {
         // TODO Needs hardcoded test data
         System.out.println("\nStarting testGetRecipe\n");
-        Recipe recipe = recipeManager.getRecipe(0); // TODO Change id when database has test data
+        Recipe recipe = recipeManager.getRecipe(0);
 
         assertNotNull(recipe);
-        assertEquals(recipe.getID(), 0); // TODO Change id when database has test data
+        assertEquals(recipe.getID(), 0);
 
         System.out.println("Finished testGetRecipe");
     }
@@ -38,9 +38,9 @@ public class RecipeManagerTest {
         Recipe recipe = new Recipe("name", "ingredients", "instructions", 4, 30, 30);
 
         recipeManager.addRecipe(recipe);
-        assertEquals(recipeManager.getRecipe(recipe.getID()).getID(), recipe.getID());
-        recipeManager.deleteRecipe(recipe.getID());
-        assertNull(recipeManager.getRecipe(recipe.getID()));
+        assertEquals(recipeManager.getRecipe(5).getID(), 5);
+        recipeManager.deleteRecipe(5);
+        assertThrows(NullPointerException.class, () -> recipeManager.getRecipe(5));
 
         System.out.println("Finished testAddDeleteRecipe");
     }
