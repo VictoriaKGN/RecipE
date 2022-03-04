@@ -14,23 +14,10 @@ public class Recipe {
     private int prepTime; //in minutes
     private int cookTime; //in minutes
 
-    //no picture
-    public Recipe(String newName, String newIngredients, String newInstructions, int serve,
-                                                                        int prep, int cook) {
-
-        id = -1;
-        name = newName;
-        ingredients = newIngredients;
-        instructions = newInstructions;
-        servings = serve;
-        prepTime = prep;
-        cookTime = cook;
-        picture = null;
-    }
 
     //with picture
     public Recipe(String newName, String newIngredients, String newInstructions, int serve,
-                                                            int prep, int cook, String picFile) {
+                  int prep, int cook, String picFile) {
 
         id = -1;
         name = newName;
@@ -41,6 +28,15 @@ public class Recipe {
         cookTime = cook;
         picture = picFile;
     }
+
+    //no picture
+    public Recipe(String newName, String newIngredients, String newInstructions, int serve,
+                                                                        int prep, int cook) {
+
+        this(newName, newIngredients, newInstructions, serve, prep, cook, null);
+    }
+
+
 
     public int getID() {
         return id;

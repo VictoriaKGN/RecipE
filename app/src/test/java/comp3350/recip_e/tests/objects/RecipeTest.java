@@ -34,6 +34,7 @@ public class RecipeTest {
         assertEquals("Recipe prep time does not match", prep, recipe.getPrepTime());
         assertEquals("Recipe cook time does not match", cook, recipe.getCookTime());
 
+        System.out.println("Finished testing recipe creation");
     }
 
 
@@ -50,6 +51,8 @@ public class RecipeTest {
         assertNotNull("Recipe2 not created", recipe1);
         assertNotNull("Recipe2 not created", recipe2);
         assertFalse("Recipe1 should not equal Recipe2", recipe1.equals(recipe2));
+
+        System.out.println("Finished testing recipe comparisons");
     }
 
 
@@ -63,6 +66,8 @@ public class RecipeTest {
         assertNull("Recipe1 picture should return NULL", recipe1.getPicture());
         assertFalse("Recipe1 picture should be NULL", recipe1.hasPicture());
         assertTrue("Recipe2 should have a picture URI", recipe2.hasPicture());
+
+        System.out.println("Finished testing recipe picture attributes");
 
         System.out.println("\nEnd of testRecipe\n");
     }
