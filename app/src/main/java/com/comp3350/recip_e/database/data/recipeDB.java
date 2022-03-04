@@ -77,7 +77,7 @@ public class recipeDB implements recipeManager{
     //get directions of a recipe
     public String getDirection(int recipeId){
 
-        return (String)getValue(recipeId).get("direction");
+        return (String)getValue(recipeId).get("Directions");
     }
 
     @Override
@@ -127,14 +127,17 @@ public class recipeDB implements recipeManager{
         int recipeId=0;
 
         JSONObject key=jsonReader();
-        for (int i = recipeId; i <Integer.MAX_VALUE ; i++) {
-            if(key.get(""+i)!=null) {
-                i++;
-            }else {
-                recipeId=i;
-                break;
+        Boolean nextId = false;
+        while (recipeId <Integer.MAX_VALUE && !nextId) {
+            if(key.get(""+recipeId)!=null) {
+                recipeId++;
+            }
+            else
+            {
+                nextId = true;
             }
         }
+
         String coverPath="src/main/asset/recipeCover/"+cover;
         addHelper(value, key,recipeId, name, ingre, direction, serving, prep, cook, cover);
 
