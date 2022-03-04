@@ -16,12 +16,7 @@ public class ExampleUnitTest {
     }
     @Test
     public void checkAdd(){
-//        String testName="Honey-Lime Chicken";
         String filePath="src/main/asset/recipe.json";
-//        recipeDB recipe=new recipeDB(filePath);
-//        String name=recipe.getRecipeName(1);
-//
-//        System.out.println("testName:"+name+", actualName:"+testName);
         recipeDB db=new recipeDB(filePath);
         String ingre="¾ teaspoon salt\n" +
                 "¼ teaspoon black pepper\n" +
@@ -41,12 +36,8 @@ public class ExampleUnitTest {
                 "Step 2\n" +
                 "Heat butter and olive oil in a large heavy skillet over medium heat. Saute chicken until golden brown, about 6 minutes on each side. Sprinkle with 2 teaspoons garlic powder and lime juice. " +
                 "Cook 5 minutes more, stirring frequently to coat evenly with sauce.\n";
-//        db.addRecipe(2,"Spicy Garlic Lime Chicken",ingre,dir,2);
-        db.delRecipe(2);
-//        System.out.println(db.getRecipeName(2));
-
-
-
+        String cover="HoneyLimeChicken.jpeg";
+        db.addRecipe("Spicy Garlic Lime Chicken",ingre,dir,4, 5, 20,cover);
     }
 
 }
