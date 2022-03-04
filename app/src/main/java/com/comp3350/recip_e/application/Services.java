@@ -8,7 +8,7 @@ public class Services {
 
     public static synchronized recipeManager getRecipePersistence() {
         if (recipePersistence == null) {
-            recipePersistence = new recipeDB(""); // TODO Add required path
+            recipePersistence = new recipeDB("src/main/asset/recipe.json");
         }
         return recipePersistence;
     }
