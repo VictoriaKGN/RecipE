@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- A scroller that allows the user to scroll up and down the pages. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,8 +8,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fillViewport="true"
-    tools:context=".UI.ViewActivity">
+    tools:context=".UI.EditActivity">
 
+    <!-- Tool to assist flipping between the left and right page -->
     <ViewFlipper
         android:id="@+id/view_flipper"
         android:layout_width="match_parent"
@@ -16,38 +19,40 @@
         <!-- left layout -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- row of tabs -->
+            <!-- first row of tabs -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="80dp"
                 android:layout_marginTop="24dp">
 
+                <!-- The add button that is placed next to the +(add) button -->
                 <ImageButton
-                    android:id="@+id/add_recipe_left_button"
+                    android:id="@+id/add_recipe_button"
                     android:layout_width="70dp"
                     android:layout_height="56dp"
                     android:background="@drawable/accent"
+                    android:backgroundTint="@color/background"
                     android:contentDescription="add new recipe"
-                    app:srcCompat="@drawable/add_icon"
-                    android:onClick="addRecipe_click"/>
+                    app:srcCompat="@drawable/add_icon" />
 
+                <!-- The delete button that is placed next to the +(add) button -->
                 <ImageButton
-                    android:id="@+id/delete_recipe_left_button"
+                    android:id="@+id/delete_recipe_button"
                     android:layout_width="70dp"
                     android:layout_height="56dp"
                     android:layout_marginStart="2dp"
                     android:background="@drawable/accent"
                     android:contentDescription="delete recipe"
                     app:srcCompat="@drawable/delete_icon"
-                    android:onClick="deleteRecipe_click"/>
+                    android:onClick="discardChanges_click"/>
 
             </LinearLayout>
 
-            <!-- row of contents (recipe name and button) -->
+            <!-- first row of contents (recipe name and button) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,12 +61,15 @@
                 android:layout_marginRight="24dp"
                 android:background="@drawable/background">
 
-                <TextView
+                <!-- Recipe Name -->
+                <EditText
                     android:id="@+id/recipe_name"
-                    android:layout_width="350dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="32dp"
+                    android:ems="10"
+                    android:hint="Recipe Name"
                     android:inputType="text"
                     android:textSize="30sp"/>
 
@@ -70,18 +78,19 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
 
+                <!-- The >(right page) button. When pressed the user moves to the right page -->
                 <ImageButton
+                    android:onClick="changeToRightView_click"
                     android:id="@+id/right_page_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="@color/accent"
                     android:src="@drawable/right_arrow"
                     android:layout_marginTop="32dp"
-                    android:layout_marginRight="32dp"
-                    android:onClick="changeToRightView_click"/>
+                    android:layout_marginRight="32dp"/>
             </LinearLayout>
 
-            <!-- row of contents - picture and recipe general info-->
+            <!-- second row of contents - picture and recipe general info-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,12 +99,16 @@
                 android:layout_marginRight="24dp"
                 android:background="@drawable/background">
 
-                <ImageView
+                <!-- Where the picture of a recipe will be added -->
+                <ImageButton
                     android:id="@+id/recipe_pic"
                     android:layout_width="204dp"
                     android:layout_height="204dp"
                     android:layout_marginLeft="32dp"
-                    android:layout_marginTop="24dp" />
+                    android:layout_marginTop="24dp"
+                    android:src="@drawable/add_photo_icon"
+                    android:background="@color/accent"
+                    android:onClick="choosePic_click" />
 
                 <View
                     android:layout_width="0dp"
@@ -106,17 +119,17 @@
                     android:id="@+id/info"
                     android:layout_width="204dp"
                     android:layout_height="204dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
                     android:layout_marginRight="32dp"
+                    android:layout_marginTop="24dp"
                     android:lineSpacingExtra="25dp"
-                    android:paddingTop="35dp">
+                    android:paddingTop="35dp"
+                    android:text="">
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingBottom="10dp">
+                        android:layout_height="match_parent">
 
+                        <!-- The Serve, Prep Time and Cooking time tabs -->
                         <TextView
                             android:id="@+id/serves"
                             android:layout_width="wrap_content"
@@ -125,21 +138,21 @@
                             android:textAlignment="textEnd"
                             android:textSize="20sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/num_serves"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ems="2"
+                            android:inputType="number"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                     </TableRow>
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp">
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:id="@+id/prep_time"
@@ -149,27 +162,28 @@
                             android:textAlignment="textEnd"
                             android:textSize="20sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/num_prep"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ems="2"
+                            android:inputType="number"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/prep_min"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/minutes"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                     </TableRow>
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingTop="10dp">
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:id="@+id/cook_time"
@@ -179,20 +193,22 @@
                             android:textAlignment="textEnd"
                             android:textSize="20sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/num_cook"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ems="2"
+                            android:inputType="number"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/cook_min"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/minutes"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                     </TableRow>
 
@@ -200,7 +216,7 @@
 
             </LinearLayout>
 
-            <!-- row of contents - ingredients header -->
+            <!-- third row of contents - ingredients header-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -223,7 +239,7 @@
 
             </LinearLayout>
 
-            <!-- row of contents - ingredients scroller -->
+            <!-- firth row of contents - ingredients scroller -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -235,20 +251,52 @@
                 <ScrollView
                     android:id="@+id/ingredients_container"
                     android:layout_width="match_parent"
-                    android:layout_height="325dp"
+                    android:layout_height="252dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
-                    android:layout_marginBottom="32dp"
                     android:fillViewport="true"
                     android:scrollbarFadeDuration="0">
 
-                    <TextView
+                    <EditText
                         android:id="@+id/ingredients"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
                         android:textSize="20sp" />
 
                 </ScrollView>
+
+            </LinearLayout>
+
+            <!-- fifth row of contents - save button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/background">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/save_left_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/accent"
+                    android:text="@string/save"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:onClick="saveInput_click"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 
@@ -269,6 +317,7 @@
 
         </LinearLayout>
 
+
         <!-- right layout -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -284,12 +333,13 @@
 
                 <ImageButton
                     android:id="@+id/add_recipe_right_button"
+                    android:backgroundTint="@color/background"
                     android:layout_width="70dp"
                     android:layout_height="56dp"
                     android:background="@drawable/accent"
                     android:contentDescription="add new recipe"
                     app:srcCompat="@drawable/add_icon"
-                    android:onClick="addRecipe_click"/>
+                    />
 
                 <ImageButton
                     android:id="@+id/delete_recipe_right_button"
@@ -358,20 +408,52 @@
                 <ScrollView
                     android:id="@+id/instructions_container"
                     android:layout_width="match_parent"
-                    android:layout_height="552dp"
+                    android:layout_height="462dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
                     android:layout_marginBottom="32dp"
                     android:fillViewport="true"
                     android:scrollbarFadeDuration="0">
 
-                    <TextView
+                    <EditText
                         android:id="@+id/instructions"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textSize="20sp" />
 
                 </ScrollView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="80dp"
+                android:background="@drawable/background">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <!-- The save button on the right page -->
+                <Button
+                    android:id="@+id/save_right_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/accent"
+                    android:text="@string/save"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:onClick="saveInput_click"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 

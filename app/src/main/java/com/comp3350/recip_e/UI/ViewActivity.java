@@ -1,11 +1,18 @@
 package com.comp3350.recip_e.UI;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,11 +22,16 @@ import android.widget.ViewFlipper;
 
 import com.comp3350.recip_e.R;
 
+import java.io.File;
+import java.net.URI;
+
 public class ViewActivity extends AppCompatActivity {
 
-    // TODO: recipe manager global variable, current viewing recipe id
     // private RecipeManager recipeManager;
-    // private int recipeID;
+    // private Recipe currRecipe;
+    // private RecipeValidator validator;
+
+    private ActivityResultLauncher<Intent> activityLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +39,54 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
 
         // recipeManager = new RecipeManager();
-        // recipeID = recipeManager.getFirst().getID();
+        // validator = new RecipeValidator();
 
-        // if (recipeID ==
+        activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result)
+                {
+                    if (result.getResultCode() == 7)
+                    {
+                        Intent intent = result.getData();
+
+                        if (intent != null)
+                        {
+                            // extract all the data
+                            Bundle bundle = intent.getExtras();
+                            // Recipe newRecipe = null;
+
+                            // if(bundle.getString("RECIPE_PICTURE") != null)
+                            // {
+                            //    newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
+                            //      bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
+                            // }
+                            // else
+                            // {
+                            //    newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
+                            //      bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
+                            // }
+
+                            /*try
+                            {
+                                validator.validate(newRecipe);
+                                currRecipe = newRecipe;
+                            }catch (InvalidRecipeException exc)
+                            {
+                                Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
+                            }*/
+
+                            //if (currRecipe == newRecipe)
+                            //{
+                            //    setAllFields();
+                            // }
+                        }
+                    }
+                }
+            }
+        );
+
+        // currRecipe = recipeManager.getRecipe(0);
+        // setAllFields();
     }
 
     // ********************************** set methods ***************************************
@@ -38,17 +95,30 @@ public class ViewActivity extends AppCompatActivity {
     public void setAllFields()
     {
         /*
-        Recipe currRecipe = recipeManager.getRecipe(recipeID);
+        if (currRecipe != null)
+        {
+            setRecipeName(currRecipe.getName());
+            setServings(currRecipe.getServings());
+            setPrepTime(currRecipe.getPrep());
+            setCookingTime(currRecipe.getCooking());
+            setIngredients(currRecipe.getIngredients());
+            setInstructions(currRecipe.getInstructions());
 
-        setRecipeName(currRecipe.getName());
-        setServings(currRecipe.getServings());
-        setPrepTime(currRecipe.getPrep());
-        setCookingTime(currRecipe.getCooking());
-        setIngredients(currRecipe.getIngredients());
-        setInstructions(currRecipe.getInstructions());
-
-        // TODO: set the picture if there is one
-
+            if (currRecipe.hasPicture())
+            {
+                setPicture(currRecipe.getPicture());
+            }
+        }
+        else
+        {
+            setRecipeName("");
+            setServings("");
+            setPrepTime("");
+            setCookingTime("");
+            setIngredients("");
+            setInstructions("");
+            setPicture("");
+        }
          */
     }
 
@@ -81,10 +151,20 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     // set the picture of the recipe if there is one
-    public void setPicture(Drawable picture)
+    public void setPicture(String picturePath)
     {
+        File newFile = new File(picturePath);
         ImageView pic = findViewById(R.id.recipe_pic);
-        pic.setBackground(picture);
+
+        if (newFile.exists())
+        {
+            Bitmap myBitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
+            pic.setImageBitmap(myBitmap);
+        }
+        else
+        {
+            pic.setImageResource(android.R.color.transparent);
+        }
     }
 
     // set the ingredients of the recipe
@@ -106,12 +186,8 @@ public class ViewActivity extends AppCompatActivity {
     // change the view to the new recipe layout and pass in the recipe manager
     public void addRecipe_click(View view)
     {
-        Intent intent = new Intent(ViewActivity.this, LeftEditActivity.class);
-        /* Bundle b = new Bundle();
-
-        b.putString("recipeManager", recipeManager);
-        intent.putExtras(b);*/
-        ViewActivity.this.startActivity(intent);
+        Intent intent = new Intent(ViewActivity.this, EditActivity.class);
+        activityLauncher.launch(intent);
     }
 
     // change flipper view
@@ -142,9 +218,9 @@ public class ViewActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i)
             {
                 Toast.makeText(ViewActivity.this, "Recipe deleted...", Toast.LENGTH_SHORT).show();
-                // TODO: send the confirmation to logic layer, view the previous recipe
                 // recipeManager.deleteRecipe(recipeID);
-                // recipeID =
+                // currRecipe = null;
+                // setAllFields();
             }
         });
 

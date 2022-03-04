@@ -1,3 +1,5 @@
+//Edit Activity Java Class
+
 package com.comp3350.recip_e.UI;
 
 import androidx.activity.result.ActivityResult;
@@ -21,18 +23,22 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
-public class LeftEditActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity {
 
     private static final int PERMISSION_CODE = 1001;
     ActivityResultLauncher<Intent> activityResultLauncher;
-    Uri pictureUri;
+    Uri pictureUri = null;
+
+    // private RecipeManager recipeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_left_edit);
+        setContentView(R.layout.activity_edit);
 
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -65,22 +71,137 @@ public class LeftEditActivity extends AppCompatActivity {
         }
     }
 
-    // changes the view to the right side
-    public void changeToRightView_click(View view)
-    {
-        Intent rIntent = new Intent(LeftEditActivity.this, MainActivity.class);
-        LeftEditActivity.this.startActivity(rIntent);
-    }
 
-    // sends info to logic layer when user tries to save the input
+    // input validation when the user tries to save a new recipe
     public void saveInput_click(View view)
     {
+        int allValid = 0;
 
+        EditText recName = (EditText) findViewById(R.id.recipe_name);
+        String rec_text = recName.getText().toString().trim();
+
+        if(rec_text.isEmpty() || rec_text.length() == 0 || rec_text.equals("") || rec_text == null)
+        {
+            //EditText is empty
+            Toast.makeText(this, "Please enter a recipe name ", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            //EditText is not empty
+            allValid++;
+        }
+
+        EditText serveNum = (EditText) findViewById(R.id.num_serves);
+        String serveNum_text = serveNum.getText().toString().trim();
+        int serves = 0;
+
+        if(serveNum_text.isEmpty() || serveNum_text.length() == 0 || serveNum_text.equals("") || serveNum_text == null)
+        {
+            //EditText is empty
+            Toast.makeText(this, "Please enter the # of people it serves ", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            //EditText is not empty
+            serves = Integer.parseInt(serveNum_text);
+            allValid++;
+        }
+
+        EditText timePrep = (EditText) findViewById(R.id.num_prep);
+        String timePrep_text = timePrep.getText().toString().trim();
+        int prepTime = 0;
+
+        if(timePrep_text.isEmpty() || timePrep_text.length() == 0 || timePrep_text.equals("") || timePrep_text == null)
+        {
+            //EditText is empty
+            Toast.makeText(this, "Please enter the prepping time ", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            //EditText is not empty
+            prepTime = Integer.parseInt(timePrep_text);
+            allValid++;
+        }
+
+        EditText timeCook = (EditText) findViewById(R.id.num_cook);
+        String timeCook_text = timeCook.getText().toString().trim();
+        int cookTime = 0;
+
+        if(timeCook_text.isEmpty() || timeCook_text.length() == 0 || timeCook_text.equals("") || timeCook_text == null)
+        {
+            //EditText is empty
+            Toast.makeText(this, "Please enter the cooking time ", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            //EditText is not empty
+            cookTime = Integer.parseInt(timeCook_text);
+            allValid++;
+        }
+
+        EditText ingred = (EditText) findViewById(R.id.ingredients);
+        String ingred_text = ingred.getText().toString().trim();
+
+        if(ingred_text.isEmpty() || ingred_text.length() == 0 || ingred_text.equals("") || ingred_text == null)
+        {
+            //EditText is empty
+            Toast.makeText(this, "Please enter ingredients ", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            //EditText is not empty
+            allValid++;
+        }
+
+        EditText inst = (EditText) findViewById(R.id.instructions);
+        String inst_text = inst.getText().toString().trim();
+
+        if(inst_text.isEmpty() || inst_text.length() == 0 || inst_text.equals("") || inst_text == null)
+        {
+            //EditText is empty
+            Toast.makeText(this, "Please enter instructions ", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            //EditText is not empty
+            allValid++;
+        }
+
+        // check if all fields are non-empty
+        if (allValid == 6)
+        {
+            // pass back all the info collected
+            Intent intent = new Intent();
+
+            Bundle extras = new Bundle();
+            extras.putString("RECIPE_NAME", rec_text);
+            extras.putInt("NUM_SERVES", serves);
+            extras.putInt("PREP_TIME", prepTime);
+            extras.putInt("COOK_TIME", cookTime);
+            extras.putString("INGREDIENTS", ingred_text);
+            extras.putString("INSTRUCTIONS", inst_text);
+
+            if (pictureUri != null)
+            {
+                extras.putString("RECIPE_PICTURE", pictureUri.getPath());
+            }
+            else
+            {
+                extras.putString("RECIPE_PICTURE", null);
+            }
+
+            intent.putExtras(extras);
+            setResult(7, intent);
+            finish();
+        }
     }
 
+    //The function below validates discarding changes.
+    //Appropriate messages are thrwon to the user to confirm their actions.
+    //Another message is thrown after the confirmed removal that lets the user know that their recipe changes were successfully discarded.
     public void discardChanges_click(View view)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(LeftEditActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this);
         builder.setTitle("Discard Changes?");
         builder.setMessage("Are you sure you want to discard this new recipe? Your progress will be lost.");
 
@@ -88,17 +209,18 @@ public class LeftEditActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i)
             {
-                Toast.makeText(LeftEditActivity.this, "Changes discarded...", Toast.LENGTH_SHORT).show();
-                // TODO: send the confirmation to logic layer
+                Toast.makeText(EditActivity.this, "Changes discarded...", Toast.LENGTH_SHORT).show();
                 finish();
 
             }
         });
 
+        //Below is when a user does not want to delete the recipe.
+        //If the user selects "No" their progress is restored and they return to the screen the way it was initially.
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() { // user does not want to proceed with the deletion
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(LeftEditActivity.this, "Progress was restored...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditActivity.this, "Progress was restored...", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -165,7 +287,7 @@ public class LeftEditActivity extends AppCompatActivity {
     // set the picture of the recipe if there is one
     public void setPicture(Drawable picture)
     {
-        ImageView pic = findViewById(R.id.picture);
+        ImageView pic = findViewById(R.id.recipe_pic);
         pic.setBackground(picture);
     }
 
@@ -215,6 +337,29 @@ public class LeftEditActivity extends AppCompatActivity {
     {
         EditText text = findViewById(R.id.ingredients);
         return text.getText().toString();
+    }
+
+
+
+// ********************************** button clicks ***************************************
+
+    //The layout of the page is in such a way that the user can flip back and forth between two pages.
+    //There are "<" and ">" buttons which denote next/right and previous/left page.
+
+    // change the view to the new recipe layout and pass in the recipe manager
+
+    // change flipper view
+    public void changeToRightView_click(View view)
+    {
+        ViewFlipper flipper = findViewById(R.id.view_flipper);
+        flipper.showNext();
+    }
+
+    // changes the view to the left side
+    public void changeToLeftView_click(View view)
+    {
+        ViewFlipper flipper = findViewById(R.id.view_flipper);
+        flipper.showPrevious();
     }
 
 }
