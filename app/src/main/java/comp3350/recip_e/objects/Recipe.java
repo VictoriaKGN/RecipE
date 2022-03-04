@@ -19,7 +19,7 @@ public class Recipe {
     public Recipe(String newName, String newIngredients, String newInstructions, int serve,
                   int prep, int cook, String picFile) {
 
-        id = -1;
+        id = 0;
         name = newName;
         ingredients = newIngredients;
         instructions = newInstructions;
@@ -101,7 +101,6 @@ public class Recipe {
 
         cookTime = newTime;
     }
-
 
 
     public String getPicture() {
