@@ -37,6 +37,8 @@ public class recipeDB implements recipeManager{
             wholeRecipe = new Recipe(name, ingre, direction, serving, prep, cook);
         }
 
+        wholeRecipe.setID(recipeId);
+
         return wholeRecipe;
     }
 
