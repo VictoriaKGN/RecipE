@@ -12,8 +12,8 @@ import com.comp3350.recip_e.database.data.recipeDBTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         RecipeTest.class,
-        RecipeManagerTest.class,
-        recipeDBTest.class
+        recipeDBTest.class,
+        RecipeManagerTest.class
 })
 
 
