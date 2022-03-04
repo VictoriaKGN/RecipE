@@ -1,11 +1,3 @@
 <resources>
-    <string name="app_name">Recip-E</string>
-
-    <string name="serves">Serves: </string>
-    <string name="prep_time">Prep Time: </string>
-    <string name="cooking_time">Cooking Time: </string>
-    <string name="minutes"> min</string>
-    <string name="ingredients">Ingredients</string>
-    <string name="save">Save</string>
-    <string name="instructions">Instructions</string>
+    <string name="app_name">recip-E</string>
 </resources>
