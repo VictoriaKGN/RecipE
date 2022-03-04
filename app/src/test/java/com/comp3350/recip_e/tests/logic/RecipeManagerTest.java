@@ -21,17 +21,6 @@ public class RecipeManagerTest {
     }
 
     @Test
-    public void testGetAllRecipes() {
-        // TODO Needs hardcoded test data
-        System.out.println("\nStarting testGetAllRecipes\n");
-        List<Recipe> recipeList = recipeManager.getAllRecipes();
-
-        assertNotNull(recipeList);
-
-        System.out.println("Finished testGetAllRecipes");
-    }
-
-    @Test
     public void testGetRecipe() {
         // TODO Needs hardcoded test data
         System.out.println("\nStarting testGetRecipe\n");
