@@ -38,9 +38,9 @@ public class RecipeManagerTest {
         Recipe recipe = new Recipe("name", "ingredients", "instructions", 4, 30, 30);
 
         recipeManager.addRecipe(recipe);
-        assertEquals(recipeManager.getRecipe(recipe.getID()).getID(), recipe.getID());
-        recipeManager.deleteRecipe(recipe.getID());
-        assertNull(recipeManager.getRecipe(recipe.getID()));
+        assertEquals(recipeManager.getRecipe(recipe.getID()).getID(), 0);
+        recipeManager.deleteRecipe(0);
+        assertThrows(NullPointerException.class, () -> recipeManager.getRecipe(0));
 
         System.out.println("Finished testAddDeleteRecipe");
     }
