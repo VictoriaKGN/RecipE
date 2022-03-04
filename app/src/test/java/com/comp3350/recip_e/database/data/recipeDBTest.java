@@ -2,7 +2,7 @@ package com.comp3350.recip_e.database.data;
 
 import static org.junit.Assert.*;
 
-import com.comp3350.recip_e.object.Recipe;
+import com.comp3350.recip_e.objects.Recipe;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,6 +11,15 @@ import org.junit.Test;
 public class recipeDBTest {
 
     private recipeDB db;
+    String name = "testRecipe";
+    String ingred = "stuff";
+    String instr = "do stuff with stuff";
+    int serv = 0;
+    int prep = 0;
+    int cook = 0;
+    String pic = "some/path";
+    Recipe recipeNoPic = new Recipe(name, ingred, instr, serv, prep, cook,  null);
+    Recipe recipeWPic = new Recipe(name, ingred, instr, serv, prep, cook,  pic);
 
     @Before
     public void setUp() throws Exception
@@ -34,7 +43,7 @@ public class recipeDBTest {
 
         try
         {
-            badPath.addRecipe( "testRecipe","stuff","do stuff with stuff", 0, 0, 0, "not a picture of stuff");
+            badPath.addRecipe(recipeNoPic);
         }catch(Exception e)
         {
             System.out.println("Expected exception 1");
@@ -103,7 +112,7 @@ public class recipeDBTest {
     @Test
     public void addRecipe()
     {
-        Recipe test = db.addRecipe( "testRecipe","stuff","do stuff with stuff", 0, 0,0, "not a picture of stuff");
+        Recipe test = db.addRecipe( recipeNoPic);
         assertTrue("name should match the added recipe", "testRecipe".equals(test.getName()));
         assertTrue("ingredients should match the added recipe", "stuff".equals(test.getIngredients()));
         assertTrue("instructions should match the added recipe", "do stuff with stuff".equals(test.getInstructions()));
@@ -118,7 +127,7 @@ public class recipeDBTest {
     @Test
     public void delRecipe()
     {
-        Recipe test = db.addRecipe( "testRecipe","stuff","do stuff with stuff", 0,0, 0, "not a picture of stuff");
+        Recipe test = db.addRecipe( recipeNoPic);
 
         assertTrue("the recipe should be deleted", db.delRecipe(5));
         //assertNull("should not be able to access the recipe anymore", db.getRecipe(10,false)); //fails because null recipe not checked for in getRecipe

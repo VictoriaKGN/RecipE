@@ -1,7 +1,7 @@
 package com.comp3350.recip_e.database.data;
 
 import com.comp3350.recip_e.database.recipeManager;
-import com.comp3350.recip_e.object.Recipe;
+import com.comp3350.recip_e.objects.Recipe;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -122,7 +122,8 @@ public class recipeDB implements recipeManager{
     }
 
     //add a new recipe to the fake database, return a Recipe object
-    public Recipe addRecipe( String name, String ingre, String direction,int serving, int prep, int cook, String cover){
+    public Recipe addRecipe(Recipe recipe){
+
         JSONObject value=new JSONObject();
         int recipeId=0;
 
@@ -138,12 +139,14 @@ public class recipeDB implements recipeManager{
             }
         }
 
-        String coverPath="src/main/asset/recipeCover/"+cover;
-        addHelper(value, key,recipeId, name, ingre, direction, serving, prep, cook, cover);
+        String coverPath="src/main/asset/recipeCover/"+recipe.getPicture();
+        addHelper(value, key,recipeId, recipe.getName(), recipe.getIngredients(), recipe.getInstructions(),
+                                    recipe.getServings(), recipe.getPrepTime(), recipe.getCookTime(), recipe.getPicture());
 
         //        System.out.println("exit try-catch.\n");
+        recipe.setID(recipeId);
 
-        return new Recipe(name,ingre,direction,serving,prep,cook,coverPath);
+        return recipe;
     }
 
     //delete a current recipe from fake database
