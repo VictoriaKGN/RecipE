@@ -51,8 +51,8 @@ public class RecipeManagerTest {
         InvalidRecipeException e;
         Recipe recipe1 = new Recipe("", "ingredients", "instructions", 1, 1, 1);
         Recipe recipe2 = new Recipe("name", "ingredients", "instructions", 0, 1, 1);
-        Recipe recipe3 = new Recipe("name", "ingredients", "instructions", 1, 0, 1);
-        Recipe recipe4 = new Recipe("name", "ingredients", "instructions", 1, 1, 0);
+        Recipe recipe3 = new Recipe("name", "ingredients", "instructions", 1, -1, 1);
+        Recipe recipe4 = new Recipe("name", "ingredients", "instructions", 1, 1, -1);
 
         try {
             // Test for null object
