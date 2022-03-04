@@ -11,8 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,15 +19,16 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.comp3350.recip_e.R;
+import com.comp3350.recip_e.logic.InvalidRecipeException;
+import com.comp3350.recip_e.logic.RecipeManager;
+import com.comp3350.recip_e.objects.Recipe;
 
 import java.io.File;
-import java.net.URI;
 
 public class ViewActivity extends AppCompatActivity {
 
-    // private RecipeManager recipeManager;
-    // private Recipe currRecipe;
-    // private RecipeValidator validator;
+    private RecipeManager recipeManager;
+    private Recipe currRecipe;
 
     private ActivityResultLauncher<Intent> activityLauncher;
 
@@ -38,8 +37,7 @@ public class ViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
 
-        // recipeManager = new RecipeManager();
-        // validator = new RecipeValidator();
+        recipeManager = new RecipeManager();
 
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -53,40 +51,42 @@ public class ViewActivity extends AppCompatActivity {
                         {
                             // extract all the data
                             Bundle bundle = intent.getExtras();
-                            // Recipe newRecipe = null;
+                            Recipe newRecipe = null;
 
-                            // if(bundle.getString("RECIPE_PICTURE") != null)
-                            // {
-                            //    newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                            //      bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
-                            // }
-                            // else
-                            // {
-                            //    newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                            //      bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
-                            // }
-
-                            /*try
+                            if(bundle.getString("RECIPE_PICTURE") != null) {
+                                try {
+                                    newRecipe = new Recipe(bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
+                                            bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
+                                } catch (InvalidRecipeException exc)
+                                {
+                                    Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else
                             {
-                                validator.validate(newRecipe);
-                                currRecipe = newRecipe;
-                            }catch (InvalidRecipeException exc)
-                            {
-                                Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
-                            }*/
+                                try
+                                {
+                                    newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
+                                            bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
+                                } catch (InvalidRecipeException exc)
+                                {
+                                    Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
+                                }
 
-                            //if (currRecipe == newRecipe)
-                            //{
-                            //    setAllFields();
-                            // }
+                            }
+
+                            if (currRecipe == newRecipe)
+                            {
+                                setAllFields();
+                            }
                         }
                     }
                 }
             }
         );
 
-        // currRecipe = recipeManager.getRecipe(0);
-        // setAllFields();
+        //currRecipe = recipeManager.getFirstRecipe();
+        //setAllFields();
     }
 
     // ********************************** set methods ***************************************
@@ -94,13 +94,12 @@ public class ViewActivity extends AppCompatActivity {
     // set all fields
     public void setAllFields()
     {
-        /*
         if (currRecipe != null)
         {
             setRecipeName(currRecipe.getName());
-            setServings(currRecipe.getServings());
-            setPrepTime(currRecipe.getPrep());
-            setCookingTime(currRecipe.getCooking());
+            setServings(String.valueOf(currRecipe.getServings()));
+            setPrepTime(String.valueOf(currRecipe.getPrepTime()));
+            setCookingTime(String.valueOf(currRecipe.getCookTime()));
             setIngredients(currRecipe.getIngredients());
             setInstructions(currRecipe.getInstructions());
 
@@ -119,7 +118,6 @@ public class ViewActivity extends AppCompatActivity {
             setInstructions("");
             setPicture("");
         }
-         */
     }
 
     // set the # of serves
@@ -218,9 +216,9 @@ public class ViewActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i)
             {
                 Toast.makeText(ViewActivity.this, "Recipe deleted...", Toast.LENGTH_SHORT).show();
-                // recipeManager.deleteRecipe(recipeID);
-                // currRecipe = null;
-                // setAllFields();
+                recipeManager.deleteRecipe(currRecipe.getID());
+                currRecipe = null;
+                setAllFields();
             }
         });
 

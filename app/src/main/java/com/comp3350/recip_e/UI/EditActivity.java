@@ -33,8 +33,6 @@ public class EditActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> activityResultLauncher;
     Uri pictureUri = null;
 
-    // private RecipeManager recipeManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -252,7 +250,6 @@ public class EditActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        //startActivityForResult(intent, IMAGE_PICK_CODE);
         activityResultLauncher.launch(intent);
     }
 
