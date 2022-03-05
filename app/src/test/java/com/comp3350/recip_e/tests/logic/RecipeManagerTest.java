@@ -21,6 +21,12 @@ public class RecipeManagerTest {
     }
 
     @Test
+    public void testGetFirstRecipe() {
+        String name = recipeManager.getFirstRecipe().getName();
+        assertEquals("test recipe 1", name);
+    }
+
+    @Test
     public void testGetRecipe() {
         // TODO Needs hardcoded test data
         System.out.println("\nStarting testGetRecipe\n");
@@ -36,11 +42,12 @@ public class RecipeManagerTest {
     public void testAddDeleteRecipe() {
         System.out.println("\nStarting testAddDeleteRecipe\n");
         Recipe recipe = new Recipe("name", "ingredients", "instructions", 4, 30, 30);
+        int lastRecipeID = 3;
 
         recipeManager.addRecipe(recipe);
-        assertEquals(recipeManager.getRecipe(5).getID(), 5);
-        recipeManager.deleteRecipe(5);
-        assertThrows(NullPointerException.class, () -> recipeManager.getRecipe(5));
+        assertEquals(recipeManager.getRecipe(lastRecipeID).getID(), lastRecipeID);
+        recipeManager.deleteRecipe(lastRecipeID);
+        assertNull(recipeManager.getRecipe(lastRecipeID));
 
         System.out.println("Finished testAddDeleteRecipe");
     }
