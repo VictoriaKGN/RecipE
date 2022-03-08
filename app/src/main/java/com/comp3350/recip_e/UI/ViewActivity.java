@@ -75,8 +75,10 @@ public class ViewActivity extends AppCompatActivity {
 
                             }
 
-                            if (currRecipe == newRecipe)
+                            if (newRecipe != null)
                             {
+                                recipeManager.addRecipe(newRecipe);
+                                currRecipe = newRecipe;
                                 setAllFields();
                             }
                         }
