@@ -85,8 +85,8 @@ public class ViewActivity extends AppCompatActivity {
             }
         );
 
-        //currRecipe = recipeManager.getFirstRecipe();
-        //setAllFields();
+        currRecipe = recipeManager.getFirstRecipe();
+        setAllFields();
     }
 
     // ********************************** set methods ***************************************
