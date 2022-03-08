@@ -12,13 +12,18 @@ import com.comp3350.recip_e.R;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,6 +31,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -37,7 +46,6 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result)
@@ -181,7 +189,8 @@ public class EditActivity extends AppCompatActivity {
 
             if (pictureUri != null)
             {
-                extras.putString("RECIPE_PICTURE", pictureUri.getPath());
+                String path = saveImage(pictureUri);
+                extras.putString("RECIPE_PICTURE", path);
             }
             else
             {
@@ -336,7 +345,40 @@ public class EditActivity extends AppCompatActivity {
         return text.getText().toString();
     }
 
+    /**
+     * Save an image into internal storage
+     *
+     * @param uri Image to save
+     * @return String representing the file path
+     */
+    public String saveImage(Uri uri) {
+        Context context = this.getApplicationContext();
+        Bitmap image = null;
 
+        try {
+            image = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);   // Get the image from the gallery
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir(Environment.DIRECTORY_PICTURES, Context.MODE_PRIVATE);   // Get the directory of internal storage
+        File path = new File(directory, System.currentTimeMillis() + "_recipe.jpg");   // Create the file in internal storage
+        FileOutputStream out = null;
+
+        try {
+            out = new FileOutputStream(path);
+            image.compress(Bitmap.CompressFormat.PNG, 100, out);    // Write the image data to the image file
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return path.toString();
+    }
 
 // ********************************** button clicks ***************************************
 
