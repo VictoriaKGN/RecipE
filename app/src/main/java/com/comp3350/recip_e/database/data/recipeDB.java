@@ -36,10 +36,40 @@ public class recipeDB implements recipeManager{
         } else {
             wholeRecipe = new Recipe(name, ingre, direction, serving, prep, cook);
         }
+        wholeRecipe.setID(recipeId);
 
         wholeRecipe.setID(recipeId);
 
         return wholeRecipe;
+    }
+
+    public void resetRecipe(){
+        JSONObject newJson=new JSONObject();
+        JSONObject currentRecipe=jsonReader();
+        String runTimePath="src/main/asset/runTimeRecipe.json";
+        try{
+            JSONObject tempObj=null;
+            Object ob=new JSONParser().parse(new FileReader(runTimePath));
+            tempObj=(JSONObject) ob;
+            if(!tempObj.isEmpty()){
+                tempObj.clear();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        for (int i = 0; i < 5; i++) {
+            if(currentRecipe.get(""+i)!=null){
+                newJson.put(i,currentRecipe.get(""+i));
+            }
+        }
+
+        try{
+            FileWriter jFile=new FileWriter(runTimePath);
+            jFile.write(newJson.toJSONString());
+            jFile.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     private JSONObject jsonReader(){
@@ -140,7 +170,7 @@ public class recipeDB implements recipeManager{
                 nextId = true;
             }
         }
-
+//        System.out.println(recipeId+"!!\n");
         String coverPath="src/main/asset/recipeCover/"+recipe.getPicture();
         addHelper(value, key,recipeId, recipe.getName(), recipe.getIngredients(), recipe.getInstructions(),
                                     recipe.getServings(), recipe.getPrepTime(), recipe.getCookTime(), recipe.getPicture());
