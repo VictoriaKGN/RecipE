@@ -1,6 +1,6 @@
 package com.comp3350.recip_e.database;
 
-import com.comp3350.recip_e.object.Recipe;
+import com.comp3350.recip_e.objects.Recipe;
 
 public interface recipeManager {
     //get the whole recipe information.
@@ -25,7 +25,7 @@ public interface recipeManager {
     String getCookTime(int recipeId);
 
     //add a new recipe to the fake database( local json file), will return a Recipe Object.
-    Recipe addRecipe(String name, String ingre, String direction,int serving, int prep, int cook, String cover);
+    Recipe addRecipe(Recipe recipe);
 
     //delete a current recipe from fake database.
     boolean delRecipe(int recipeId);
