@@ -21,24 +21,19 @@ public class RecipeManagerTest {
     }
 
     @Test
-    public void testGetAllRecipes() {
-        // TODO Needs hardcoded test data
-        System.out.println("\nStarting testGetAllRecipes\n");
-        List<Recipe> recipeList = recipeManager.getAllRecipes();
-
-        assertNotNull(recipeList);
-
-        System.out.println("Finished testGetAllRecipes");
+    public void testGetFirstRecipe() {
+        String name = recipeManager.getFirstRecipe().getName();
+        assertEquals("test recipe 1", name);
     }
 
     @Test
     public void testGetRecipe() {
         // TODO Needs hardcoded test data
         System.out.println("\nStarting testGetRecipe\n");
-        Recipe recipe = recipeManager.getRecipe(0); // TODO Change id when database has test data
+        Recipe recipe = recipeManager.getRecipe(0);
 
         assertNotNull(recipe);
-        assertEquals(recipe.getID(), 0); // TODO Change id when database has test data
+        assertEquals(recipe.getID(), 0);
 
         System.out.println("Finished testGetRecipe");
     }
@@ -47,11 +42,12 @@ public class RecipeManagerTest {
     public void testAddDeleteRecipe() {
         System.out.println("\nStarting testAddDeleteRecipe\n");
         Recipe recipe = new Recipe("name", "ingredients", "instructions", 4, 30, 30);
+        int lastRecipeID = 3;
 
         recipeManager.addRecipe(recipe);
-        assertEquals(recipeManager.getRecipe(recipe.getID()).getID(), recipe.getID());
-        recipeManager.deleteRecipe(recipe.getID());
-        assertNull(recipeManager.getRecipe(recipe.getID()));
+        assertEquals(recipeManager.getRecipe(lastRecipeID).getID(), lastRecipeID);
+        recipeManager.deleteRecipe(lastRecipeID);
+        assertNull(recipeManager.getRecipe(lastRecipeID));
 
         System.out.println("Finished testAddDeleteRecipe");
     }
@@ -62,8 +58,8 @@ public class RecipeManagerTest {
         InvalidRecipeException e;
         Recipe recipe1 = new Recipe("", "ingredients", "instructions", 1, 1, 1);
         Recipe recipe2 = new Recipe("name", "ingredients", "instructions", 0, 1, 1);
-        Recipe recipe3 = new Recipe("name", "ingredients", "instructions", 1, 0, 1);
-        Recipe recipe4 = new Recipe("name", "ingredients", "instructions", 1, 1, 0);
+        Recipe recipe3 = new Recipe("name", "ingredients", "instructions", 1, -1, 1);
+        Recipe recipe4 = new Recipe("name", "ingredients", "instructions", 1, 1, -1);
 
         try {
             // Test for null object
