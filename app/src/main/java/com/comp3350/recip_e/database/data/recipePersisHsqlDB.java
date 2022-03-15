@@ -7,9 +7,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class recipePersisHsqlDB {
@@ -24,7 +21,7 @@ public class recipePersisHsqlDB {
     }
 
     private Recipe fromResultSet(ResultSet rs) throws SQLException{
-        final int id=rs.getInt("id");
+        final int id=rs.getInt("RecipeId");
         final String name=rs.getString("name");
         final String ingredients=rs.getString("ingredients");
         final String instructions=rs.getString("instructions");
@@ -56,7 +53,7 @@ public class recipePersisHsqlDB {
             st.executeUpdate();
 
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new hsqlDBException(e);
         }
     }
 
@@ -68,7 +65,7 @@ public class recipePersisHsqlDB {
 
     //new Recipe(name,ingredients,instructions,serving,prepTime,cookTime,'picture');
     public void updateRecipe(Recipe recipe){
-        String updateQuery="UPDATE Recipes SET name = ?,ingredients =?, instructions =?, serving=?,prepTime=?,cookTime=?,picture=? where recipeID = ?";
+        String updateQuery="UPDATE Recipes SET name = ?,ingredients =?, instructions =?, serving=?,prepTime=?,cookTime=?,picture=? where recipeId = ?";
         sqlSetHelper(updateQuery,recipe);
     }
 

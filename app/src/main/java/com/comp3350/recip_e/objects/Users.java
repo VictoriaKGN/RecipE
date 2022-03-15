@@ -4,35 +4,35 @@ package com.comp3350.recip_e.objects;
 
 public class Users {
 
-    private int userID;
+    private int userId;
     private String userName;
-    private int userPassword;
+    private String userPassword;
 
-    public Users(int id,String name,int password){
-        userID=id;
+    public Users(int id,String name,String password){
+        userId=id;
         userName=name;
         userPassword=password;
     }
 
-    public void setUserID(int userID) { this.userID = userID; }
+    public void setUserID(int userID) { this.userId = userID; }
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public void setUserPassword(int userPassword) {
+    public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
 
     public int getUserID() {
-        return userID;
+        return userId;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public int getUserPassword() {
+    public String getUserPassword() {
         return userPassword;
     }
 }
