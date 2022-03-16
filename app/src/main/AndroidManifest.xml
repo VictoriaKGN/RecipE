@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.comp3350.recip_e" >
+    package="com.comp3350.recip_e">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -10,12 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RecipE" >
+        android:theme="@style/Theme.RecipE">
         <activity
-            android:name=".UI.EditActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UI.ViewActivity"
+            android:name=".UI.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UI.EditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.ViewActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
