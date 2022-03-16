@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(LoginActivity.this, ViewActivity.class);
         // TODO: pass in the user info
-        activityLauncher.launch(intent);
+        startActivity(intent);
     }
 
     // ********************************** dialog method ***************************************
@@ -123,8 +123,9 @@ public class LoginActivity extends AppCompatActivity {
         Button submitBtn = dialog.findViewById(R.id.submit_btn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                submit_click();;
+            public void onClick(View view)
+            {
+                submit_click();
             }
         });
     }
