@@ -2,19 +2,19 @@ package com.comp3350.recip_e.objects;
 
 
 
-public class Users {
+public class User {
 
-    private int userId;
+    private final int userId;
     private String userName;
     private String userPassword;
 
-    public Users(int id,String name,String password){
+    public User(int id, String name, String password){
         userId=id;
         userName=name;
         userPassword=password;
     }
 
-    public void setUserID(int userID) { this.userId = userID; }
+//    public void setUserID(int userID) { this.userId = userID; }
 
     public void setUserName(String userName) {
         this.userName = userName;

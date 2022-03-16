@@ -1,7 +1,7 @@
 package com.comp3350.recip_e.database.data;
 
 import com.comp3350.recip_e.database.IuserManager;
-import com.comp3350.recip_e.objects.Users;
+import com.comp3350.recip_e.objects.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,16 +18,16 @@ public class userPersisHsqlDB implements IuserManager {
         return DriverManager.getConnection("jdbc:hsqldb:file:"+ dbpath + ";shutdown=true", "SA", "");
     }
 
-    private Users fromResultSet(ResultSet rs) throws SQLException{
+    private User fromResultSet(ResultSet rs) throws SQLException{
         final int id=rs.getInt("userId");
         final String name=rs.getString("userName");
         final String password=rs.getString("userPassword");
 
-        Users userObj= new Users(id,name,password);
+        User userObj= new User(id,name,password);
 
         return userObj;
     }
-    private void sqlSetHelper(String prepSt,Users usr){
+    private void sqlSetHelper(String prepSt, User usr){
         try(Connection c= connection()) {
             final PreparedStatement st=c.prepareStatement(prepSt);
             st.setInt(1,usr.getUserID());
@@ -41,17 +41,33 @@ public class userPersisHsqlDB implements IuserManager {
 
     }
 
-    public Users insertUser(Users user) {
+    public User insertUser(User user) {
         String prepSt = "INSERT INTO Users VALUE(?,?,?)";
         sqlSetHelper(prepSt, user);
 
         return user;
     }
 
-    public Users updateUser(Users user){
+    public User updateUser(User user){
         String prepSt= "UPDATE Users SET userName =?,userPassword =? where UserId=?";
         sqlSetHelper(prepSt,user);
 
         return user;
     }
+
+    public User selectUser(int userId){
+        try(Connection c=connection()){
+            final PreparedStatement st=c.prepareStatement("SELECT * FROM Users WHERE UserId=?");
+            st.setInt(1,userId);
+            final ResultSet rs=st.executeQuery();
+
+            User usr=fromResultSet(rs);
+
+            return usr;
+
+        }catch (final SQLException e){
+            throw new hsqlDBException(e);
+        }
+    }
+
 }
