@@ -30,7 +30,7 @@ public class IngredientTest {
         //Ingredient ingredient = new Ingredient(ingred1);
 
         assertNotNull("Ingredient object is null", ingredient1);
-        assertEquals("Ingredient name does not match", ingred1, ingredient1.getIngredientData());
+        assertEquals("Ingredient name does not match", ingred1, ingredient1.toString());
 
         System.out.println("Finished testing Ingredient creation");
     }
@@ -45,7 +45,7 @@ public class IngredientTest {
         ingredient1.setIngredientData(ingred2);
         ingredient1.setRecipeID(recipeID1);
 
-        assertEquals("Ingredient update does not match", ingred2, ingredient1.getIngredientData());
+        assertEquals("Ingredient update does not match", ingred2, ingredient1.toString());
         assertEquals("Ingredient not assigned to correct Recipe", recipeID1, ingredient1.getRecipeID());
 
         System.out.println("Finished testing Ingredient update");
