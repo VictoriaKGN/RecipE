@@ -29,7 +29,7 @@ public class InstructionTest {
         System.out.println("Testing Instruction creation");
 
         assertNotNull("Instruction object is null", instruction1);
-        assertEquals("Instruction does not match", instrs1, instruction1.getInstruction());
+        assertEquals("Instruction does not match", instrs1, instruction1.toString());
 
         System.out.println("Finished testing Instruction creation");
     }
@@ -43,7 +43,7 @@ public class InstructionTest {
         instruction1.setInstruction(instrs2);
         instruction1.setRecipeID(recipeID1);
 
-        assertEquals("Instruction update does not match", instrs2, instruction1.getInstruction());
+        assertEquals("Instruction update does not match", instrs2, instruction1.toString());
         assertEquals("Instruction not assigned to correct Recipe", recipeID1, instruction1.getRecipeID());
 
         System.out.println("Finished testing Instruction update");
