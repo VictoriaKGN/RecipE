@@ -22,13 +22,13 @@ public class Ingredient {
         this.ingredientData = newIngred;
     }
 
-    public String getIngredientData() {
+    public String toString() {
         return ingredientData;
     }
 
     public boolean equals(Ingredient ingred) {
         return (this.recipeID == ingred.getRecipeID() &&
-                this.ingredientData.equals(ingred.getIngredientData()));
+                this.ingredientData.equals(ingred.toString()));
     }
 
 }
