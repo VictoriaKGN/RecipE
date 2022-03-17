@@ -15,9 +15,9 @@ public class RecipeStub implements recipeManager {
     private ArrayList<Instruction> instructions;
 
     public RecipeStub() {
-        recipes = new ArrayList<>();
-        ingredients = new ArrayList<>();
-        instructions = new ArrayList<>();
+        recipes = new ArrayList<Recipe>();
+        ingredients = new ArrayList<Ingredient>();
+        instructions = new ArrayList<Instruction>();
 
         for(int i = 1; i <= 3; i++) {
             ingredients.add(new Ingredient(((i*100) + "ml ingredients")));
