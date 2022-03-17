@@ -7,6 +7,7 @@ import com.comp3350.recip_e.database.recipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 import com.comp3350.recip_e.objects.Ingredient;
 import com.comp3350.recip_e.objects.Instruction;
+
 import java.util.List;
 
 public class RecipeManager {
@@ -18,7 +19,8 @@ public class RecipeManager {
 
     /**
      * Get the first recipe from the database
-     * @return  The first recipe in the database
+     *
+     * @return The first recipe in the database
      */
     public Recipe getFirstRecipe() {
         return getRecipe(0);
@@ -51,5 +53,27 @@ public class RecipeManager {
      */
     public void deleteRecipe(int id) {
         database.delRecipe(id);
+    }
+
+    /**
+     * Search for recipes in the database by name
+     *
+     * @param searchKey  String used to perform a partial match against a recipe's name
+     * @return  A list of all recipes that contain searchKey in the name
+     */
+    public List<Recipe> searchRecipeByName(String searchKey) {
+        // TODO Call database search by name function
+        return null;
+    }
+
+    /**
+     * Search for recipes in the database by ingredient
+     *
+     * @param searchKey    String used to perform a partial match against a recipe's ingredients
+     * @return  A list of all recipes that have an ingredient that contains searchKey
+     */
+    public List<Recipe> searchRecipeByIngredient(String searchKey) {
+        // TODO Call database search by ingredient function
+        return null;
     }
 }
