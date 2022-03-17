@@ -9,6 +9,7 @@ import com.comp3350.recip_e.logic.InvalidRecipeException;
 import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +42,7 @@ public class RecipeManagerTest {
     @Test
     public void testAddDeleteRecipe() {
         System.out.println("\nStarting testAddDeleteRecipe\n");
-        Recipe recipe = new Recipe("name", "ingredients", "instructions", 4, 30, 30);
+        Recipe recipe = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 4, 30, 30);
         int lastRecipeID = 3;
 
         recipeManager.addRecipe(recipe);
@@ -56,10 +57,10 @@ public class RecipeManagerTest {
     public void testValidateRecipe() {
         System.out.println("\nStarting testValidateRecipe\n");
         InvalidRecipeException e;
-        Recipe recipe1 = new Recipe("", "ingredients", "instructions", 1, 1, 1);
-        Recipe recipe2 = new Recipe("name", "ingredients", "instructions", 0, 1, 1);
-        Recipe recipe3 = new Recipe("name", "ingredients", "instructions", 1, -1, 1);
-        Recipe recipe4 = new Recipe("name", "ingredients", "instructions", 1, 1, -1);
+        Recipe recipe1 = new Recipe("", new ArrayList<>(), new ArrayList<>(), 1, 1, 1);
+        Recipe recipe2 = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 0, 1, 1);
+        Recipe recipe3 = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 1, -1, 1);
+        Recipe recipe4 = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 1, 1, -1);
 
         try {
             // Test for null object
