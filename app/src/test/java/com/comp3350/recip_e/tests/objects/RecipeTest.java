@@ -2,7 +2,10 @@ package com.comp3350.recip_e.tests.objects;
 
 import org.junit.Test;
 
+import com.comp3350.recip_e.objects.Ingredient;
+import com.comp3350.recip_e.objects.Instruction;
 import com.comp3350.recip_e.objects.Recipe;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -10,38 +13,62 @@ import static org.junit.Assert.*;
 public class RecipeTest {
 
     //data for testing purposes
-    String name = "Basic Grilled Chicken";
-    String ingred = "2 lbs chicken\n1 tsp salt\n1/2 tsp pepper\n1 tbsp olive oil";
-    String instr = "1. Rub chicken with salt and pepper\n2. Brush hot grill with oil\n3. Grill chicken";
-    int serv = 4;
-    int prep = 5;
-    int cook = 20;
-    String pic = "../../../../../../main/assets/images/pic.jpg";
+    private Recipe recipe1, recipe2;
+    private String name = "Basic Grilled Chicken";
+    private ArrayList<Ingredient> ingredients = new ArrayList<>();
+    private ArrayList<Instruction> instructions = new ArrayList<>();
+    private int serv = 4;
+    private int prep = 5;
+    private int cook = 20;
+    private String pic = "../../../../../../main/assets/images/pic.jpg";
+    private String[] ingreds = {"2 lbs chicken", "1/4C onions", "200ml sauce"};
+    private String[] instrs = {"1. Rub chicken with salt and pepper", "2. Brush hot grill with oil", "3. Grill chicken"};
+
+
+    private void reset() {
+
+        ingredients.clear();
+        instructions.clear();
+
+        for (int i = 0; i < 3; i++) {
+            ingredients.add(new Ingredient(ingreds[i]));
+            instructions.add(new Instruction(instrs[i]));
+        }
+
+        recipe1 = new Recipe(name, ingredients, instructions, serv, prep, cook);
+        recipe2 = new Recipe(name, ingredients, instructions, serv, prep, cook, pic);
+    }
 
 
     @Test
     public void testCreateRecipe() {
-        Recipe recipe = new Recipe(name, ingred, instr, serv, prep, cook);
+        reset();
 
         System.out.println("\nBeginning Recipe Tests\n");
         System.out.println("Testing Recipe creation");
 
-        assertNotNull("Recipe1 not created", recipe);
-        assertEquals("Recipe name does not match", name, recipe.getName());
-        assertEquals("Recipe ingredients do not match", ingred, recipe.getIngredients());
-        assertEquals("Recipe instructions do not match", instr, recipe.getInstructions());
-        assertEquals("Recipe servings do not match", serv, recipe.getServings());
-        assertEquals("Recipe prep time does not match", prep, recipe.getPrepTime());
-        assertEquals("Recipe cook time does not match", cook, recipe.getCookTime());
+        assertNotNull("Recipe not created", recipe1);
+        assertEquals("Recipe name does not match", name, recipe1.getName());
 
-        System.out.println("Finished testing recipe creation");
+        ArrayList<Ingredient> tempIngred = recipe1.getIngredients();
+        ArrayList<Instruction> tempInstr = recipe1.getInstructions();
+
+        for (int i = 0; i < 3; i++) {
+            assertTrue("Ingredient " + i + " does not match", ingredients.get(i).equals(tempIngred.get(i)));
+            assertTrue("Instruction " + i + " does not match", instructions.get(i).equals(tempInstr.get(i)));
+        }
+
+        assertEquals("Recipe servings do not match", serv, recipe1.getServings());
+        assertEquals("Recipe prep time does not match", prep, recipe1.getPrepTime());
+        assertEquals("Recipe cook time does not match", cook, recipe1.getCookTime());
+
+        System.out.println("Finished testing Recipe creation");
     }
 
 
     @Test
     public void testCompareRecipes() {
-        Recipe recipe1 = new Recipe(name, ingred, instr, serv, prep, cook);
-        Recipe recipe2 = new Recipe(name, ingred, instr, serv, prep, cook, pic);
+        reset();
 
         System.out.println("Testing Recipe comparisons");
 
@@ -58,8 +85,8 @@ public class RecipeTest {
 
     @Test
     public void testPicturePathExists() {
-        Recipe recipe1 = new Recipe(name, ingred, instr, serv, prep, cook);
-        Recipe recipe2 = new Recipe(name, ingred, instr, serv, prep, cook, pic);
+
+        reset();
 
         System.out.println("Testing Recipe picture attributes");
 
@@ -69,6 +96,48 @@ public class RecipeTest {
 
         System.out.println("Finished testing recipe picture attributes");
 
+    }
+
+
+    @Test
+    public void testGetNextIngredient() {
+        reset();
+
+        System.out.println("Testing Ingredient iterator");
+
+        int i = 0;
+        while(recipe1.hasNextIngredient()) {
+            Ingredient myIngredient = recipe1.getNextIngredient();
+            assertEquals("Iterator ingredients do not match", myIngredient.getIngredientData(), ingreds[i]);
+            i++;
+        }
+
+        recipe1.resetNextIngredient();
+        assertEquals("Iterator did not reset to first ingredient",
+                recipe1.getNextIngredient().getIngredientData(), ingreds[0]);
+
+        System.out.println("Finished testing Ingredient iterator");
+
+    }
+
+
+    @Test
+    public void testGetNextInstruction() {
+        reset();
+
+        int i = 0;
+        while(recipe1.hasNextInstruction()) {
+            Instruction myInstruction = recipe1.getNextInstruction();
+            assertEquals("Iterator instructions do not match", myInstruction.getInstruction(), instrs[i]);
+            i++;
+        }
+
+        recipe1.resetNextInstruction();
+        assertEquals("Iterator did not reset to first instruction",
+                recipe1.getNextInstruction().getInstruction(), instrs[0]);
+
+        System.out.println("Finished testing Instruction iterator");
         System.out.println("\nEnd of testRecipe\n");
+
     }
 }
