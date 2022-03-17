@@ -4,12 +4,12 @@ package com.comp3350.recip_e.objects;
 
 public class User {
 
-    private final int userId;
+    private final String userEmail;
     private String userName;
     private String userPassword;
 
-    public User(int id, String name, String password){
-        userId=id;
+    public User(String email, String name, String password){
+        userEmail=email;
         userName=name;
         userPassword=password;
     }
@@ -24,8 +24,8 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public int getUserID() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
     public String getUserName() {

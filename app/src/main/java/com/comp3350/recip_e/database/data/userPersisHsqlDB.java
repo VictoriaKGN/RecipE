@@ -19,22 +19,23 @@ public class userPersisHsqlDB implements IuserManager {
     }
 
     private User fromResultSet(ResultSet rs) throws SQLException{
-        final int id=rs.getInt("userId");
+        final String email=rs.getString("userEmail");
         final String name=rs.getString("userName");
         final String password=rs.getString("userPassword");
 
-        User userObj= new User(id,name,password);
+        User userObj= new User(email,name,password);
 
         return userObj;
     }
     private void sqlSetHelper(String prepSt, User usr){
         try(Connection c= connection()) {
             final PreparedStatement st=c.prepareStatement(prepSt);
-            st.setInt(1,usr.getUserID());
+            st.setString(1,usr.getUserEmail());
             st.setString(2,usr.getUserName());
             st.setString(3,usr.getUserPassword());
 
             st.executeUpdate();
+            st.close();
         }catch (final SQLException e){
             throw new hsqlDBException(e);
         }
@@ -49,25 +50,60 @@ public class userPersisHsqlDB implements IuserManager {
     }
 
     public User updateUser(User user){
-        String prepSt= "UPDATE Users SET userName =?,userPassword =? where UserId=?";
-        sqlSetHelper(prepSt,user);
+        String prepSt= "UPDATE Users SET userName = ?,userPassword = ? WHERE UserEmail = ?";
+        try(Connection c= connection()) {
+            final PreparedStatement st=c.prepareStatement(prepSt);
+            st.setString(1,user.getUserName());
+            st.setString(2,user.getUserPassword());
+            st.setString(3,user.getUserEmail());
+
+            st.executeUpdate();
+            st.close();
+        }catch (final SQLException e){
+            throw new hsqlDBException(e);
+        }
 
         return user;
     }
 
-    public User selectUser(int userId){
+    public User selectUser(String userEmail){
         try(Connection c=connection()){
-            final PreparedStatement st=c.prepareStatement("SELECT * FROM Users WHERE UserId=?");
-            st.setInt(1,userId);
-            final ResultSet rs=st.executeQuery();
+            final PreparedStatement st=c.prepareStatement("SELECT * FROM Users WHERE UserEmail=?");
+            st.setString(1,userEmail);
 
+            final ResultSet rs=st.executeQuery();
             User usr=fromResultSet(rs);
 
-            return usr;
+            rs.close();
+            st.close();
 
+            return usr;
         }catch (final SQLException e){
             throw new hsqlDBException(e);
         }
     }
 
+    public User verifyUser(String usrEmail, String password){
+        User matchedUser= null;
+        try(Connection c=connection()){
+            final PreparedStatement st=c.prepareStatement("SELECT * FROM User WHERE userEmail =?");
+            st.setString(1,usrEmail);
+
+            final ResultSet rt=st.executeQuery();
+
+            if(rt.next()){
+                matchedUser=fromResultSet(rt);
+                if(!matchedUser.getUserPassword().equals(password)){
+                    matchedUser=null;
+                }
+            }
+            rt.close();
+            st.close();
+
+            return matchedUser;
+
+        }catch (final SQLException e){
+            throw new hsqlDBException(e);
+        }
+    }
 }

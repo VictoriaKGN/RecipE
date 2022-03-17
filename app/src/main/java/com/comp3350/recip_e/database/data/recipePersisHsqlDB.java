@@ -51,7 +51,7 @@ public class recipePersisHsqlDB {
             st.setInt(8,recipe.getID());
 
             st.executeUpdate();
-
+            st.close();
         }catch (SQLException e){
             throw new hsqlDBException(e);
         }

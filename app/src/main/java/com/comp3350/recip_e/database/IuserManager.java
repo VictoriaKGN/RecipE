@@ -10,8 +10,10 @@ public interface IuserManager {
     User updateUser(User user);
 
     //Get specific user info from database
-    User selectUser(int userId);
+    User selectUser(String email);
 
+    //verifyUser by input name and password, would have a null return if name/password doesn't match
+    User verifyUser(String usrEmail, String password);
 
 
 
