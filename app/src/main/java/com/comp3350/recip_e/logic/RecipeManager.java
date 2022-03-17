@@ -5,6 +5,9 @@ import com.comp3350.recip_e.application.Services;
 import com.comp3350.recip_e.database.recipeManager;
 
 import com.comp3350.recip_e.objects.Recipe;
+import com.comp3350.recip_e.objects.Ingredient;
+import com.comp3350.recip_e.objects.Instruction;
+import java.util.List;
 
 public class RecipeManager {
     private recipeManager database;
