@@ -22,12 +22,12 @@ public class Instruction {
         this.instruction = newInstruction;
     }
 
-    public String getInstruction() {
+    public String toString() {
         return instruction;
     }
 
     public boolean equals(Instruction other) {
         return (this.recipeID == other.getRecipeID() &&
-                this.instruction.equals(other.getInstruction()));
+                this.instruction.equals(other.toString()));
     }
 }
