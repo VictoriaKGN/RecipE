@@ -19,12 +19,24 @@
         android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header"
         android:layout_marginLeft="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:hint="Email"
+        android:textSize="20sp"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/email"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="80dp"
         android:hint="Username"
         android:textSize="20sp" />
@@ -35,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/username"
         android:layout_marginLeft="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="80dp"
         android:hint="Password"
         android:inputType="textPassword"
@@ -47,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/password"
         android:layout_marginLeft="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="80dp"
         android:hint="Confirm password"
         android:inputType="textPassword"
