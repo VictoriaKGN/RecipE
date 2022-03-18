@@ -8,7 +8,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.comp3350.recip_e.R;
+import com.comp3350.recip_e.logic.InvalidRecipeException;
+import com.comp3350.recip_e.logic.RecipeManager;
+import com.comp3350.recip_e.objects.Ingredient;
+import com.comp3350.recip_e.objects.Instruction;
+import com.comp3350.recip_e.objects.Recipe;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -18,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -25,9 +32,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -35,17 +45,49 @@ import android.widget.ViewFlipper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class EditActivity extends AppCompatActivity {
 
     private static final int PERMISSION_CODE = 1001;
-    ActivityResultLauncher<Intent> activityResultLauncher;
-    Uri pictureUri = null;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+    private Uri pictureUri = null;
+
+    private ArrayList<String> ingredientArrayList;
+    private ArrayList<String> instructionArrayList;
+    private ArrayAdapter<String> ingredientArrayAdapter;
+    private ArrayAdapter<String> instructionArrayAdapter;
+    private ListView ingredientListView;
+    private ListView instructionListView;
+    private int selectedIngredientIndex;
+    private int selectedInstructionIndex;
+
+    private RecipeManager recipeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
+        selectedIngredientIndex = -1;
+        selectedInstructionIndex = -1;
+
+        ingredientArrayList = new ArrayList<String>();
+        instructionArrayList = new ArrayList<String>();
+        ingredientArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientArrayList);
+        instructionArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionArrayList);
+
+        ingredientListView = findViewById(R.id.ingredients_container);
+        instructionListView = findViewById(R.id.instructions_container);
+
+        ingredientListView.setAdapter(ingredientArrayAdapter);
+        instructionListView.setAdapter(instructionArrayAdapter);
+        setBtnsEnabled(false, true);
+        setBtnsEnabled(false, false);
+
+        recipeManager = new RecipeManager();
+
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result)
@@ -58,6 +100,61 @@ public class EditActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ingredientListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                if (i == selectedIngredientIndex)
+                {
+                    ingredientListView.setItemChecked(i, false);
+                    selectedIngredientIndex = -1;
+                    setSelector(false, true);
+                    setBtnsEnabled(false, true);
+                    clearIngredients();
+                }
+                else
+                {
+                    setSelector(true, true);
+                    ingredientListView.setItemChecked(i, true);
+                    setBtnsEnabled(true, true);
+                    selectedIngredientIndex = i;
+                    selectIngredientAtPosition(i);
+
+                }
+            }
+        });
+
+        instructionListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                if (i == selectedInstructionIndex)
+                {
+                    instructionListView.setItemChecked(i, false);
+                    selectedInstructionIndex = -1;
+                    setSelector(false, false);
+                    setBtnsEnabled(false, false);
+                    clearInstructions();
+                }
+                else
+                {
+                    setSelector(true, false);
+                    instructionListView.setItemChecked(i, true);
+                    setBtnsEnabled(true, false);
+                    selectedInstructionIndex = i;
+                    selectInstructionAtPosition(i);
+
+                }
+            }
+        });
+    }
+
+    private void listViewItemClick()
+    {
+
     }
 
     @Override
@@ -82,11 +179,12 @@ public class EditActivity extends AppCompatActivity {
     public void saveInput_click(View view)
     {
         int allValid = 0;
+        Toast.makeText(EditActivity.this, "Im here", Toast.LENGTH_SHORT).show();
 
         EditText recName = (EditText) findViewById(R.id.recipe_name);
         String rec_text = recName.getText().toString().trim();
 
-        if(rec_text.isEmpty() || rec_text.length() == 0 || rec_text.equals("") || rec_text == null)
+        if(isValidInput(rec_text))
         {
             //EditText is empty
             Toast.makeText(this, "Please enter a recipe name ", Toast.LENGTH_SHORT).show();
@@ -101,10 +199,10 @@ public class EditActivity extends AppCompatActivity {
         String serveNum_text = serveNum.getText().toString().trim();
         int serves = 0;
 
-        if(serveNum_text.isEmpty() || serveNum_text.length() == 0 || serveNum_text.equals("") || serveNum_text == null)
+        if(isValidInput(serveNum_text))
         {
             //EditText is empty
-            Toast.makeText(this, "Please enter the # of people it serves ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter the # of people it serves", Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -117,10 +215,10 @@ public class EditActivity extends AppCompatActivity {
         String timePrep_text = timePrep.getText().toString().trim();
         int prepTime = 0;
 
-        if(timePrep_text.isEmpty() || timePrep_text.length() == 0 || timePrep_text.equals("") || timePrep_text == null)
+        if(isValidInput(timePrep_text))
         {
             //EditText is empty
-            Toast.makeText(this, "Please enter the prepping time ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter the prepping time", Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -133,10 +231,10 @@ public class EditActivity extends AppCompatActivity {
         String timeCook_text = timeCook.getText().toString().trim();
         int cookTime = 0;
 
-        if(timeCook_text.isEmpty() || timeCook_text.length() == 0 || timeCook_text.equals("") || timeCook_text == null)
+        if(isValidInput(timeCook_text))
         {
             //EditText is empty
-            Toast.makeText(this, "Please enter the cooking time ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter the cooking time", Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -145,37 +243,32 @@ public class EditActivity extends AppCompatActivity {
             allValid++;
         }
 
-        EditText ingred = (EditText) findViewById(R.id.ingredients);
-        String ingred_text = ingred.getText().toString().trim();
-
-        if(ingred_text.isEmpty() || ingred_text.length() == 0 || ingred_text.equals("") || ingred_text == null)
+        if(ingredientArrayList.isEmpty())
         {
-            //EditText is empty
-            Toast.makeText(this, "Please enter ingredients ", Toast.LENGTH_SHORT).show();
+            //is empty
+            Toast.makeText(this, "Please enter ingredients", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            //EditText is not empty
+            //is not empty
             allValid++;
         }
 
-        EditText inst = (EditText) findViewById(R.id.instructions);
-        String inst_text = inst.getText().toString().trim();
-
-        if(inst_text.isEmpty() || inst_text.length() == 0 || inst_text.equals("") || inst_text == null)
+        if(instructionArrayList.isEmpty())
         {
-            //EditText is empty
+            //is empty
             Toast.makeText(this, "Please enter instructions ", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            //EditText is not empty
+            //is not empty
             allValid++;
         }
 
         // check if all fields are non-empty
         if (allValid == 6)
         {
+            /*Toast.makeText(EditActivity.this, "All valid", Toast.LENGTH_SHORT).show();
             // pass back all the info collected
             Intent intent = new Intent();
 
@@ -184,8 +277,8 @@ public class EditActivity extends AppCompatActivity {
             extras.putInt("NUM_SERVES", serves);
             extras.putInt("PREP_TIME", prepTime);
             extras.putInt("COOK_TIME", cookTime);
-            extras.putString("INGREDIENTS", ingred_text);
-            extras.putString("INSTRUCTIONS", inst_text);
+            //extras.putStringArrayList("INGREDIENTS", ingredientList);
+            //extras.putString("INSTRUCTIONS", inst_text);
 
             if (pictureUri != null)
             {
@@ -199,8 +292,49 @@ public class EditActivity extends AppCompatActivity {
 
             intent.putExtras(extras);
             setResult(7, intent);
-            finish();
+            finish();*/
+            // TODO: create Instructions
+            ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+
+            // TODO create Ingredients
+            ArrayList<Instruction> instructions = new ArrayList<Instruction>();
+
+            Recipe newRecipe = null;
+
+            if (pictureUri != null)
+            {
+                String path = saveImage(pictureUri);
+                newRecipe = new Recipe(rec_text, ingredients, instructions, serves, prepTime, cookTime, path);
+            }
+            else
+            {
+                newRecipe = new Recipe(rec_text, ingredients, instructions, serves, prepTime, cookTime);
+            }
+
+            try
+            {
+                recipeManager.addRecipe(newRecipe);
+
+                Intent intent = new Intent();
+
+                Bundle extras = new Bundle();
+                extras.putInt("NEW_RECIPE_ID", newRecipe.getID());
+
+                intent.putExtras(extras);
+                setResult(7, intent);
+                finish();
+            }
+            catch (InvalidRecipeException exc)
+            {
+                Toast.makeText(EditActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         }
+    }
+
+    private boolean isValidInput(String input)
+    {
+        return (input.isEmpty() || input.length() == 0 || input.equals("") || input == null);
     }
 
     //The function below validates discarding changes.
@@ -298,10 +432,21 @@ public class EditActivity extends AppCompatActivity {
     }
 
     // set the ingredients of the recipe
-    public void setIngredients(String ings)
+    public void setIngredients(ArrayList<Ingredient> ingredientList)
     {
-        EditText text = findViewById(R.id.ingredients);
-        text.setText(ings);
+        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<Ingredient>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientList);
+
+        ingredientListView.setAdapter(ingredientAdapter);
+        ingredientAdapter.notifyDataSetChanged();
+    }
+
+    // set the instructions of the recipe
+    public void setInstructions(ArrayList<Instruction> instructionList)
+    {
+        ArrayAdapter<Instruction> instructionAdapter = new ArrayAdapter<Instruction>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionList);
+
+        instructionListView.setAdapter(instructionAdapter);
+        instructionAdapter.notifyDataSetChanged();
     }
 
     // get the # of serves from input
@@ -339,10 +484,15 @@ public class EditActivity extends AppCompatActivity {
     }
 
     // get the ingredients of the recipe from input
-    public String getIngredients()
+    public ArrayList<String> getIngredients()
     {
-        EditText text = findViewById(R.id.ingredients);
-        return text.getText().toString();
+        return ingredientArrayList;
+    }
+
+    // get the instructions
+    public ArrayList<String> getInstructions()
+    {
+        return instructionArrayList;
     }
 
     /**
@@ -380,6 +530,28 @@ public class EditActivity extends AppCompatActivity {
         return path.toString();
     }
 
+
+    private void selectIngredientAtPosition(int pos)
+    {
+        String selected = ingredientArrayList.get(pos);
+        String[] splitted = selected.split(" ");
+
+        EditText amount = findViewById(R.id.amount_input);
+        EditText unit = findViewById(R.id.unit_input);
+        EditText ingredient = findViewById(R.id.ingredient_input);
+
+        amount.setText(splitted[0]);
+        unit.setText(splitted[1]);
+        ingredient.setText(splitted[2]);
+    }
+
+    private void selectInstructionAtPosition(int pos)
+    {
+        String selected = instructionArrayList.get(pos);
+        EditText instruction = findViewById(R.id.instruction_input);
+
+        instruction.setText(selected);
+    }
 // ********************************** button clicks ***************************************
 
     //The layout of the page is in such a way that the user can flip back and forth between two pages.
@@ -401,4 +573,211 @@ public class EditActivity extends AppCompatActivity {
         flipper.showPrevious();
     }
 
+    //
+    public void addIngredient_click(View view)
+    {
+        EditText amount = findViewById(R.id.amount_input);
+        String amountString = amount.getText().toString().trim();
+
+        EditText unit = findViewById(R.id.unit_input);
+        String unitString = unit.getText().toString().trim();
+
+        EditText ingredient = findViewById(R.id.ingredient_input);
+        String ingredientString = ingredient.getText().toString().trim();
+
+        if (!amountString.isEmpty() && !amountString.equals("\\s+") && !unitString.isEmpty() && !unitString.equals("\\s+") && !ingredientString.isEmpty() && !ingredientString.equals("\\s+"))
+        {
+            if (isIngredientExist(ingredientString, -1))
+            {
+                Toast.makeText(this, "The inputted ingredient already exists... \nPlease edit the existing one to update...", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                String input = amountString + " " + unitString + " " + ingredientString;
+
+                ingredientArrayList.add(input);
+                ingredientArrayAdapter.notifyDataSetChanged();
+
+                clearIngredients();
+                setSelector(false, true);
+            }
+        }
+        else
+        {
+            Toast.makeText(this, "Please fill all ingredient fields before proceeding...", Toast.LENGTH_LONG).show();
+        }
+
+        //setSelector(false, true);
+    }
+
+    public void addInstruction_click(View view)
+    {
+        EditText instruction = findViewById(R.id.instruction_input);
+        String string = instruction.getText().toString().trim();
+
+        if (!string.isEmpty() && !string.equals("\\s+"))
+        {
+            instructionArrayList.add(string);
+            instructionArrayAdapter.notifyDataSetChanged();
+
+            clearInstructions();
+            setSelector(false, false);
+        }
+        else
+        {
+            Toast.makeText(this, "Please fill the instruction field before proceeding...", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //
+    public void updateIngredient_click(View view)
+    {
+        EditText amount = findViewById(R.id.amount_input);
+        String amountString = amount.getText().toString().trim();
+
+        EditText unit = findViewById(R.id.unit_input);
+        String unitString = unit.getText().toString().trim();
+
+        EditText ingredient = findViewById(R.id.ingredient_input);
+        String ingredientString = ingredient.getText().toString().trim();
+
+        if (!amountString.isEmpty() && !amountString.equals("\\s+") && !unitString.isEmpty() && !unitString.equals("\\s+") && !ingredientString.isEmpty() && !ingredientString.equals("\\s+"))
+        {
+            if (!isIngredientExist(ingredientString, selectedIngredientIndex) )
+            {
+                String input = amountString + " " + unitString + " " + ingredientString;
+
+                ingredientArrayList.set(selectedIngredientIndex, input);
+                ingredientArrayAdapter.notifyDataSetChanged();
+
+                clearIngredients();
+                selectedIngredientIndex = -1;
+                setSelector(false, true);
+            }
+            else
+            {
+                Toast.makeText(this, "The inputted ingredient already exists... \nPlease edit the existing one to update...", Toast.LENGTH_LONG).show();
+            }
+        }
+        else
+        {
+            Toast.makeText(this, "Please fill all ingredient fields...", Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    public void updateInstruction_click(View view)
+    {
+        EditText instruction = findViewById(R.id.instruction_input);
+        String string = instruction.getText().toString().trim();
+
+        if (!string.isEmpty() && !string.equals("\\s+"))
+        {
+            instructionArrayList.set(selectedInstructionIndex, string);
+            instructionArrayAdapter.notifyDataSetChanged();
+
+            clearInstructions();
+            selectedInstructionIndex = -1;
+            setSelector(false, false);
+        }
+        else
+        {
+            Toast.makeText(this, "Please fill the instruction field before proceeding...", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //
+    public void deleteIngredient_click(View view)
+    {
+        ingredientArrayList.remove(selectedIngredientIndex);
+        ingredientArrayAdapter.notifyDataSetChanged();
+        selectedIngredientIndex = -1;
+        clearIngredients();
+        setSelector(false, true);
+        setBtnsEnabled(false, true);
+    }
+
+    public void deleteInstruction_click(View view)
+    {
+        instructionArrayList.remove(selectedInstructionIndex);
+        instructionArrayAdapter.notifyDataSetChanged();
+
+        selectedInstructionIndex = -1;
+        clearInstructions();
+        setSelector(false, false);
+        setBtnsEnabled(false, false);
+    }
+
+    private boolean isIngredientExist(String ingredient, int index)
+    {
+        boolean retVal = false;
+        String[] splitted = null;
+
+        for (int i = 0; i < ingredientArrayList.size(); i++)
+        {
+            splitted = ingredientArrayList.get(i).split(" ");
+            if (splitted[2].equals(ingredient) && i != index)
+            {
+                retVal = true;
+            }
+        }
+
+        return retVal;
+    }
+
+    private void clearIngredients()
+    {
+        EditText amount = findViewById(R.id.amount_input);
+        EditText unit = findViewById(R.id.unit_input);
+        EditText ingredient = findViewById(R.id.ingredient_input);
+
+        amount.setText("");
+        unit.setText("");
+        ingredient.setText("");
+    }
+
+    private void clearInstructions()
+    {
+        EditText instruction = findViewById(R.id.instruction_input);
+        instruction.setText("");
+    }
+
+    private void setBtnsEnabled(boolean isEnabled, boolean isIngredient)
+    {
+
+        ImageButton updateBtn = null;
+        ImageButton deleteBtn = null;
+
+        if (isIngredient)
+        {
+            updateBtn = findViewById(R.id.update_ingredient_button);
+            deleteBtn = findViewById(R.id.delete_ingredient_button);
+        }
+        else
+        {
+            updateBtn = findViewById(R.id.update_instruction_button);
+            deleteBtn = findViewById(R.id.delete_instruction_button);
+        }
+
+        updateBtn.setEnabled(isEnabled);
+        deleteBtn.setEnabled(isEnabled);
+    }
+
+    private void setSelector(boolean isSelected, boolean isIngredient)
+    {
+        ListView lv= null;
+
+        if (isIngredient)
+            lv = ingredientListView;
+        else
+            lv = instructionListView;
+
+        if (isSelected)
+            lv.setSelector(R.color.accent);
+        else
+        {
+            lv.setSelector(R.color.background);
+        }
+    }
 }

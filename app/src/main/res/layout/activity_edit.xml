@@ -239,6 +239,65 @@
 
             </LinearLayout>
 
+            <!-- row of contents - ingredient input fields & buttons-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/background">
+
+                <EditText
+                    android:id="@+id/amount_input"
+                    android:layout_width="98dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="32dp"
+                    android:inputType="numberDecimal"
+                    android:hint="Amount"/>
+
+                <EditText
+                    android:id="@+id/unit_input"
+                    android:layout_width="98dp"
+                    android:layout_height="50dp"
+                    android:hint="Unit"/>
+
+                <EditText
+                    android:id="@+id/ingredient_input"
+                    android:layout_width="98dp"
+                    android:layout_height="50dp"
+                    android:hint="Ingredient"/>
+
+                <ImageButton
+                    android:id="@+id/add_ingredient_button"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/accent"
+                    android:src="@drawable/add_icon"
+                    android:onClick="addIngredient_click"/>
+
+                <ImageButton
+                    android:id="@+id/update_ingredient_button"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/accent"
+                    android:src="@drawable/edit_icon"
+                    android:onClick="updateIngredient_click"/>
+
+                <ImageButton
+                    android:id="@+id/delete_ingredient_button"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="32dp"
+                    android:backgroundTint="@color/accent"
+                    android:src="@drawable/delete_icon"
+                    android:onClick="deleteIngredient_click"/>
+
+            </LinearLayout>
+
             <!-- firth row of contents - ingredients scroller -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -248,24 +307,18 @@
                 android:layout_marginRight="24dp"
                 android:background="@drawable/background">
 
-                <ScrollView
+                <ListView
                     android:id="@+id/ingredients_container"
                     android:layout_width="match_parent"
-                    android:layout_height="252dp"
+                    android:layout_height="172dp"
                     android:layout_marginLeft="32dp"
+                    android:layout_marginBottom="32dp"
                     android:layout_marginRight="32dp"
                     android:fillViewport="true"
-                    android:scrollbarFadeDuration="0">
-
-                    <EditText
-                        android:id="@+id/ingredients"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:textSize="20sp" />
-
-                </ScrollView>
-
+                    android:scrollbarFadeDuration="0"
+                    android:layout_gravity="top"
+                    android:textSize="20sp"
+                    android:choiceMode="singleChoice" />
             </LinearLayout>
 
             <!-- fifth row of contents - save button -->
@@ -349,7 +402,7 @@
                     android:background="@drawable/accent"
                     android:contentDescription="delete recipe"
                     app:srcCompat="@drawable/delete_icon"
-                    android:onClick="deleteRecipe_click"/>
+                    android:onClick="discardChanges_click"/>
 
             </LinearLayout>
 
@@ -396,6 +449,53 @@
 
             </LinearLayout>
 
+            <!-- row of contents - instruction input field & buttons-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="80dp"
+                android:background="@drawable/background">
+
+                <EditText
+                    android:id="@+id/instruction_input"
+                    android:layout_width="294dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="32dp"
+                    android:hint="Instruction"/>
+
+                <ImageButton
+                    android:id="@+id/add_instruction_button"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/accent"
+                    android:src="@drawable/add_icon"
+                    android:onClick="addInstruction_click"/>
+
+                <ImageButton
+                    android:id="@+id/update_instruction_button"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/accent"
+                    android:src="@drawable/edit_icon"
+                    android:onClick="updateInstruction_click"/>
+
+                <ImageButton
+                    android:id="@+id/delete_instruction_button"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="32dp"
+                    android:backgroundTint="@color/accent"
+                    android:src="@drawable/delete_icon"
+                    android:onClick="deleteInstruction_click"
+                    />
+
+            </LinearLayout>
+
             <!-- row of contents - instructions scroller -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -405,23 +505,18 @@
                 android:layout_marginRight="80dp"
                 android:background="@drawable/background">
 
-                <ScrollView
+                <ListView
                     android:id="@+id/instructions_container"
                     android:layout_width="match_parent"
-                    android:layout_height="462dp"
+                    android:layout_height="400dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
                     android:layout_marginBottom="32dp"
                     android:fillViewport="true"
-                    android:scrollbarFadeDuration="0">
-
-                    <EditText
-                        android:id="@+id/instructions"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textSize="20sp" />
-
-                </ScrollView>
+                    android:scrollbarFadeDuration="0"
+                    android:layout_gravity="top"
+                    android:textSize="20sp"
+                    android:choiceMode="singleChoice"/>
 
             </LinearLayout>
 

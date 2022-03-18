@@ -13,7 +13,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -21,9 +23,12 @@ import android.widget.ViewFlipper;
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.logic.InvalidRecipeException;
 import com.comp3350.recip_e.logic.RecipeManager;
+import com.comp3350.recip_e.objects.Ingredient;
+import com.comp3350.recip_e.objects.Instruction;
 import com.comp3350.recip_e.objects.Recipe;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class ViewActivity extends AppCompatActivity {
 
@@ -38,6 +43,7 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
 
         recipeManager = new RecipeManager();
+        currRecipe = null;
 
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -45,18 +51,32 @@ public class ViewActivity extends AppCompatActivity {
                 {
                     if (result.getResultCode() == 7)
                     {
-                        Intent intent = result.getData();
+                        Bundle extras = getIntent().getExtras();
+                        Toast.makeText(ViewActivity.this, "im here", Toast.LENGTH_SHORT).show();
+
+                        if (extras != null)
+                        {
+                            // extract the new recipe
+                            int newRecipeID = extras.getInt("NEW_RECIPE_ID");
+                            Toast.makeText(ViewActivity.this, Integer.toString(newRecipeID), Toast.LENGTH_SHORT).show();
+                            Recipe newRecipe = recipeManager.getRecipe(newRecipeID);
+
+                            currRecipe = newRecipe;
+                            setAllFields();
+
+                        }
+
+                        /*Intent intent = result.getData();
 
                         if (intent != null)
                         {
-                            // extract all the data
                             Bundle bundle = intent.getExtras();
                             Recipe newRecipe = null;
 
                             if(bundle.getString("RECIPE_PICTURE") != null) {
                                 try {
-                                    newRecipe = new Recipe(bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                                            bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
+                                    //newRecipe = new Recipe(bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
+                                            //bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
                                 } catch (InvalidRecipeException exc)
                                 {
                                     Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
@@ -66,8 +86,8 @@ public class ViewActivity extends AppCompatActivity {
                             {
                                 try
                                 {
-                                    newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                                            bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
+                                    //newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
+                                            //bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
                                 } catch (InvalidRecipeException exc)
                                 {
                                     Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
@@ -81,7 +101,7 @@ public class ViewActivity extends AppCompatActivity {
                                 currRecipe = newRecipe;
                                 setAllFields();
                             }
-                        }
+                        }*/
                     }
                 }
             }
@@ -116,8 +136,8 @@ public class ViewActivity extends AppCompatActivity {
             setServings("");
             setPrepTime("");
             setCookingTime("");
-            setIngredients("");
-            setInstructions("");
+            setIngredients(new ArrayList<Ingredient>());
+            setInstructions(new ArrayList<Instruction>());
             setPicture("");
         }
     }
@@ -168,17 +188,23 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     // set the ingredients of the recipe
-    public void setIngredients(String ings)
+    public void setIngredients(ArrayList<Ingredient> ingredientList)
     {
-        TextView text = findViewById(R.id.ingredients);
-        text.setText(ings);
+        ListView list = findViewById(R.id.ingredients);
+        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<Ingredient>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientList);
+
+        list.setAdapter(ingredientAdapter);
+        ingredientAdapter.notifyDataSetChanged();
     }
 
     // set the instructions of the recipe
-    public void setInstructions(String ins)
+    public void setInstructions(ArrayList<Instruction> instructionList)
     {
-        TextView text = findViewById(R.id.instructions);
-        text.setText(ins);
+        ListView list = findViewById(R.id.instructions);
+        ArrayAdapter<Instruction> instructionAdapter = new ArrayAdapter<Instruction>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionList);
+
+        list.setAdapter(instructionAdapter);
+        instructionAdapter.notifyDataSetChanged();
     }
 
     // ********************************** button clicks ***************************************
