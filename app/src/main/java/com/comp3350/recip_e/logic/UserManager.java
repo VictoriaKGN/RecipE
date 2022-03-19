@@ -13,10 +13,10 @@ public class UserManager {
     /**
      * Get a single user from the database
      *
-     * @param id id of the user to get
-     * @return The user with the given id
+     * @param username Username of the user to get
+     * @return The user with the given username
      */
-    public User getUser(int id) {
+    public User getUser(String username) {
         // TODO Get user from database
         return null;
     }
@@ -37,5 +37,27 @@ public class UserManager {
      */
     public void updateUser(User user) {
         // TODO Update user in database
+    }
+
+    /**
+     * Check if a user with the given username exists
+     *
+     * @param username  The username to check
+     * @return  True if a user with the given username exists, false otherwise
+     */
+    public boolean usernameExists(String username) {
+        // TODO Call db function
+        return false;
+    }
+
+    /**
+     * Check if a user with the given email exists
+     *
+     * @param email  The email to check
+     * @return  True if a user with the given email exists, false otherwise
+     */
+    public boolean emailExists(String email) {
+        // TODO Call db function
+        return false;
     }
 }
