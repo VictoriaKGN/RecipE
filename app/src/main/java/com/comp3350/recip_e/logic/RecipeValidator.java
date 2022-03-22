@@ -1,5 +1,6 @@
 package com.comp3350.recip_e.logic;
 
+import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.objects.Recipe;
 
 public class RecipeValidator {

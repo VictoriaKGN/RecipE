@@ -19,7 +19,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.comp3350.recip_e.R;
-import com.comp3350.recip_e.logic.InvalidRecipeException;
+import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 

@@ -5,11 +5,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import com.comp3350.recip_e.logic.InvalidRecipeException;
+import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 
-import java.util.List;
 import java.util.Objects;
 
 public class RecipeManagerTest {
