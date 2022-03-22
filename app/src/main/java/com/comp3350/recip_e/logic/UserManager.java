@@ -1,6 +1,8 @@
 package com.comp3350.recip_e.logic;
 
 import com.comp3350.recip_e.application.Services;
+import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
+import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 public class UserManager {
@@ -33,7 +35,7 @@ public class UserManager {
     /**
      * Update a user in the database
      *
-     * @param user  User with updated values
+     * @param user User with updated values
      */
     public void updateUser(User user) {
         // TODO Update user in database
@@ -42,8 +44,8 @@ public class UserManager {
     /**
      * Check if a user with the given username exists
      *
-     * @param username  The username to check
-     * @return  True if a user with the given username exists, false otherwise
+     * @param username The username to check
+     * @return True if a user with the given username exists, false otherwise
      */
     public boolean usernameExists(String username) {
         // TODO Call db function
@@ -53,11 +55,33 @@ public class UserManager {
     /**
      * Check if a user with the given email exists
      *
-     * @param email  The email to check
-     * @return  True if a user with the given email exists, false otherwise
+     * @param email The email to check
+     * @return True if a user with the given email exists, false otherwise
      */
     public boolean emailExists(String email) {
         // TODO Call db function
         return false;
+    }
+
+    /**
+     * Validate a given user
+     *
+     * @param user The user to validate
+     * @throws UsernameDoesNotExistException Indicates no user with the given username exists
+     * @throws IncorrectPasswordException    Indicates that the given password doesn't match the users password
+     */
+    public void validateUser(User user) throws UsernameDoesNotExistException, IncorrectPasswordException {
+        User realUser;
+        String username = user.getUsername();
+
+        if (usernameExists(username)) {
+            realUser = getUser(username);
+
+            if (!user.getPassword().equals(realUser.getPassword())) {
+                throw new IncorrectPasswordException("Incorrect password.");
+            }
+        } else {
+            throw new UsernameDoesNotExistException("User " + username + " does not exist.");
+        }
     }
 }
