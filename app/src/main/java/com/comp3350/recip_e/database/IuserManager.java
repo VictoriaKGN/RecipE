@@ -15,6 +15,7 @@ public interface IuserManager {
     //verifyUser by input name and password, would have a null return if name/password doesn't match
     User verifyUser(String usrEmail, String password);
 
-
+    boolean usernameExists(String username);
+    boolean emailExists(String email);
 
 }
