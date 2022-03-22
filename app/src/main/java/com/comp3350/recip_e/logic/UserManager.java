@@ -20,8 +20,7 @@ public class UserManager {
      * @return The user with the given username
      */
     public User getUser(String username) {
-        // TODO Might not be needed
-        return null;
+        return database.selectUser(username);
     }
 
     /**
