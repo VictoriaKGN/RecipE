@@ -1,15 +1,16 @@
 package com.comp3350.recip_e.logic;
 
 import com.comp3350.recip_e.application.Services;
+import com.comp3350.recip_e.database.IuserManager;
 import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
 import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 public class UserManager {
-    // TODO Instance of User database
+    private IuserManager database;
 
     public UserManager() {
-        // TODO Set instance of database user
+        database = Services.getUserPersistence();
     }
 
     /**
@@ -19,7 +20,7 @@ public class UserManager {
      * @return The user with the given username
      */
     public User getUser(String username) {
-        // TODO Get user from database
+        // TODO Might not be needed
         return null;
     }
 
@@ -29,7 +30,7 @@ public class UserManager {
      * @param user The user to add
      */
     public void addUser(User user) {
-        // TODO Add user to database
+        database.insertUser(user);
     }
 
     /**
@@ -38,7 +39,7 @@ public class UserManager {
      * @param user User with updated values
      */
     public void updateUser(User user) {
-        // TODO Update user in database
+        database.updateUser(user);
     }
 
     /**
@@ -48,8 +49,7 @@ public class UserManager {
      * @return True if a user with the given username exists, false otherwise
      */
     public boolean usernameExists(String username) {
-        // TODO Call db function
-        return false;
+        return database.usernameExists(username);
     }
 
     /**
@@ -59,8 +59,7 @@ public class UserManager {
      * @return True if a user with the given email exists, false otherwise
      */
     public boolean emailExists(String email) {
-        // TODO Call db function
-        return false;
+        return database.emailExists(email);
     }
 
     /**
