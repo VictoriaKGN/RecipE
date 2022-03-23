@@ -6,8 +6,8 @@ public interface recipeManager {
     //get the whole recipe information.
     Recipe getRecipe(int recipeId,boolean withPic);
 
-    //reset the stub database to default.
-    void resetRecipe();
+//    //reset the stub database to default.
+//    void resetRecipe();
 
     //get the name of a recipe
     String getRecipeName(int recipeId);

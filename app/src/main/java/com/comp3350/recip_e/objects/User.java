@@ -1,6 +1,7 @@
 package com.comp3350.recip_e.objects;
 
 
+import java.util.Objects;
 
 public class User {
 
@@ -34,5 +35,9 @@ public class User {
 
     public String getUserPassword() {
         return userPassword;
+    }
+
+    public boolean equals(final User usr){
+        return Objects.equals(usr.getUserEmail(),userEmail);
     }
 }
