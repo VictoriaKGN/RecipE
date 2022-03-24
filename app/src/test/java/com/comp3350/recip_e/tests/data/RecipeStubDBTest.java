@@ -24,6 +24,7 @@ public class RecipeStubDBTest {
     int prep = 1;
     int cook = 1;
     String pic = "some/path";
+    String userID = "user@email.com";
     Recipe recipeNoPic;
     Recipe recipeWPic;
 
@@ -38,8 +39,8 @@ public class RecipeStubDBTest {
             instr.add(i + ". Test instruction.");
         }
 
-        recipeNoPic = new Recipe(name1, ingred, instr, serv, prep, cook);
-        recipeWPic = new Recipe(name2, ingred, instr, serv, prep, cook,  pic);
+        recipeNoPic = new Recipe(name1, ingred, instr, serv, prep, cook, "default/path", userID);
+        recipeWPic = new Recipe(name2, ingred, instr, serv, prep, cook,  pic, userID);
         recipeNoPic.setID(0);
         recipeWPic.setID(1);
     }

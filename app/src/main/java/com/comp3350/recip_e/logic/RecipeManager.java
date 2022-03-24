@@ -38,10 +38,8 @@ public class RecipeManager {
      * @param recipe The recipe to add
      */
     public Recipe addRecipe(Recipe recipe) throws InvalidRecipeException {
-        Recipe added = null;
-        RecipeValidator.validate(recipe);
-        added = database.addRecipe(recipe);
-        return added;
+        //RecipeValidator.validate(recipe);
+        return database.addRecipe(recipe);
     }
 
     /**
