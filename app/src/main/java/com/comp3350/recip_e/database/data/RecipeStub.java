@@ -2,8 +2,6 @@ package com.comp3350.recip_e.database.data;
 
 import com.comp3350.recip_e.database.recipeManager;
 import com.comp3350.recip_e.objects.Recipe;
-import com.comp3350.recip_e.objects.Ingredient;
-import com.comp3350.recip_e.objects.Instruction;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,22 +9,22 @@ import java.util.List;
 
 public class RecipeStub implements recipeManager {
     private List<Recipe> recipes;
-    private ArrayList<Ingredient> ingredients;
-    private ArrayList<Instruction> instructions;
+    private ArrayList<String> ingredients;
+    private ArrayList<String> instructions;
 
     public RecipeStub() {
         recipes = new ArrayList<Recipe>();
-        ingredients = new ArrayList<Ingredient>();
-        instructions = new ArrayList<Instruction>();
+        ingredients = new ArrayList<String>();
+        instructions = new ArrayList<String>();
 
         for(int i = 1; i <= 3; i++) {
-            ingredients.add(new Ingredient(((i*100) + "ml ingredients")));
-            instructions.add(new Instruction(i + ". Test instruction."));
+            ingredients.add((i*100) + "ml ingredients");
+            instructions.add(i + ". Test instruction.");
         }
 
-        Recipe recipe1 = new Recipe("test recipe 1", ingredients, instructions, 1, 1, 1);
-        Recipe recipe2 = new Recipe("test recipe 2", ingredients, instructions, 1, 1, 1);
-        Recipe recipe3 = new Recipe("test recipe 3", ingredients, instructions, 1, 1, 1);
+        Recipe recipe1 = new Recipe("test recipe 1", ingredients, instructions, 1, 1, 1, "this/path/1", "user@email.com");
+        Recipe recipe2 = new Recipe("test recipe 2", ingredients, instructions, 1, 1, 1, "this/path/2", "user@email.com");
+        Recipe recipe3 = new Recipe("test recipe 3", ingredients, instructions, 1, 1, 1, "default/path", "user@email.com");
         recipe1.setID(0);
         recipe2.setID(1);
         recipe3.setID(2);
@@ -46,36 +44,6 @@ public class RecipeStub implements recipeManager {
         }
 
         return recipe;
-    }
-
-    @Override
-    public String getRecipeName(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getIngredients(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getDirection(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getServing(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getPrepTime(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getCookTime(int recipeId) {
-        return null;
     }
 
     @Override
