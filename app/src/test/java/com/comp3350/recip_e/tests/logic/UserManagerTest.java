@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 import com.comp3350.recip_e.logic.UserManager;
 import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
-import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
+import com.comp3350.recip_e.logic.exceptions.EmailDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 public class UserManagerTest {
@@ -37,7 +37,7 @@ public class UserManagerTest {
     public void testAddUser() {
         System.out.println("\nStarting testAddUser\n");
 
-        User testUser = userManager.getUser(username);
+        User testUser = userManager.getUser(email);
 
         assertNotNull("User does not exist", testUser);
         assertEquals("Usernames should be equal", username, testUser.getUsername());
@@ -53,7 +53,7 @@ public class UserManagerTest {
 
         String newPassword = "4321";
         userManager.updateUser(new User(email, username, newPassword));
-        User testUser = userManager.getUser(username);
+        User testUser = userManager.getUser(email);
 
         assertNotNull("User does not exist", testUser);
         assertEquals("Usernames should be equal", username, testUser.getUsername());
@@ -88,7 +88,7 @@ public class UserManagerTest {
         User fakeUser = new User("", "", "");
         User wrongPassword = new User(email, username, "4321");
 
-        assertThrows(UsernameDoesNotExistException.class, () -> userManager.validateUser(fakeUser));
+        assertThrows(EmailDoesNotExistException.class, () -> userManager.validateUser(fakeUser));
         assertThrows(IncorrectPasswordException.class, () -> userManager.validateUser(wrongPassword));
 
         System.out.println("Finished testValidateUser");

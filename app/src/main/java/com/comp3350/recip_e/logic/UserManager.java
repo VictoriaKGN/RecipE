@@ -3,7 +3,7 @@ package com.comp3350.recip_e.logic;
 import com.comp3350.recip_e.application.Services;
 import com.comp3350.recip_e.database.IuserManager;
 import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
-import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
+import com.comp3350.recip_e.logic.exceptions.EmailDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 public class UserManager {
@@ -65,21 +65,21 @@ public class UserManager {
      * Validate a given user
      *
      * @param user The user to validate
-     * @throws UsernameDoesNotExistException Indicates no user with the given username exists
+     * @throws EmailDoesNotExistException Indicates no user with the given username exists
      * @throws IncorrectPasswordException    Indicates that the given password doesn't match the users password
      */
-    public void validateUser(User user) throws UsernameDoesNotExistException, IncorrectPasswordException {
+    public void validateUser(User user) throws EmailDoesNotExistException, IncorrectPasswordException {
         User realUser;
-        String username = user.getUsername();
+        String email = user.getEmail();
 
-        if (usernameExists(username)) {
-            realUser = getUser(username);
+        if (emailExists(email)) {
+            realUser = getUser(email);
 
             if (!user.getPassword().equals(realUser.getPassword())) {
                 throw new IncorrectPasswordException("Incorrect password.");
             }
         } else {
-            throw new UsernameDoesNotExistException("User " + username + " does not exist.");
+            throw new EmailDoesNotExistException("User " + email + " does not exist.");
         }
     }
 }
