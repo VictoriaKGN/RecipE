@@ -7,7 +7,7 @@ import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.application.App;
 import com.comp3350.recip_e.logic.UserManager;
 import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
-import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
+import com.comp3350.recip_e.logic.exceptions.EmailDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 import android.content.Intent;
@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (signInMode)
         {
-            if(!isEmpty(emailText, "Please fill the email field...") && !isEmpty(passwordText, "Please fill the password field...") && userManager.emailExists(emailText))
+            if(!isEmpty(emailText, "Please fill the email field...") && !isEmpty(passwordText, "Please fill the password field..."))
             {
                 User user = new User(emailText, usernameText, passwordText);
 
@@ -100,24 +100,20 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, ViewActivity.class);
                     startActivity(intent);
                 }
-                catch (UsernameDoesNotExistException e)
+                catch (EmailDoesNotExistException e)
                 {
-                    Toast.makeText(LoginActivity.this, "The given username does not exist...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "The given Email does not exist...", Toast.LENGTH_SHORT).show();
                 }
                 catch (IncorrectPasswordException e)
                 {
                     Toast.makeText(LoginActivity.this, "The given password is incorrect...", Toast.LENGTH_SHORT).show();
                 }
             }
-            else
-            {
-                Toast.makeText(LoginActivity.this, "The given email does not exist...", Toast.LENGTH_SHORT).show();
-            }
-
         }
         else
         {
-            if (!isEmpty(emailText, "Please fill the email field...") && !isEmpty(usernameText, "Please fill the username field") && !isEmpty(passwordText, "Please fill the password field") && !isEmpty(confText, "Please fill the confirmation password field")) {
+            if (!isEmpty(emailText, "Please fill the email field...") && !isEmpty(usernameText, "Please fill the username field") && !isEmpty(passwordText, "Please fill the password field") && !isEmpty(confText, "Please fill the confirmation password field"))
+            {
                 if (!userManager.usernameExists(usernameText) && !userManager.emailExists(emailText))
                 {
                     if (passwordText.equals(confText))
