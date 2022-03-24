@@ -5,9 +5,6 @@ import com.comp3350.recip_e.application.Services;
 import com.comp3350.recip_e.database.recipeManager;
 
 import com.comp3350.recip_e.objects.Recipe;
-import com.comp3350.recip_e.objects.Ingredient;
-import com.comp3350.recip_e.objects.Instruction;
-
 import java.util.List;
 
 public class RecipeManager {
@@ -19,8 +16,7 @@ public class RecipeManager {
 
     /**
      * Get the first recipe from the database
-     *
-     * @return The first recipe in the database
+     * @return  The first recipe in the database
      */
     public Recipe getFirstRecipe() {
         return getRecipe(0);
@@ -41,9 +37,9 @@ public class RecipeManager {
      *
      * @param recipe The recipe to add
      */
-    public void addRecipe(Recipe recipe) throws InvalidRecipeException {
-        RecipeValidator.validate(recipe);
-        database.addRecipe(recipe);
+    public Recipe addRecipe(Recipe recipe) throws InvalidRecipeException {
+        //RecipeValidator.validate(recipe);
+        return database.addRecipe(recipe);
     }
 
     /**

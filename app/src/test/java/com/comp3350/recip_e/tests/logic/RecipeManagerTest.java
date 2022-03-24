@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import com.comp3350.recip_e.logic.InvalidRecipeException;
 import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 
@@ -42,7 +41,7 @@ public class RecipeManagerTest {
     @Test
     public void testAddDeleteRecipe() {
         System.out.println("\nStarting testAddDeleteRecipe\n");
-        Recipe recipe = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 4, 30, 30);
+        Recipe recipe = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 4, 30, 30, "default/path", "user@email.com");
         int lastRecipeID = 3;
 
         recipeManager.addRecipe(recipe);
@@ -53,37 +52,4 @@ public class RecipeManagerTest {
         System.out.println("Finished testAddDeleteRecipe");
     }
 
-    @Test
-    public void testValidateRecipe() {
-        System.out.println("\nStarting testValidateRecipe\n");
-        InvalidRecipeException e;
-        Recipe recipe1 = new Recipe("", new ArrayList<>(), new ArrayList<>(), 1, 1, 1);
-        Recipe recipe2 = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 0, 1, 1);
-        Recipe recipe3 = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 1, -1, 1);
-        Recipe recipe4 = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 1, 1, -1);
-
-        try {
-            // Test for null object
-            e = assertThrows(InvalidRecipeException.class, () -> recipeManager.addRecipe(null));
-            assertTrue(Objects.requireNonNull(e.getMessage()).contains("recipe is null."));
-
-            // Test for blank name
-            e = assertThrows(InvalidRecipeException.class, () -> recipeManager.addRecipe(recipe1));
-            assertTrue(Objects.requireNonNull(e.getMessage()).contains("name is blank."));
-
-            // Test for non-positive servings
-            e = assertThrows(InvalidRecipeException.class, () -> recipeManager.addRecipe(recipe2));
-            assertTrue(Objects.requireNonNull(e.getMessage()).contains("servings must be positive and non-zero."));
-
-            // Test for negative prep time
-            e = assertThrows(InvalidRecipeException.class, () -> recipeManager.addRecipe(recipe3));
-            assertTrue(Objects.requireNonNull(e.getMessage()).contains("prep time must be positive."));
-
-            // Test for negative cook time
-            e = assertThrows(InvalidRecipeException.class, () -> recipeManager.addRecipe(recipe4));
-            assertTrue(Objects.requireNonNull(e.getMessage()).contains("cook time must be positive."));
-        } catch (NullPointerException npe) {
-            fail(npe.getMessage());
-        }
-    }
 }

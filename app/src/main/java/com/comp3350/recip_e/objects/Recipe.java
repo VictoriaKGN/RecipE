@@ -1,28 +1,30 @@
 package com.comp3350.recip_e.objects;
 
+import com.comp3350.recip_e.logic.InvalidRecipeException;
+
 import java.util.ArrayList;
-import com.comp3350.recip_e.objects.Ingredient;
-import com.comp3350.recip_e.objects.Instruction;
 
 public class Recipe {
 
     private int id;
     private String name;
-    private ArrayList<Ingredient> ingredients;
-    private ArrayList<Instruction> instructions;
+    private ArrayList<String> ingredients;
+    private ArrayList<String> instructions;
     private String picture; // Filepath
     private int servings; //portions
     private int prepTime; //in minutes
     private int cookTime; //in minutes
+    private String userID;
     private int currIngredient;
     private int currInstruction;
 
 
     /**
-     * Recipe constructor, for Recipe with picture
+     * Recipe constructor
+     * @throws InvalidRecipeException
      */
-    public Recipe(String newName, ArrayList<Ingredient> newIngredients, ArrayList<Instruction> newInstructions,
-                  int serve, int prep, int cook, String picFile) {
+    public Recipe(String newName, ArrayList<String> newIngredients, ArrayList<String> newInstructions,
+                  int serve, int prep, int cook, String picFile, String user) throws InvalidRecipeException {
 
         id = 0;
         name = newName;
@@ -32,17 +34,11 @@ public class Recipe {
         prepTime = prep;
         cookTime = cook;
         picture = picFile;
+        userID = user;
         currIngredient = 0;
         currInstruction = 0;
-    }
 
-    /**
-     * Recipe constructor, for Recipe without picture
-     */
-    public Recipe(String newName, ArrayList<Ingredient> newIngredients, ArrayList<Instruction> newInstructions,
-                  int serve, int prep, int cook) {
-
-        this(newName, newIngredients, newInstructions, serve, prep, cook, null);
+        validate(this);
     }
 
 
@@ -55,22 +51,12 @@ public class Recipe {
     }
 
     /**
-     * Set a new Recipe id; also updates attached Ingredients and Instructions
+     * Set a new Recipe id
      * @param  newID: the new Recipe id
      */
     public void setID(int newID) {
 
         id = newID;
-
-        //update attached Ingredients
-        for (Ingredient ing : ingredients) {
-            ing.setRecipeID(newID);
-        }
-
-        for (Instruction inst : instructions) {
-            inst.setRecipeID(newID);
-        }
-        //update in DB?
     }
 
     /**
@@ -94,19 +80,16 @@ public class Recipe {
      * Get a list of all the Ingredients
      * @return  An ArrayList of all the Ingredients
      */
-    public ArrayList<Ingredient> getIngredients() {
+    public ArrayList<String> getIngredients() {
         return ingredients;
     }
 
-    //does the Ingredient get vetted before call or in here?
     /****Do we even need this?? Or is this RecipeManager's job to create and swap whole object?****/
-    public void updateIngredients(ArrayList<Ingredient> newIngreds) {
+    public void updateIngredients(ArrayList<String> newIngreds) {
 
         ingredients.clear();
         ingredients = newIngreds;
-        for (Ingredient ing : ingredients) {
-            ing.setRecipeID(id);
-        }
+        resetNextIngredient();
     }
 
     /**
@@ -119,10 +102,10 @@ public class Recipe {
 
     /**
      * Works as an iterator for the Ingredient list
-     * @return  The next Ingredient in the list, or null if out of list
+     * @return  The next Ingredient in the list, or empty string if out of list
      */
-    public Ingredient getNextIngredient() {
-        Ingredient currIngred = null;
+    public String getNextIngredient() {
+        String currIngred = "";
 
         if(hasNextIngredient()) {
             currIngred = ingredients.get(currIngredient);
@@ -139,33 +122,22 @@ public class Recipe {
         currIngredient = 0;
     }
 
-    /****
-     * Do we need delete individual ingredients? Or just swap whole list?
-     *
-     * public void deleteIngredient(Ingredient ingred) {
-     *   ingredients.remove(ingred);
-     *
-     *    //update DB?
-     * }
-     ******/
 
     /**
      * Get a list of all the Instructions
      * @return  An ArrayList of all the Instructions
      */
-    public ArrayList<Instruction> getInstructions() {
+    public ArrayList<String> getInstructions() {
         return instructions;
     }
 
 
     /***don't need this if remaking whole Recipe object*****/
-    public void updateInstructions(ArrayList<Instruction> newInstrs) {
+    public void updateInstructions(ArrayList<String> newInstrs) {
 
         instructions.clear();
         instructions = newInstrs;
-        for (Instruction inst : instructions) {
-            inst.setRecipeID(id);
-        }
+        resetNextInstruction();
     }
 
     /**
@@ -178,10 +150,10 @@ public class Recipe {
 
     /**
      * Works as an iterator for the Instruction list
-     * @return  The next Instruction in the list, or null if out of list
+     * @return  The next Instruction in the list, or empty string if out of list
      */
-    public Instruction getNextInstruction() {
-        Instruction currInstr = null;
+    public String getNextInstruction() {
+        String currInstr = "";
 
         if(hasNextInstruction()) {
             currInstr = instructions.get(currInstruction);
@@ -283,5 +255,26 @@ public class Recipe {
      */
     public Boolean equals(Recipe r) {
         return this.id == r.getID();
+    }
+
+
+    /**
+     * Validates a Recipe
+     *
+     * @param recipe Recipe to validate
+     * @throws InvalidRecipeException
+     */
+    public void validate(Recipe recipe) throws InvalidRecipeException {
+        if (recipe == null) {
+            throw new InvalidRecipeException("recipe is null.");
+        } else if (recipe.getName() == null || recipe.getName().equals("")) {
+            throw new InvalidRecipeException("name is blank.");
+        } else if (recipe.getServings() <= 0) {
+            throw new InvalidRecipeException("servings must be positive and non-zero.");
+        } else if (recipe.getPrepTime() < 0) {
+            throw new InvalidRecipeException("prep time must be positive.");
+        } else if (recipe.getCookTime() < 0) {
+            throw new InvalidRecipeException("cook time must be positive.");
+        }
     }
 }
