@@ -1,17 +1,17 @@
 package com.comp3350.recip_e.database.data;
 
-import com.comp3350.recip_e.database.recipeManager;
+import com.comp3350.recip_e.database.iRecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class RecipeStub implements recipeManager {
+public class RecipeStub implements iRecipeManager {
     private List<Recipe> recipes;
 
     public RecipeStub() {
-        recipes = new ArrayList<Recipe>();
+        recipes = new ArrayList<>();
 
         Recipe recipe1 = new Recipe("test recipe 1", "ingredients", "instructions", 1, 1, 1);
         Recipe recipe2 = new Recipe("test recipe 2", "ingredients", "instructions", 1, 1, 1);

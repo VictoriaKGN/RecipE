@@ -2,7 +2,7 @@ package com.comp3350.recip_e.database;
 
 import com.comp3350.recip_e.objects.Recipe;
 
-public interface recipeManager {
+public interface iRecipeManager {
     //get the whole recipe information.
     Recipe getRecipe(int recipeId,boolean withPic);
 

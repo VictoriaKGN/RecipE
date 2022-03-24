@@ -2,12 +2,12 @@ package com.comp3350.recip_e.logic;
 
 import com.comp3350.recip_e.application.Services;
 
-import com.comp3350.recip_e.database.recipeManager;
+import com.comp3350.recip_e.database.iRecipeManager;
 
 import com.comp3350.recip_e.objects.Recipe;
 
 public class RecipeManager {
-    private recipeManager database;
+    private iRecipeManager database;
 
     public RecipeManager() {
         database = Services.getRecipePersistence();

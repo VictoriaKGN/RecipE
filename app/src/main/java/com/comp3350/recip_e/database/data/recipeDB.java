@@ -1,6 +1,6 @@
 package com.comp3350.recip_e.database.data;
 
-import com.comp3350.recip_e.database.recipeManager;
+import com.comp3350.recip_e.database.iRecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 
 import org.json.simple.JSONObject;
@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class recipeDB implements recipeManager{
+public class recipeDB implements iRecipeManager {
     private String path;
     //constructor, save the json file path.
     public recipeDB(String filePath){

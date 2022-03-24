@@ -2,7 +2,7 @@ package com.comp3350.recip_e.database;
 
 import com.comp3350.recip_e.objects.User;
 
-public interface IuserManager {
+public interface iUserManager {
     //insert new user into database
     User insertUser(User user);
 

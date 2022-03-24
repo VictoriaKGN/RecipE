@@ -1,6 +1,6 @@
 package com.comp3350.recip_e.database.data;
 
-import com.comp3350.recip_e.database.IuserManager;
+import com.comp3350.recip_e.database.iUserManager;
 import com.comp3350.recip_e.objects.User;
 
 import java.sql.Connection;
@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class userPersisHsqlDB implements IuserManager {
+public class userPersisHsqlDB implements iUserManager {
     private final String dbpath;
 
     public userPersisHsqlDB(String dbpath){ this.dbpath=dbpath;}
@@ -23,9 +23,7 @@ public class userPersisHsqlDB implements IuserManager {
         final String name=rs.getString("userName");
         final String password=rs.getString("userPassword");
 
-        User userObj= new User(email,name,password);
-
-        return userObj;
+        return new User(email,name,password);
     }
     private void sqlSetHelper(String prepSt, User usr){
         try(Connection c= connection()) {

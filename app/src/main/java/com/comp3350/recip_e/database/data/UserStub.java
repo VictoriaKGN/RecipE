@@ -1,13 +1,12 @@
 package com.comp3350.recip_e.database.data;
 
-import com.comp3350.recip_e.database.IuserManager;
+import com.comp3350.recip_e.database.iUserManager;
 import com.comp3350.recip_e.objects.User;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class UserStub implements IuserManager {
+public class UserStub implements iUserManager {
 
     private List<User> userList;
 
