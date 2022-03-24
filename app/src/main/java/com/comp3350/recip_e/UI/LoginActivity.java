@@ -4,7 +4,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.comp3350.recip_e.R;
+import com.comp3350.recip_e.application.App;
 import com.comp3350.recip_e.logic.UserManager;
+import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
+import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 import android.content.Intent;
@@ -14,17 +17,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private ActivityResultLauncher<Intent> activityLauncher;
     private boolean signInMode;
     private AlertDialog dialog;
     private UserManager userManager;
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         Button submitBtn = dialog.findViewById(R.id.submit_btn);
         Button viewBtn = dialog.findViewById(R.id.changeMode_btn);
         EditText confPass = dialog.findViewById(R.id.confirm_password);
-        EditText email = dialog.findViewById(R.id.email);
+        EditText username = dialog.findViewById(R.id.username);
 
         if (signInMode)
         {
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             submitBtn.setText(getResources().getString(R.string.signup));
             viewBtn.setText(getResources().getString(R.string.or_login));
             confPass.setVisibility(View.VISIBLE);
-            email.setVisibility(View.VISIBLE);
+            username.setVisibility(View.VISIBLE);
         }
         else
         {
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             submitBtn.setText(getResources().getString(R.string.login));
             viewBtn.setText(getResources().getString(R.string.or_signup));
             confPass.setVisibility(View.GONE);
-            email.setVisibility(View.GONE);
+            username.setVisibility(View.GONE);
         }
 
         signInMode = !signInMode;
@@ -75,43 +75,72 @@ public class LoginActivity extends AppCompatActivity {
     public void submit_click()
     {
         EditText username = dialog.findViewById(R.id.username);
+        String usernameText = username.getText().toString();
+
         EditText password = dialog.findViewById(R.id.password);
+        String passwordText = password.getText().toString();
+
         EditText confPass = dialog.findViewById(R.id.confirm_password);
+        String confText = confPass.getText().toString();
+
         EditText email = dialog.findViewById(R.id.email);
+        String emailText = email.getText().toString();
 
         if (signInMode)
         {
-            // TODO: confirm username exists and password matches
-            // if username exists
-            // get user using the username
-            // check if passwords match
-            // start an intent
+            if(!isEmpty(emailText, "Please fill the email field...") && !isEmpty(passwordText, "Please fill the password field...") && userManager.emailExists(emailText))
+            {
+                User user = new User(emailText, usernameText, passwordText);
+
+                try
+                {
+                    userManager.validateUser(user);
+                    userManager.addUser(user);
+                    ((App)this.getApplication()).setCurrentUser(user);
+                    Intent intent = new Intent(LoginActivity.this, ViewActivity.class);
+                    startActivity(intent);
+                }
+                catch (UsernameDoesNotExistException e)
+                {
+                    Toast.makeText(LoginActivity.this, "The given username does not exist...", Toast.LENGTH_SHORT).show();
+                }
+                catch (IncorrectPasswordException e)
+                {
+                    Toast.makeText(LoginActivity.this, "The given password is incorrect...", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "The given email does not exist...", Toast.LENGTH_SHORT).show();
+            }
 
         }
         else
         {
-            // if the username and email dont already exist
-            if (password.getText().toString().equals(confPass.getText().toString()))
-            {
-                User newUser = new User(email.getText().toString(), username.getText().toString(), password.getText().toString());
-                userManager.addUser(newUser);
+            if (!isEmpty(emailText, "Please fill the email field...") && !isEmpty(usernameText, "Please fill the username field") && !isEmpty(passwordText, "Please fill the password field") && !isEmpty(confText, "Please fill the confirmation password field")) {
+                if (!userManager.usernameExists(usernameText) && !userManager.emailExists(emailText))
+                {
+                    if (passwordText.equals(confText))
+                    {
+                        User newUser = new User(emailText, usernameText, passwordText);
+                        userManager.addUser(newUser);
 
-                dialog.dismiss();
-                Intent intent = new Intent(LoginActivity.this, ViewActivity.class);
-                // TODO: pass in the user info
-                startActivity(intent);
+                        dialog.dismiss();
+                        ((App) this.getApplication()).setCurrentUser(newUser);
+                        Intent intent = new Intent(LoginActivity.this, ViewActivity.class);
+                        startActivity(intent);
+                    } else
+                    {
+                        Toast.makeText(LoginActivity.this, "Please make sure your passwords match...", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (userManager.usernameExists(usernameText)) {
+                    Toast.makeText(LoginActivity.this, "The given username already exists...", Toast.LENGTH_SHORT).show();
+                } else // userManager.emailExists(emailText)
+                {
+                    Toast.makeText(LoginActivity.this, "An account with given email already exists...", Toast.LENGTH_SHORT).show();
+                }
             }
-            else
-            {
-                Toast.makeText(LoginActivity.this, "Please make sure your passwords match...", Toast.LENGTH_SHORT).show();
-            }
-            //else if (just username already exists)
-            Toast.makeText(LoginActivity.this, "Sorry, that username already exists...", Toast.LENGTH_SHORT).show();
-            //else
-            Toast.makeText(LoginActivity.this, "An account with given email already exists...", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     // ********************************** dialog method ***************************************
@@ -157,5 +186,18 @@ public class LoginActivity extends AppCompatActivity {
                 submit_click();
             }
         });
+    }
+
+    private boolean isEmpty(String input, String message)
+    {
+        boolean retVal = false;
+
+        if(input.isEmpty() || input.length() == 0 || input.equals("") || input == null)
+        {
+            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+            retVal = true;
+        }
+
+        return retVal;
     }
 }
