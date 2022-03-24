@@ -1,15 +1,13 @@
 package com.comp3350.recip_e.objects;
 
 import java.util.ArrayList;
-import com.comp3350.recip_e.objects.Ingredient;
-import com.comp3350.recip_e.objects.Instruction;
 
 public class Recipe {
 
     private int id;
     private String name;
-    private ArrayList<Ingredient> ingredients;
-    private ArrayList<Instruction> instructions;
+    private ArrayList<String> ingredients;
+    private ArrayList<String> instructions;
     private String picture; // Filepath
     private int servings; //portions
     private int prepTime; //in minutes
@@ -21,7 +19,7 @@ public class Recipe {
     /**
      * Recipe constructor, for Recipe with picture
      */
-    public Recipe(String newName, ArrayList<Ingredient> newIngredients, ArrayList<Instruction> newInstructions,
+    public Recipe(String newName, ArrayList<String> newIngredients, ArrayList<String> newInstructions,
                   int serve, int prep, int cook, String picFile) {
 
         id = 0;
@@ -39,7 +37,7 @@ public class Recipe {
     /**
      * Recipe constructor, for Recipe without picture
      */
-    public Recipe(String newName, ArrayList<Ingredient> newIngredients, ArrayList<Instruction> newInstructions,
+    public Recipe(String newName, ArrayList<String> newIngredients, ArrayList<String> newInstructions,
                   int serve, int prep, int cook) {
 
         this(newName, newIngredients, newInstructions, serve, prep, cook, null);
@@ -55,22 +53,12 @@ public class Recipe {
     }
 
     /**
-     * Set a new Recipe id; also updates attached Ingredients and Instructions
+     * Set a new Recipe id
      * @param  newID: the new Recipe id
      */
     public void setID(int newID) {
 
         id = newID;
-
-        //update attached Ingredients
-        for (Ingredient ing : ingredients) {
-            ing.setRecipeID(newID);
-        }
-
-        for (Instruction inst : instructions) {
-            inst.setRecipeID(newID);
-        }
-        //update in DB?
     }
 
     /**
@@ -94,19 +82,16 @@ public class Recipe {
      * Get a list of all the Ingredients
      * @return  An ArrayList of all the Ingredients
      */
-    public ArrayList<Ingredient> getIngredients() {
+    public ArrayList<String> getIngredients() {
         return ingredients;
     }
 
-    //does the Ingredient get vetted before call or in here?
     /****Do we even need this?? Or is this RecipeManager's job to create and swap whole object?****/
-    public void updateIngredients(ArrayList<Ingredient> newIngreds) {
+    public void updateIngredients(ArrayList<String> newIngreds) {
 
         ingredients.clear();
         ingredients = newIngreds;
-        for (Ingredient ing : ingredients) {
-            ing.setRecipeID(id);
-        }
+        resetNextIngredient();
     }
 
     /**
@@ -119,10 +104,10 @@ public class Recipe {
 
     /**
      * Works as an iterator for the Ingredient list
-     * @return  The next Ingredient in the list, or null if out of list
+     * @return  The next Ingredient in the list, or empty string if out of list
      */
-    public Ingredient getNextIngredient() {
-        Ingredient currIngred = null;
+    public String getNextIngredient() {
+        String currIngred = "";
 
         if(hasNextIngredient()) {
             currIngred = ingredients.get(currIngredient);
@@ -139,33 +124,22 @@ public class Recipe {
         currIngredient = 0;
     }
 
-    /****
-     * Do we need delete individual ingredients? Or just swap whole list?
-     *
-     * public void deleteIngredient(Ingredient ingred) {
-     *   ingredients.remove(ingred);
-     *
-     *    //update DB?
-     * }
-     ******/
 
     /**
      * Get a list of all the Instructions
      * @return  An ArrayList of all the Instructions
      */
-    public ArrayList<Instruction> getInstructions() {
+    public ArrayList<String> getInstructions() {
         return instructions;
     }
 
 
     /***don't need this if remaking whole Recipe object*****/
-    public void updateInstructions(ArrayList<Instruction> newInstrs) {
+    public void updateInstructions(ArrayList<String> newInstrs) {
 
         instructions.clear();
         instructions = newInstrs;
-        for (Instruction inst : instructions) {
-            inst.setRecipeID(id);
-        }
+        resetNextInstruction();
     }
 
     /**
@@ -178,10 +152,10 @@ public class Recipe {
 
     /**
      * Works as an iterator for the Instruction list
-     * @return  The next Instruction in the list, or null if out of list
+     * @return  The next Instruction in the list, or empty string if out of list
      */
-    public Instruction getNextInstruction() {
-        Instruction currInstr = null;
+    public String getNextInstruction() {
+        String currInstr = "";
 
         if(hasNextInstruction()) {
             currInstr = instructions.get(currInstruction);

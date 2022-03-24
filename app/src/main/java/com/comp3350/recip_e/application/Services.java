@@ -2,7 +2,6 @@ package com.comp3350.recip_e.application;
 
 import com.comp3350.recip_e.database.data.RecipeStub;
 import com.comp3350.recip_e.database.recipeManager;
-import com.comp3350.recip_e.database.data.recipeDB;
 
 public class Services {
     private static recipeManager recipePersistence = null;
