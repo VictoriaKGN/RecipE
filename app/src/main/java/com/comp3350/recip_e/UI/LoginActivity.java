@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (signInMode)
         {
-            if(!isEmpty(emailText, "Please fill the email field...") && !isEmpty(passwordText, "Please fill the password field..."))
+            if(!isValid(emailText, "Please fill the email field...") && !isValid(passwordText, "Please fill the password field..."))
             {
                 User user = new User(emailText, usernameText, passwordText);
 
@@ -112,7 +112,8 @@ public class LoginActivity extends AppCompatActivity {
         }
         else
         {
-            if (!isEmpty(emailText, "Please fill the email field...") && !isEmpty(usernameText, "Please fill the username field") && !isEmpty(passwordText, "Please fill the password field") && !isEmpty(confText, "Please fill the confirmation password field"))
+            if (!isValid(emailText, "Please fill the email field...") && !isValid(usernameText, "Please fill the username field")
+                    && !isValid(passwordText, "Please fill the password field") && !isValid(confText, "Please fill the confirmation password field"))
             {
                 if (!userManager.usernameExists(usernameText) && !userManager.emailExists(emailText))
                 {
@@ -184,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isEmpty(String input, String message)
+    private boolean isValid(String input, String message)
     {
         boolean retVal = false;
 
