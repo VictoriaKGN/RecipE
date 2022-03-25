@@ -21,10 +21,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.comp3350.recip_e.R;
-import com.comp3350.recip_e.logic.InvalidRecipeException;
 import com.comp3350.recip_e.logic.RecipeManager;
-import com.comp3350.recip_e.objects.Ingredient;
-import com.comp3350.recip_e.objects.Instruction;
 import com.comp3350.recip_e.objects.Recipe;
 
 import java.io.File;
@@ -52,7 +49,6 @@ public class ViewActivity extends AppCompatActivity {
                     if (result.getResultCode() == 7)
                     {
                         Bundle extras = getIntent().getExtras();
-                        Toast.makeText(ViewActivity.this, "im here", Toast.LENGTH_SHORT).show();
 
                         if (extras != null)
                         {
@@ -136,8 +132,8 @@ public class ViewActivity extends AppCompatActivity {
             setServings("");
             setPrepTime("");
             setCookingTime("");
-            setIngredients(new ArrayList<Ingredient>());
-            setInstructions(new ArrayList<Instruction>());
+            setIngredients(new ArrayList<String>());
+            setInstructions(new ArrayList<String>());
             setPicture("");
         }
     }
@@ -188,20 +184,20 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     // set the ingredients of the recipe
-    public void setIngredients(ArrayList<Ingredient> ingredientList)
+    public void setIngredients(ArrayList<String> ingredientList)
     {
         ListView list = findViewById(R.id.ingredients);
-        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<Ingredient>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientList);
+        ArrayAdapter<String> ingredientAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientList);
 
         list.setAdapter(ingredientAdapter);
         ingredientAdapter.notifyDataSetChanged();
     }
 
     // set the instructions of the recipe
-    public void setInstructions(ArrayList<Instruction> instructionList)
+    public void setInstructions(ArrayList<String> instructionList)
     {
         ListView list = findViewById(R.id.instructions);
-        ArrayAdapter<Instruction> instructionAdapter = new ArrayAdapter<Instruction>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionList);
+        ArrayAdapter<String> instructionAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionList);
 
         list.setAdapter(instructionAdapter);
         instructionAdapter.notifyDataSetChanged();

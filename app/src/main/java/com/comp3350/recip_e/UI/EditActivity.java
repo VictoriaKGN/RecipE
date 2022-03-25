@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.logic.InvalidRecipeException;
 import com.comp3350.recip_e.logic.RecipeManager;
-import com.comp3350.recip_e.objects.Ingredient;
-import com.comp3350.recip_e.objects.Instruction;
 import com.comp3350.recip_e.objects.Recipe;
 
 import android.Manifest;
@@ -38,14 +36,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EditActivity extends AppCompatActivity {
@@ -175,166 +171,32 @@ public class EditActivity extends AppCompatActivity {
     }
 
 
-    // input validation when the user tries to save a new recipe
-    public void saveInput_click(View view)
+
+
+    private boolean isValidInput(String input, String message)
     {
-        int allValid = 0;
-        Toast.makeText(EditActivity.this, "Im here", Toast.LENGTH_SHORT).show();
+        boolean retVal = true;
 
-        EditText recName = (EditText) findViewById(R.id.recipe_name);
-        String rec_text = recName.getText().toString().trim();
-
-        if(isValidInput(rec_text))
+        if(input.isEmpty() || input.length() == 0 || input.equals("") || input == null)
         {
-            //EditText is empty
-            Toast.makeText(this, "Please enter a recipe name ", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            //EditText is not empty
-            allValid++;
+            Toast.makeText(EditActivity.this, message, Toast.LENGTH_SHORT).show();
+            retVal = false;
         }
 
-        EditText serveNum = (EditText) findViewById(R.id.num_serves);
-        String serveNum_text = serveNum.getText().toString().trim();
-        int serves = 0;
-
-        if(isValidInput(serveNum_text))
-        {
-            //EditText is empty
-            Toast.makeText(this, "Please enter the # of people it serves", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            //EditText is not empty
-            serves = Integer.parseInt(serveNum_text);
-            allValid++;
-        }
-
-        EditText timePrep = (EditText) findViewById(R.id.num_prep);
-        String timePrep_text = timePrep.getText().toString().trim();
-        int prepTime = 0;
-
-        if(isValidInput(timePrep_text))
-        {
-            //EditText is empty
-            Toast.makeText(this, "Please enter the prepping time", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            //EditText is not empty
-            prepTime = Integer.parseInt(timePrep_text);
-            allValid++;
-        }
-
-        EditText timeCook = (EditText) findViewById(R.id.num_cook);
-        String timeCook_text = timeCook.getText().toString().trim();
-        int cookTime = 0;
-
-        if(isValidInput(timeCook_text))
-        {
-            //EditText is empty
-            Toast.makeText(this, "Please enter the cooking time", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            //EditText is not empty
-            cookTime = Integer.parseInt(timeCook_text);
-            allValid++;
-        }
-
-        if(ingredientArrayList.isEmpty())
-        {
-            //is empty
-            Toast.makeText(this, "Please enter ingredients", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            //is not empty
-            allValid++;
-        }
-
-        if(instructionArrayList.isEmpty())
-        {
-            //is empty
-            Toast.makeText(this, "Please enter instructions ", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            //is not empty
-            allValid++;
-        }
-
-        // check if all fields are non-empty
-        if (allValid == 6)
-        {
-            /*Toast.makeText(EditActivity.this, "All valid", Toast.LENGTH_SHORT).show();
-            // pass back all the info collected
-            Intent intent = new Intent();
-
-            Bundle extras = new Bundle();
-            extras.putString("RECIPE_NAME", rec_text);
-            extras.putInt("NUM_SERVES", serves);
-            extras.putInt("PREP_TIME", prepTime);
-            extras.putInt("COOK_TIME", cookTime);
-            //extras.putStringArrayList("INGREDIENTS", ingredientList);
-            //extras.putString("INSTRUCTIONS", inst_text);
-
-            if (pictureUri != null)
-            {
-                String path = saveImage(pictureUri);
-                extras.putString("RECIPE_PICTURE", path);
-            }
-            else
-            {
-                extras.putString("RECIPE_PICTURE", null);
-            }
-
-            intent.putExtras(extras);
-            setResult(7, intent);
-            finish();*/
-            // TODO: create Instructions
-            ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
-
-            // TODO create Ingredients
-            ArrayList<Instruction> instructions = new ArrayList<Instruction>();
-
-            Recipe newRecipe = null;
-
-            if (pictureUri != null)
-            {
-                String path = saveImage(pictureUri);
-                newRecipe = new Recipe(rec_text, ingredients, instructions, serves, prepTime, cookTime, path);
-            }
-            else
-            {
-                newRecipe = new Recipe(rec_text, ingredients, instructions, serves, prepTime, cookTime);
-            }
-
-            try
-            {
-                recipeManager.addRecipe(newRecipe);
-
-                Intent intent = new Intent();
-
-                Bundle extras = new Bundle();
-                extras.putInt("NEW_RECIPE_ID", newRecipe.getID());
-
-                intent.putExtras(extras);
-                setResult(7, intent);
-                finish();
-            }
-            catch (InvalidRecipeException exc)
-            {
-                Toast.makeText(EditActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
+        return retVal;
     }
 
-    private boolean isValidInput(String input)
+    private boolean isValidList(ArrayList<String> list, String message)
     {
-        return (input.isEmpty() || input.length() == 0 || input.equals("") || input == null);
+        boolean retVal = true;
+
+        if (list.isEmpty())
+        {
+            Toast.makeText(EditActivity.this, message, Toast.LENGTH_SHORT).show();
+            retVal = false;
+        }
+
+        return retVal;
     }
 
     //The function below validates discarding changes.
@@ -432,18 +294,18 @@ public class EditActivity extends AppCompatActivity {
     }
 
     // set the ingredients of the recipe
-    public void setIngredients(ArrayList<Ingredient> ingredientList)
+    public void setIngredients(ArrayList<String> ingredientList)
     {
-        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<Ingredient>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientList);
+        ArrayAdapter<String> ingredientAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientList);
 
         ingredientListView.setAdapter(ingredientAdapter);
         ingredientAdapter.notifyDataSetChanged();
     }
 
     // set the instructions of the recipe
-    public void setInstructions(ArrayList<Instruction> instructionList)
+    public void setInstructions(ArrayList<String> instructionList)
     {
-        ArrayAdapter<Instruction> instructionAdapter = new ArrayAdapter<Instruction>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionList);
+        ArrayAdapter<String> instructionAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionList);
 
         instructionListView.setAdapter(instructionAdapter);
         instructionAdapter.notifyDataSetChanged();
@@ -501,33 +363,40 @@ public class EditActivity extends AppCompatActivity {
      * @param uri Image to save
      * @return String representing the file path
      */
-    public String saveImage(Uri uri) {
-        Context context = this.getApplicationContext();
-        Bitmap image = null;
+    public String saveImage(Uri uri)
+    {
+        String retVal = null;
 
-        try {
-            image = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);   // Get the image from the gallery
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ContextWrapper cw = new ContextWrapper(context);
-        File directory = cw.getDir(Environment.DIRECTORY_PICTURES, Context.MODE_PRIVATE);   // Get the directory of internal storage
-        File path = new File(directory, System.currentTimeMillis() + "_recipe.jpg");   // Create the file in internal storage
-        FileOutputStream out = null;
+        if (uri != null) {
+            Context context = this.getApplicationContext();
+            Bitmap image = null;
 
-        try {
-            out = new FileOutputStream(path);
-            image.compress(Bitmap.CompressFormat.PNG, 100, out);    // Write the image data to the image file
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
             try {
-                out.close();
-            } catch (Exception e) {
+                image = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);   // Get the image from the gallery
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+            ContextWrapper cw = new ContextWrapper(context);
+            File directory = cw.getDir(Environment.DIRECTORY_PICTURES, Context.MODE_PRIVATE);   // Get the directory of internal storage
+            File path = new File(directory, System.currentTimeMillis() + "_recipe.jpg");   // Create the file in internal storage
+            FileOutputStream out = null;
+
+            try {
+                out = new FileOutputStream(path);
+                image.compress(Bitmap.CompressFormat.PNG, 100, out);    // Write the image data to the image file
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    out.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            retVal = path.toString();
         }
-        return path.toString();
+
+        return retVal;
     }
 
 
@@ -587,7 +456,7 @@ public class EditActivity extends AppCompatActivity {
 
         if (!amountString.isEmpty() && !amountString.equals("\\s+") && !unitString.isEmpty() && !unitString.equals("\\s+") && !ingredientString.isEmpty() && !ingredientString.equals("\\s+"))
         {
-            if (isIngredientExist(ingredientString, -1))
+            if (doesIngredientExist(ingredientString, -1))
             {
                 Toast.makeText(this, "The inputted ingredient already exists... \nPlease edit the existing one to update...", Toast.LENGTH_LONG).show();
             }
@@ -599,7 +468,9 @@ public class EditActivity extends AppCompatActivity {
                 ingredientArrayAdapter.notifyDataSetChanged();
 
                 clearIngredients();
+                selectedIngredientIndex = -1;
                 setSelector(false, true);
+                setBtnsEnabled(false, true);
             }
         }
         else
@@ -621,7 +492,9 @@ public class EditActivity extends AppCompatActivity {
             instructionArrayAdapter.notifyDataSetChanged();
 
             clearInstructions();
+            selectedIngredientIndex = -1;
             setSelector(false, false);
+            setBtnsEnabled(false, false);
         }
         else
         {
@@ -643,7 +516,7 @@ public class EditActivity extends AppCompatActivity {
 
         if (!amountString.isEmpty() && !amountString.equals("\\s+") && !unitString.isEmpty() && !unitString.equals("\\s+") && !ingredientString.isEmpty() && !ingredientString.equals("\\s+"))
         {
-            if (!isIngredientExist(ingredientString, selectedIngredientIndex) )
+            if (!doesIngredientExist(ingredientString, selectedIngredientIndex) )
             {
                 String input = amountString + " " + unitString + " " + ingredientString;
 
@@ -653,6 +526,7 @@ public class EditActivity extends AppCompatActivity {
                 clearIngredients();
                 selectedIngredientIndex = -1;
                 setSelector(false, true);
+                setBtnsEnabled(false, true);
             }
             else
             {
@@ -680,6 +554,7 @@ public class EditActivity extends AppCompatActivity {
             clearInstructions();
             selectedInstructionIndex = -1;
             setSelector(false, false);
+            setBtnsEnabled(false, false);
         }
         else
         {
@@ -692,6 +567,7 @@ public class EditActivity extends AppCompatActivity {
     {
         ingredientArrayList.remove(selectedIngredientIndex);
         ingredientArrayAdapter.notifyDataSetChanged();
+
         selectedIngredientIndex = -1;
         clearIngredients();
         setSelector(false, true);
@@ -709,7 +585,51 @@ public class EditActivity extends AppCompatActivity {
         setBtnsEnabled(false, false);
     }
 
-    private boolean isIngredientExist(String ingredient, int index)
+    // input validation when the user tries to save a new recipe
+    public void saveInput_click(View view)
+    {
+        EditText recName = (EditText) findViewById(R.id.recipe_name);
+        String rec_text = recName.getText().toString().trim();
+
+        EditText serveNum = (EditText) findViewById(R.id.num_serves);
+        String serveNum_text = serveNum.getText().toString().trim();
+
+        EditText timePrep = (EditText) findViewById(R.id.num_prep);
+        String timePrep_text = timePrep.getText().toString().trim();
+
+        EditText timeCook = (EditText) findViewById(R.id.num_cook);
+        String timeCook_text = timeCook.getText().toString().trim();
+
+        if (isValidInput(rec_text, "Please enter a recipe name") && isValidInput(serveNum_text, "Please enter the # of people it serves")
+                && isValidInput(timePrep_text, "Please enter the prepping time") && isValidInput(timeCook_text, "Please enter the cooking time")
+                && isValidList(ingredientArrayList, "Please enter ingredients") && isValidList(instructionArrayList, "Please enter instructions"))
+        {
+            String path = saveImage(pictureUri);
+            Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, null);
+            // TODO: change the user to ((App)getApplication()).getCurrentUser()
+
+            try
+            {
+                recipeManager.addRecipe(newRecipe);
+
+                Intent intent = new Intent();
+
+                Bundle extras = new Bundle();
+                extras.putInt("NEW_RECIPE_ID", newRecipe.getID());
+
+                intent.putExtras(extras);
+                setResult(7, intent);
+                finish();
+            }
+            catch (InvalidRecipeException exc)
+            {
+                Toast.makeText(EditActivity.this, "The recipe was not valid. Progress is lost...", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    private boolean doesIngredientExist(String ingredient, int index)
     {
         boolean retVal = false;
         String[] splitted = null;
