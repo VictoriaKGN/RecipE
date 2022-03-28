@@ -257,6 +257,14 @@ public class Recipe {
         return this.id == r.getID();
     }
 
+    /**
+     * Get the Recipe user
+     * @return  The user email (identifier)
+     */
+    public String getUserID() {
+        return this.userID;
+    }
+
 
     /**
      * Validates a Recipe
@@ -264,7 +272,7 @@ public class Recipe {
      * @param recipe Recipe to validate
      * @throws InvalidRecipeException
      */
-    public void validate(Recipe recipe) throws InvalidRecipeException {
+    private void validate(Recipe recipe) throws InvalidRecipeException {
         if (recipe == null) {
             throw new InvalidRecipeException("recipe is null.");
         } else if (recipe.getName() == null || recipe.getName().equals("")) {
