@@ -7,7 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +18,8 @@ import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
 
 public class DrawerBaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -65,6 +67,13 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         drawerLayout.closeDrawer(GravityCompat.START);
+
+        Intent intent = new Intent(DrawerBaseActivity.this, ViewActivity.class);
+        intent.putExtra("RecipeID", item.getItemId());
+
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+
         return true;
     }
 
@@ -72,11 +81,10 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     private void setRecipeMenu()
     {
         Menu menu = navigationView.getMenu();
-        Recipe rec;
+        ArrayList<Recipe> userRecs = recipeManager.getUserRecipes("user@email.com"); //TODO (((App)getApplication()).getCurrentUser().getEmail());
 
-        for (int i = 0; i < 3; i++)
+        for (Recipe rec : userRecs)
         {
-            rec = recipeManager.getRecipe(i);
             menu.add(0, rec.getID(), 0, rec.getName());
         }
     }

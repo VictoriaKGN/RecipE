@@ -85,8 +85,20 @@ public class ViewActivity extends DrawerBaseActivity {
             }
         );
 
-        currRecipe = recipeManager.getFirstRecipe();
-        setAllFields();
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null)
+        {
+
+            int recipeID = bundle.getInt("RecipeID");
+            currRecipe = recipeManager.getRecipe(recipeID);
+            setAllFields();
+        }
+        else
+        {
+            currRecipe = recipeManager.getFirstRecipe();
+            setAllFields();
+        }
     }
 
     // ********************************** set methods ***************************************

@@ -37,7 +37,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends DrawerBaseActivity {
 
     private static final int PERMISSION_CODE = 1001;
     private ActivityResultLauncher<Intent> activityResultLauncher;
