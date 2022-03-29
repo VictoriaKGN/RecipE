@@ -7,12 +7,10 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.logic.InvalidRecipeException;
-import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
+import com.comp3350.recip_e.databinding.ActivityEditBinding;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -22,7 +20,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -44,12 +41,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends DrawerBaseActivity {
 
     private static final int PERMISSION_CODE = 1001;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private Uri pictureUri = null;
-
     private ArrayList<String> ingredientArrayList;
     private ArrayList<String> instructionArrayList;
     private ArrayAdapter<String> ingredientArrayAdapter;
@@ -58,13 +54,13 @@ public class EditActivity extends AppCompatActivity {
     private ListView instructionListView;
     private int selectedIngredientIndex;
     private int selectedInstructionIndex;
-
-    private RecipeManager recipeManager;
+    private ActivityEditBinding activityEditBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        activityEditBinding = ActivityEditBinding.inflate(getLayoutInflater());
+        setContentView(activityEditBinding.getRoot());
 
         selectedIngredientIndex = -1;
         selectedInstructionIndex = -1;
@@ -81,8 +77,6 @@ public class EditActivity extends AppCompatActivity {
         instructionListView.setAdapter(instructionArrayAdapter);
         setBtnsEnabled(false, true);
         setBtnsEnabled(false, false);
-
-        recipeManager = new RecipeManager();
 
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override

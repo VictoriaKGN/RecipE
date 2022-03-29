@@ -21,25 +21,25 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.comp3350.recip_e.R;
-import com.comp3350.recip_e.logic.RecipeManager;
+import com.comp3350.recip_e.databinding.ActivityViewBinding;
+import com.comp3350.recip_e.logic.InvalidRecipeException;
 import com.comp3350.recip_e.objects.Recipe;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class ViewActivity extends AppCompatActivity {
+public class ViewActivity extends DrawerBaseActivity {
 
-    private RecipeManager recipeManager;
     private Recipe currRecipe;
-
     private ActivityResultLauncher<Intent> activityLauncher;
+    private ActivityViewBinding activityViewBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view);
+        activityViewBinding = ActivityViewBinding.inflate(getLayoutInflater());
+        setContentView(activityViewBinding.getRoot());
 
-        recipeManager = new RecipeManager();
         currRecipe = null;
 
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -66,13 +66,14 @@ public class ViewActivity extends AppCompatActivity {
 
                         if (intent != null)
                         {
+                            // extract all the data
                             Bundle bundle = intent.getExtras();
                             Recipe newRecipe = null;
 
                             if(bundle.getString("RECIPE_PICTURE") != null) {
                                 try {
-                                    //newRecipe = new Recipe(bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                                            //bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
+                                    newRecipe = new Recipe(bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
+                                            bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
                                 } catch (InvalidRecipeException exc)
                                 {
                                     Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
@@ -82,8 +83,8 @@ public class ViewActivity extends AppCompatActivity {
                             {
                                 try
                                 {
-                                    //newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                                            //bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
+                                    newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
+                                            bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
                                 } catch (InvalidRecipeException exc)
                                 {
                                     Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
@@ -103,12 +104,23 @@ public class ViewActivity extends AppCompatActivity {
             }
         );
 
-        currRecipe = recipeManager.getFirstRecipe();
-        setAllFields();
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null)
+        {
+
+            int recipeID = bundle.getInt("RecipeID");
+            currRecipe = recipeManager.getRecipe(recipeID);
+            setAllFields();
+        }
+        else
+        {
+            currRecipe = recipeManager.getFirstRecipe();
+            setAllFields();
+        }
     }
 
     // ********************************** set methods ***************************************
-
     // set all fields
     public void setAllFields()
     {
