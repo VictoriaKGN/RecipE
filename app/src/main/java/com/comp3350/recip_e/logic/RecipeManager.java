@@ -5,6 +5,7 @@ import com.comp3350.recip_e.application.Services;
 import com.comp3350.recip_e.database.iRecipeManager;
 
 import com.comp3350.recip_e.objects.Recipe;
+import java.util.List;
 
 public class RecipeManager {
     private iRecipeManager database;
@@ -36,9 +37,9 @@ public class RecipeManager {
      *
      * @param recipe The recipe to add
      */
-    public void addRecipe(Recipe recipe) throws InvalidRecipeException {
-        RecipeValidator.validate(recipe);
-        database.addRecipe(recipe);
+    public Recipe addRecipe(Recipe recipe) throws InvalidRecipeException {
+        //RecipeValidator.validate(recipe);
+        return database.addRecipe(recipe);
     }
 
     /**

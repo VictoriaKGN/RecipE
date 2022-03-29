@@ -6,13 +6,13 @@ import org.junit.runners.Suite;
 
 import com.comp3350.recip_e.tests.objects.RecipeTest;
 import com.comp3350.recip_e.tests.logic.RecipeManagerTest;
-import com.comp3350.recip_e.database.data.recipeDBTest;
+import com.comp3350.recip_e.tests.data.RecipeStubDBTest;
 
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         RecipeTest.class,
-        recipeDBTest.class,
+        RecipeStubDBTest.class,
         RecipeManagerTest.class
 })
 

@@ -9,13 +9,22 @@ import java.util.List;
 
 public class RecipeStub implements iRecipeManager {
     private List<Recipe> recipes;
+    private ArrayList<String> ingredients;
+    private ArrayList<String> instructions;
 
     public RecipeStub() {
-        recipes = new ArrayList<>();
+        recipes = new ArrayList<Recipe>();
+        ingredients = new ArrayList<String>();
+        instructions = new ArrayList<String>();
 
-        Recipe recipe1 = new Recipe("test recipe 1", "ingredients", "instructions", 1, 1, 1);
-        Recipe recipe2 = new Recipe("test recipe 2", "ingredients", "instructions", 1, 1, 1);
-        Recipe recipe3 = new Recipe("test recipe 3", "ingredients", "instructions", 1, 1, 1);
+        for(int i = 1; i <= 3; i++) {
+            ingredients.add((i*100) + "ml ingredients");
+            instructions.add(i + ". Test instruction.");
+        }
+
+        Recipe recipe1 = new Recipe("test recipe 1", ingredients, instructions, 1, 1, 1, "this/path/1", "user@email.com");
+        Recipe recipe2 = new Recipe("test recipe 2", ingredients, instructions, 1, 1, 1, "this/path/2", "user@email.com");
+        Recipe recipe3 = new Recipe("test recipe 3", ingredients, instructions, 1, 1, 1, "default/path", "user@email.com");
         recipe1.setID(0);
         recipe2.setID(1);
         recipe3.setID(2);
@@ -35,36 +44,6 @@ public class RecipeStub implements iRecipeManager {
         }
 
         return recipe;
-    }
-
-    @Override
-    public String getRecipeName(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getIngredients(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getDirection(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getServing(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getPrepTime(int recipeId) {
-        return null;
-    }
-
-    @Override
-    public String getCookTime(int recipeId) {
-        return null;
     }
 
     @Override
