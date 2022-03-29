@@ -61,44 +61,6 @@ public class ViewActivity extends DrawerBaseActivity {
                             setAllFields();
 
                         }
-
-                        /*Intent intent = result.getData();
-
-                        if (intent != null)
-                        {
-                            // extract all the data
-                            Bundle bundle = intent.getExtras();
-                            Recipe newRecipe = null;
-
-                            if(bundle.getString("RECIPE_PICTURE") != null) {
-                                try {
-                                    newRecipe = new Recipe(bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                                            bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
-                                } catch (InvalidRecipeException exc)
-                                {
-                                    Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                                            bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
-                                } catch (InvalidRecipeException exc)
-                                {
-                                    Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-
-                            if (newRecipe != null)
-                            {
-                                recipeManager.addRecipe(newRecipe);
-                                currRecipe = newRecipe;
-                                setAllFields();
-                            }
-                        }*/
                     }
                 }
             }

@@ -142,11 +142,6 @@ public class EditActivity extends DrawerBaseActivity {
         });
     }
 
-    private void listViewItemClick()
-    {
-
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -599,11 +594,12 @@ public class EditActivity extends DrawerBaseActivity {
                 && isValidList(ingredientArrayList, "Please enter ingredients") && isValidList(instructionArrayList, "Please enter instructions"))
         {
             String path = saveImage(pictureUri);
-            Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, null);
-            // TODO: change the user to ((App)getApplication()).getCurrentUser()
 
             try
             {
+                Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, null);
+                // TODO: change the user to ((App)getApplication()).getCurrentUser()
+
                 recipeManager.addRecipe(newRecipe);
 
                 Intent intent = new Intent();
@@ -617,8 +613,7 @@ public class EditActivity extends DrawerBaseActivity {
             }
             catch (InvalidRecipeException exc)
             {
-                Toast.makeText(EditActivity.this, "The recipe was not valid. Progress is lost...", Toast.LENGTH_SHORT).show();
-                finish();
+                Toast.makeText(EditActivity.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
