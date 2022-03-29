@@ -64,7 +64,7 @@ public class RecipeTest {
         assertEquals("Recipe servings do not match", serv, recipe1.getServings());
         assertEquals("Recipe prep time does not match", prep, recipe1.getPrepTime());
         assertEquals("Recipe cook time does not match", cook, recipe1.getCookTime());
-
+        assertTrue("User does not match", user.equals(recipe1.getUserID()));
 
 
         System.out.println("Finished testing Recipe creation");

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecipE" >
         <activity
+            android:name=".UI.DrawerBaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.EditActivity"
             android:exported="false" />
         <activity

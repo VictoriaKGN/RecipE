@@ -6,6 +6,7 @@ import com.comp3350.recip_e.database.recipeManager;
 
 import com.comp3350.recip_e.objects.Recipe;
 import java.util.List;
+import java.util.ArrayList;
 
 public class RecipeManager {
     private recipeManager database;
@@ -37,7 +38,7 @@ public class RecipeManager {
      *
      * @param recipe The recipe to add
      */
-    public Recipe addRecipe(Recipe recipe) throws InvalidRecipeException {
+    public Recipe addRecipe(Recipe recipe) {
         //RecipeValidator.validate(recipe);
         return database.addRecipe(recipe);
     }
@@ -49,5 +50,9 @@ public class RecipeManager {
      */
     public void deleteRecipe(int id) {
         database.delRecipe(id);
+    }
+
+    public ArrayList<Recipe> getUserRecipes(String user) {
+        return database.getUserRecipes(user);
     }
 }

@@ -76,4 +76,20 @@ public class RecipeStub implements recipeManager {
     private int getNextID() {
         return recipes.get(recipes.size() - 1).getID() + 1;
     }
+
+    @Override
+    public ArrayList<Recipe> getUserRecipes(String user) {
+        ArrayList<Recipe> userRecipes = new ArrayList<>();
+        Iterator<Recipe> iterator = recipes.listIterator();
+
+        while (iterator.hasNext()) {
+            Recipe r = iterator.next();
+
+            if (r.getUserID().equals(user)) {
+                userRecipes.add(r);
+            }
+        }
+
+        return userRecipes;
+    }
 }

@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.comp3350.recip_e.R;
+import com.comp3350.recip_e.databinding.ActivityEditBinding;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -36,16 +37,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends DrawerBaseActivity {
 
     private static final int PERMISSION_CODE = 1001;
-    ActivityResultLauncher<Intent> activityResultLauncher;
-    Uri pictureUri = null;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+    private Uri pictureUri = null;
+    private ActivityEditBinding activityEditBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        activityEditBinding = ActivityEditBinding.inflate(getLayoutInflater());
+        setContentView(activityEditBinding.getRoot());
+
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result)
