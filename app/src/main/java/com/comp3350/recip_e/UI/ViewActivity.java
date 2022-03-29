@@ -30,6 +30,13 @@ public class ViewActivity extends AppCompatActivity {
     private RecipeManager recipeManager;
     private Recipe currRecipe;
 
+
+
+
+
+
+
+
     private ActivityResultLauncher<Intent> activityLauncher;
 
     @Override
