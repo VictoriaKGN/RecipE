@@ -48,7 +48,7 @@ public class ViewActivity extends DrawerBaseActivity {
                 {
                     if (result.getResultCode() == 7)
                     {
-                        Bundle extras = getIntent().getExtras();
+                        Bundle extras = result.getData().getExtras();
 
                         if (extras != null)
                         {
