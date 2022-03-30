@@ -2,7 +2,7 @@ package com.comp3350.recip_e.objects;
 
 public class User {
     private final String email;
-    private final String username;
+    private String username;
     private String password;
 
     public User(String email, String username, String password) {
@@ -17,6 +17,10 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {
