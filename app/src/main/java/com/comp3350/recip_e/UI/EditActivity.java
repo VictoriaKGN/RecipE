@@ -597,15 +597,15 @@ public class EditActivity extends DrawerBaseActivity {
 
             try
             {
-                Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, null);
-                // TODO: change the user to ((App)getApplication()).getCurrentUser()
+                Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, "user@email.com");
+                // TODO: change the user to ((App)getApplication()).getCurrentUser().getEmail()
 
-                recipeManager.addRecipe(newRecipe);
+                Recipe recipe = recipeManager.addRecipe(newRecipe);
 
                 Intent intent = new Intent();
 
                 Bundle extras = new Bundle();
-                extras.putInt("NEW_RECIPE_ID", newRecipe.getID());
+                extras.putInt("NEW_RECIPE_ID", recipe.getID());
 
                 intent.putExtras(extras);
                 setResult(7, intent);
