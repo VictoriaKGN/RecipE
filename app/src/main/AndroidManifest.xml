@@ -14,7 +14,7 @@
         android:theme="@style/Theme.RecipE">
         <activity
             android:name=".UI.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +26,13 @@
             android:exported="false" />
         <activity
             android:name=".UI.ViewActivity"
-            android:exported="false"/>
+            android:exported="false" />
+        <activity
+            android:name=".UI.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.ImageActivity"
+            android:theme="@style/myDialogTheme" />
     </application>
 
 </manifest>

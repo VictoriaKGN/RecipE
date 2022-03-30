@@ -45,6 +45,16 @@
                     app:srcCompat="@drawable/delete_icon"
                     android:onClick="deleteRecipe_click"/>
 
+                <ImageButton
+                    android:id="@+id/profile_button_left"
+                    android:layout_width="70dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/accent"
+                    android:contentDescription="profile page"
+                    app:srcCompat="@drawable/profile_icon"
+                    android:onClick="profile_click"/>
+
             </LinearLayout>
 
             <!-- row of contents (recipe name and button) -->
@@ -300,6 +310,16 @@
                     android:contentDescription="delete recipe"
                     app:srcCompat="@drawable/delete_icon"
                     android:onClick="deleteRecipe_click"/>
+
+                <ImageButton
+                    android:id="@+id/profile_button_right"
+                    android:layout_width="70dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/accent"
+                    android:contentDescription="profile page"
+                    app:srcCompat="@drawable/profile_icon"
+                    android:onClick="profile_click"/>
 
             </LinearLayout>
 

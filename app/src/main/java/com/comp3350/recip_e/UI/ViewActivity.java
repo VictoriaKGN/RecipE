@@ -30,13 +30,6 @@ public class ViewActivity extends AppCompatActivity {
     private RecipeManager recipeManager;
     private Recipe currRecipe;
 
-
-
-
-
-
-
-
     private ActivityResultLauncher<Intent> activityLauncher;
 
     @Override
@@ -191,9 +184,31 @@ public class ViewActivity extends AppCompatActivity {
     // ********************************** button clicks ***************************************
 
     // change the view to the new recipe layout and pass in the recipe manager
+
     public void addRecipe_click(View view)
     {
+        boolean xy = false;
         Intent intent = new Intent(ViewActivity.this, EditActivity.class);
+Bundle newBundle = new Bundle();
+newBundle.putBoolean("isEdit", false);
+intent.putExtras(newBundle);
+        activityLauncher.launch(intent);
+    }
+
+    //change the view to take the user to the profile page
+    public void profile_click(View view)
+    {
+        Intent intent = new Intent(ViewActivity.this, ProfileActivity.class);
+        activityLauncher.launch(intent);
+    }
+
+    public void edit_recipe_click(View view)
+    {
+        Intent intent = new Intent(ViewActivity.this, EditActivity.class);
+        Bundle newBundle = new Bundle();
+        newBundle.putBoolean("isEdit", true);
+        newBundle.putInt("RecipeId", currRecipe.getID());
+        intent.putExtras(newBundle);
         activityLauncher.launch(intent);
     }
 

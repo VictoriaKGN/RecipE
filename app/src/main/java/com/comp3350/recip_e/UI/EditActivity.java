@@ -46,6 +46,19 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
+        Bundle newBundle = getIntent().getExtras();
+       if (newBundle.getBoolean("isEdit"))
+       {
+
+           int recipeId =  newBundle.getInt("RecipeId");
+           //recipe newRecipe = recipeManager.getRecipe(RecipeId);
+           //setRecipeName(newRecipe.getName);
+           //
+        }
+
+
+
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result)
