@@ -58,7 +58,8 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
             public void onClick(View v)
             {
                 // start profile activity
-
+                Intent intent = new Intent(DrawerBaseActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -22,6 +22,9 @@
             android:name=".UI.ViewActivity"
             android:exported="false" />
         <activity
+            android:name=".UI.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.LoginActivity"
             android:exported="true">
             <intent-filter>

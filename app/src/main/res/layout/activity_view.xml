@@ -46,13 +46,14 @@
                     android:onClick="deleteRecipe_click"/>
 
                 <ImageButton
-                    android:id="@+id/profile_button_left"
+                    android:id="@+id/edit_recipe_left_button"
                     android:layout_width="70dp"
                     android:layout_height="56dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="2dp"
                     android:background="@drawable/accent"
-                    android:contentDescription="profile page"
-                    app:srcCompat="@drawable/profile_icon" />
+                    android:contentDescription="edit recipe"
+                    app:srcCompat="@drawable/edit_icon"
+                    android:onClick="editRecipe_click"/>
 
             </LinearLayout>
 
@@ -312,13 +313,14 @@
                     android:onClick="deleteRecipe_click"/>
 
                 <ImageButton
-                    android:id="@+id/profile_button_right"
+                    android:id="@+id/edit_recipe_right_button"
                     android:layout_width="70dp"
                     android:layout_height="56dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="2dp"
                     android:background="@drawable/accent"
                     android:contentDescription="profile page"
-                    app:srcCompat="@drawable/profile_icon" />
+                    app:srcCompat="@drawable/edit_icon"
+                    android:onClick="editRecipe_click"/>
 
             </LinearLayout>
 

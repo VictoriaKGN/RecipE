@@ -225,7 +225,7 @@ public class ViewActivity extends DrawerBaseActivity {
         flipper.showNext();
     }
 
-    public void edit_recipe_click(View view)
+    public void editRecipe_click(View view)
     {
         Intent intent = new Intent(ViewActivity.this, EditActivity.class);
         Bundle newBundle = new Bundle();
