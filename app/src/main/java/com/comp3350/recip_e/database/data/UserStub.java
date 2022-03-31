@@ -1,23 +1,30 @@
 package com.comp3350.recip_e.database.data;
 
-import com.comp3350.recip_e.database.IuserManager;
+import com.comp3350.recip_e.database.iUserManager;
 import com.comp3350.recip_e.objects.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class UserStub implements IuserManager {
+public class UserStub implements iUserManager {
     private List<User> users;
 
     public UserStub() {
         users = new ArrayList<User>();
+
+        userList.add(new User("dogge@hot.com","Bob","cool978988"));
+        userList.add(new User("gogle@mail.com","Alice","nice124355"));
+        userList.add(new User("nail@ufo.com","Eve","check564423"));
     }
 
     @Override
     public User insertUser(User user) {
-        users.add(user);
-        return null;
+        if(user!=null) {
+            users.add(user);
+        }
+        
+        return user;
     }
 
     @Override
@@ -50,16 +57,21 @@ public class UserStub implements IuserManager {
                 found = true;
             }
         }
-
-        if (!found) {
-            curUser = null;
-        }
+        
         return curUser;
     }
 
     @Override
     public User verifyUser(String usrEmail, String password) {
-        return null;
+        User result=null;
+
+        for (User Curr : userList) {
+            if (email.equals(Curr.getUserEmail())&&password.equals(Curr.getUserPassword())) {
+                result = Curr;
+            }
+        }
+
+        return result;
     }
 
     @Override

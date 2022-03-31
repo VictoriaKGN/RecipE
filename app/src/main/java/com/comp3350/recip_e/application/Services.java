@@ -1,22 +1,22 @@
 package com.comp3350.recip_e.application;
 
-import com.comp3350.recip_e.database.IuserManager;
+import com.comp3350.recip_e.database.iUserManager;
 import com.comp3350.recip_e.database.data.RecipeStub;
 import com.comp3350.recip_e.database.data.UserStub;
-import com.comp3350.recip_e.database.recipeManager;
+import com.comp3350.recip_e.database.iRecipeManager;
 
 public class Services {
-    private static recipeManager recipePersistence = null;
-    private static IuserManager userPersistence = null;
+    private static iRecipeManager recipePersistence = null;
+    private static iUserManager userPersistence = null;
 
-    public static synchronized recipeManager getRecipePersistence() {
+    public static synchronized iRecipeManager getRecipePersistence() {
         if (recipePersistence == null) {
             recipePersistence = new RecipeStub();
         }
         return recipePersistence;
     }
 
-    public static synchronized IuserManager getUserPersistence() {
+    public static synchronized iUserManager getUserPersistence() {
         if (userPersistence == null) {
             userPersistence = new UserStub();
         }
