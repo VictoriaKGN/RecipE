@@ -53,6 +53,12 @@ public class RecipeStub implements iRecipeManager {
         return recipe;
     }
 
+
+    @Override
+    public void updateRecipe(Recipe recipe) {
+        //TODO--------------
+    }
+
     @Override
     public boolean delRecipe(int recipeId) {
         Iterator<Recipe> iterator = recipes.listIterator();
@@ -68,10 +74,12 @@ public class RecipeStub implements iRecipeManager {
         return removed;
     }
 
+    /*****
     @Override
     public String getCoverPic(int recipeId) {
         return null;
     }
+    *****/
 
     private int getNextID() {
         return recipes.get(recipes.size() - 1).getID() + 1;
@@ -91,5 +99,15 @@ public class RecipeStub implements iRecipeManager {
         }
 
         return userRecipes;
+    }
+
+    @Override
+    public ArrayList<Recipe> searchRecipeByName(String user, String searchKey) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Recipe> searchRecipeByIngredient(String user, String searchKey) {
+        return null;
     }
 }

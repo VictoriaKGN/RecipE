@@ -13,9 +13,9 @@ public class UserStub implements iUserManager {
     public UserStub() {
         users = new ArrayList<User>();
 
-        userList.add(new User("dogge@hot.com","Bob","cool978988"));
-        userList.add(new User("gogle@mail.com","Alice","nice124355"));
-        userList.add(new User("nail@ufo.com","Eve","check564423"));
+        users.add(new User("dogge@hot.com","Bob","cool978988"));
+        users.add(new User("gogle@mail.com","Alice","nice124355"));
+        users.add(new User("nail@ufo.com","Eve","check564423"));
     }
 
     @Override
@@ -65,8 +65,8 @@ public class UserStub implements iUserManager {
     public User verifyUser(String usrEmail, String password) {
         User result=null;
 
-        for (User Curr : userList) {
-            if (email.equals(Curr.getUserEmail())&&password.equals(Curr.getUserPassword())) {
+        for (User Curr : users) {
+            if (usrEmail.equals(Curr.getEmail())&&password.equals(Curr.getPassword())) {
                 result = Curr;
             }
         }
