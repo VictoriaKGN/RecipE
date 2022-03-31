@@ -1,6 +1,6 @@
 package com.comp3350.recip_e.objects;
 
-import com.comp3350.recip_e.logic.InvalidRecipeException;
+import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 
 import java.util.ArrayList;
 

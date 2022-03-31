@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.comp3350.recip_e.logic.InvalidRecipeException;
+import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.objects.Recipe;
 import java.util.ArrayList;
 import java.util.Objects;
