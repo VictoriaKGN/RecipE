@@ -28,9 +28,9 @@ public class userPersisHsqlDB implements iUserManager {
     private void sqlSetHelper(String prepSt, User usr){
         try(Connection c= connection()) {
             final PreparedStatement st=c.prepareStatement(prepSt);
-            st.setString(1,usr.getUserEmail());
-            st.setString(2,usr.getUserName());
-            st.setString(3,usr.getUserPassword());
+            st.setString(1,usr.getEmail());
+            st.setString(2,usr.getUsername());
+            st.setString(3,usr.getPassword());
 
             st.executeUpdate();
             st.close();
@@ -51,9 +51,9 @@ public class userPersisHsqlDB implements iUserManager {
         String prepSt= "UPDATE Users SET userName = ?,userPassword = ? WHERE UserEmail = ?";
         try(Connection c= connection()) {
             final PreparedStatement st=c.prepareStatement(prepSt);
-            st.setString(1,user.getUserName());
-            st.setString(2,user.getUserPassword());
-            st.setString(3,user.getUserEmail());
+            st.setString(1,user.getUsername());
+            st.setString(2,user.getPassword());
+            st.setString(3,user.getEmail());
 
             st.executeUpdate();
             st.close();
@@ -91,7 +91,7 @@ public class userPersisHsqlDB implements iUserManager {
 
             if(rt.next()){
                 matchedUser=fromResultSet(rt);
-                if(!matchedUser.getUserPassword().equals(password)){
+                if(!matchedUser.getPassword().equals(password)){
                     matchedUser=null;
                 }
             }
@@ -104,4 +104,33 @@ public class userPersisHsqlDB implements iUserManager {
             throw new hsqlDBException(e);
         }
     }
+
+    private boolean existChecker(String query,String key){
+        boolean exist=false;
+        try(Connection c=connection()){
+            final PreparedStatement st=c.prepareStatement(query);
+            st.setString(1,key);
+
+            final ResultSet rt=st.executeQuery();
+            if(rt.next()){
+                exist=true;
+            }
+        }catch (final SQLException e){
+            throw new hsqlDBException(e);
+        }
+
+        return exist;
+    }
+
+    public boolean usernameExists(String username){
+       final String nameCheck="SELECT * FROM USER WHERE userName = ?";
+        return existChecker(nameCheck,username);
+    }
+
+    public boolean emailExists(String email){
+        final String emailCheck="SELECT * FROM USER WHERE UserEmail = ?";
+        return existChecker(emailCheck,email);
+    }
+
+
 }
