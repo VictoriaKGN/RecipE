@@ -12,4 +12,17 @@
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
 
+    <string name="login">Log in</string>
+    <string name="or_signup">or, sign up</string>
+    <string name="signup">Sign up</string>
+    <string name="or_login">or, log in</string>
+
+    <string name="profileHead">Welcome To Your Profile</string>
+    <string name="changeUsername">Change Username</string>
+    <string name="changePassword">Change Password</string>
+    <string name="logout">Log Out</string>
+    <string name="donePassword">DONE</string>
+    <string name="doneUsername">DONE</string>
+    <string name="goBackPassword">Go Back</string>
+    <string name="goBackUsername">Go Back</string>
 </resources>

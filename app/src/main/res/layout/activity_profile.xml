@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    tools:context=".UI.ProfileActivity">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:text="Welcome To Your Profile"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/oldUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:hint="Old Username"
+        android:textSize="20sp"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/newUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/oldUsername"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:hint="New Username"
+        android:textSize="20sp"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/confirmNewUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newUsername"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:hint="Confirm New Username"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/oldPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:hint="Old Password"
+        android:textSize="20sp"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/newPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/oldPassword"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:hint="New Password"
+        android:textSize="20sp"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/confirmNewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newPassword"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:hint="Confirm New Password"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        android:visibility="gone"/>
+
+
+    <Button
+        android:id="@+id/changeUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/confirmNewUsername"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/accent"
+        android:text="@string/changeUsername"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/changePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/changeUsername"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="@color/accent"
+        android:text="@string/changePassword"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/changePassword"
+        android:layout_centerHorizontal="true"
+
+        android:backgroundTint="@color/accent"
+        android:text="@string/logout"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@color/accent"
+        android:text="Back"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/donePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/confirmNewPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@color/accent"
+        android:text="@string/donePassword"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/doneUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/confirmNewUsername"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@color/accent"
+        android:text="@string/doneUsername"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/goBackPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/donePassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@color/accent"
+        android:text="@string/goBackPassword"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/goBackUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/doneUsername"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@color/accent"
+        android:text="@string/goBackUsername"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:visibility="gone"/>
+
+
+
+</RelativeLayout>
