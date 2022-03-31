@@ -109,16 +109,32 @@ public class userPersisHsqlDB implements iUserManager {
         }
     }
 
-    @Override
-    public boolean usernameExists(String username) {
-        //TODO-------------
-        return true;
+    private boolean existChecker(String query,String key){
+        boolean exist=false;
+        try(Connection c=connection()){
+            final PreparedStatement st=c.prepareStatement(query);
+            st.setString(1,key);
+
+            final ResultSet rt=st.executeQuery();
+            if(rt.next()){
+                exist=true;
+            }
+        }catch (final SQLException e){
+            throw new hsqlDBException(e);
+        }
+
+        return exist;
+    }
+
+    public boolean usernameExists(String username){
+       final String nameCheck="SELECT * FROM USER WHERE userName = ?";
+        return existChecker(nameCheck,username);
+    }
+
+    public boolean emailExists(String email){
+        final String emailCheck="SELECT * FROM USER WHERE UserEmail = ?";
+        return existChecker(emailCheck,email);
     }
 
 
-    @Override
-    public boolean emailExists(String email) {
-        //TODO-------------
-        return true;
-    }
 }
