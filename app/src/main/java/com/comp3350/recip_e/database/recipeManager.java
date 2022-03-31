@@ -3,6 +3,7 @@ package com.comp3350.recip_e.database;
 import com.comp3350.recip_e.objects.Recipe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface recipeManager {
     //get the whole recipe information.
@@ -18,4 +19,8 @@ public interface recipeManager {
     String getCoverPic(int recipeId);
 
     ArrayList<Recipe> getUserRecipes(String user);
+
+    ArrayList<Recipe> searchRecipeByName(String user, String searchKey);
+
+    ArrayList<Recipe> searchRecipeByIngredient(String user, String searchKey);
 }
