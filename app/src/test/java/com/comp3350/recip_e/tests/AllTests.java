@@ -1,4 +1,4 @@
-package com.comp3350.recip_e.tests.utils;
+package com.comp3350.recip_e.tests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
