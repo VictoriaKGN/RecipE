@@ -31,7 +31,6 @@ public class ProfileActivity extends AppCompatActivity {
     private boolean profileMode;
     private boolean changeUsernameMode;
     private boolean changePasswordMode;
-    private boolean logoutMode;
     private AlertDialog dialog;
     private UserManager userManagerProfile;
 
@@ -41,6 +40,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         dialog = null;
         profileMode = true;
+        changePasswordMode = false;
+        changeUsernameMode = false;
         userManagerProfile = new UserManager();
 
         showDialog();
@@ -83,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         else if (changePasswordMode)
         {
-            header.setText(getResources().getString(R.string.profileHead));
+            header.setText(getResources().getString(R.string.changePassword));
             oldPassword.setVisibility(View.VISIBLE);
             newPassword.setVisibility(View.VISIBLE);
             confirmNewPassword.setVisibility(View.VISIBLE);
@@ -94,13 +95,11 @@ public class ProfileActivity extends AppCompatActivity {
             donePassword.setVisibility(View.VISIBLE);
             goBackPassword.setVisibility(View.VISIBLE);
             goBackUsername.setVisibility(View.GONE);
-//activity.finish ******
         }
-
         else if (changeUsernameMode)
         {
 
-            header.setText(getResources().getString(R.string.profileHead));
+            header.setText(getResources().getString(R.string.changeUsername));
             oldUsername.setVisibility(View.VISIBLE);
             newUsername.setVisibility(View.VISIBLE);
             confirmNewUsername.setVisibility(View.VISIBLE);
@@ -114,13 +113,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         }
-
-        else if (logoutMode)
-        {
-            finish();
-
-        }
-
     }
 
     // when the user clicks on the submit button (log in / sign up)
@@ -144,87 +136,52 @@ public class ProfileActivity extends AppCompatActivity {
         EditText confirmPassword = dialog.findViewById(R.id.confirmNewPassword);
         String confirmPasswordText = confirmPassword.getText().toString();
 
-        /*if (profileMode)
-        {
-
-        }
-        else
-        {
-            // if the username and email dont already exist
-            if (oldPassword.getText().toString().equals(newPassword.getText().toString()))
-            {
-                Toast.makeText(ProfileActivity.this, "Please make sure your passwords match...", Toast.LENGTH_SHORT).show();
-            }
-
-        }*/
+        User loggedUser = ((App)getApplication()).getCurrentUser();
 
         if (changePasswordMode)
         {
             if(!isValid(oldPasswordText, "Please fill the old password field...") && !isValid(newPasswordText, "Please fill the new password field...") && !isValid(confirmPasswordText, "Please fill the confirm new password field...") )
             {
-                User user = userManagerProfile.getUser(oldPasswordText);
-
-                if (oldPasswordText.toString().equals(newPasswordText.toString()))
+                if (oldPasswordText.equals(loggedUser.getPassword())) // first need to check that the old password is indeed the correct password
                 {
-
-                    ((App)this.getApplication()).getCurrentUser().setPassword(newPasswordText);
-                     userManagerProfile.updateUser(((App)getApplication()).getCurrentUser());   //ERROR HERE
+                    if (newPasswordText.equals(confirmPasswordText)) // then check that new password matches the confirm one
+                    {
+                        loggedUser.setPassword(newPasswordText);
+                        userManagerProfile.updateUser(loggedUser);
+                    }
+                    else
+                    {
+                        Toast.makeText(ProfileActivity.this, "Please make sure your passwords match...", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-
-                    Toast.makeText(ProfileActivity.this, "Please make sure your passwords match...", Toast.LENGTH_SHORT).show();
-
-                }
-                    /*try
+                else
                 {
-                    *//*userManagerProfile.validateUser(user);
-                    userManagerProfile.addUser(user);
-                    ((App)this.getApplication()).setCurrentUser(user);
-                    Intent intent = new Intent(ProfileActivity.this, ViewActivity.class);
-                    startActivity(intent);*//*
+                    Toast.makeText(ProfileActivity.this, "Please make sure your old password is the one on record...", Toast.LENGTH_SHORT).show();
                 }
-                catch (IncorrectPasswordException e)
-                {
-                    Toast.makeText(ProfileActivity.this, "The given password is incorrect...", Toast.LENGTH_SHORT).show();
-                }*/
             }
         }
-
-        if (changeUsernameMode)
+        else if (changeUsernameMode)
         {
-            if(!isValid(oldUsernameText, "Please fill the old username field...") && !isValid(newUsernameText, "Please fill the new username field...") && !isValid(confirmNewUsernameText, "Please fill the confirm new username field...") )
+            if(!isValid(oldUsernameText, "Please fill the old username field...") && !isValid(newUsernameText, "Please fill the new username field...") && !isValid(confirmPasswordText, "Please fill the confirm new username field...") )
             {
-                User user = userManagerProfile.getUser(oldPasswordText);
-
-                if (oldUsernameText.toString().equals(newUsernameText.toString()))
+                if (oldUsernameText.equals(loggedUser.getUsername())) // first need to check that the old username is indeed the correct password
                 {
-
-                    ((App)this.getApplication()).getCurrentUser().setUsername(newUsernameText);
-                    userManagerProfile.updateUser(((App)getApplication()).getCurrentUser());
+                    if (newUsernameText.equals(confirmNewUsernameText)) // then check that new username matches the confirm one
+                    {
+                        loggedUser.setUsername(newUsernameText);
+                        userManagerProfile.updateUser(loggedUser);
+                    }
+                    else
+                    {
+                        Toast.makeText(ProfileActivity.this, "Please make sure your usernames match...", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-
-                    Toast.makeText(ProfileActivity.this, "Please make sure your passwords match...", Toast.LENGTH_SHORT).show();
-
-                }
-
-                /*try
+                else
                 {
-                    userManagerProfile.validateUser(user);
-                    userManagerProfile.addUser(user);
-                    ((App)this.getApplication()).setCurrentUser(user);
-                    Intent intent = new Intent(ProfileActivity.this, ViewActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(ProfileActivity.this, "Please make sure your old username is the one on record...", Toast.LENGTH_SHORT).show();
                 }
-
-                catch (IncorrectUsernameException e)
-                {
-                    Toast.makeText(ProfileActivity.this, "The given password is incorrect...", Toast.LENGTH_SHORT).show();
-                }*/
             }
         }
-
-
     }
 
     // ********************************** dialog method ***************************************
@@ -253,29 +210,34 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
-
         Button changePassBtn = dialog.findViewById(R.id.changePassword);
         changePassBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-               // changeMode_click();
                 profileMode = false;
                 changePasswordMode = true;
                 changeMode_click();
+            }
+        });
+
+        Button donePassBtn = dialog.findViewById(R.id.donePassword);
+        donePassBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                submit_click();
+            }
+        });
+
+        Button passBackBtn = dialog.findViewById(R.id.goBackPassword);
+        passBackBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view)
+            {
                 changePasswordMode = false;
-                Button goBack = dialog.findViewById(R.id.goBackPassword);
-                goBack.setOnClickListener(new View.OnClickListener(){
-
-                    @Override
-                    public void onClick(View view) {
-                        Intent intentGobackPass = new Intent(ProfileActivity.this,
-                                ProfileActivity.class);
-                        startActivity(intentGobackPass);
-                    }
-                });
-
-
+                profileMode = true;
+                changeMode_click();
             }
         });
 
@@ -284,23 +246,30 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-
                 profileMode = false;
                 changeUsernameMode = true;
                 changeMode_click();
+            }
+        });
+
+        Button doneNameBtn = dialog.findViewById(R.id.doneUsername);
+        doneNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                submit_click();
+            }
+        });
+
+        Button nameBack = dialog.findViewById(R.id.goBackUsername);
+        nameBack.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view)
+            {
                 changeUsernameMode = false;
-                Button goBack = dialog.findViewById(R.id.goBackUsername);
-                goBack.setOnClickListener(new View.OnClickListener(){
-
-                    @Override
-                    public void onClick(View view) {
-                        Intent intentGobackUser = new Intent(ProfileActivity.this,
-                                ProfileActivity.class);
-                        startActivity(intentGobackUser);
-                    }
-                });
-
-               // submit_click();
+                profileMode = true;
+                changeMode_click();
             }
         });
 
@@ -309,34 +278,21 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-
-                profileMode = false;
-                logoutMode = true;
-                changeMode_click();
-                logoutMode = false;
-                Button goBack = dialog.findViewById(R.id.logout);
-                goBack.setOnClickListener(new View.OnClickListener(){
-
-                    @Override
-                    public void onClick(View view) {
-                        Intent intentLogout = new Intent(ProfileActivity.this,
-                                LoginActivity.class);
-                        startActivity(intentLogout);
-                    }
-                });
-
-                // submit_click();
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
-
-
-//function for username change, password change
-
-
-
+        Button backBtn = dialog.findViewById(R.id.back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
+            }
+        });
     }
-
 
     private boolean isValid(String input, String message)
     {
@@ -350,19 +306,4 @@ public class ProfileActivity extends AppCompatActivity {
 
         return retVal;
     }
-    
 }
-
-// TODO:
-//  1. Make sure all fields are populated in old,new and confirm pass&username----DONE
-//  2. ENsure all inputs match username&pass old and new
-//           oldUsername.equals( (App) getApplication().getCurrentUser()getUsername );
-//              pass in a toast
-//  3. next xhexk that the new and confirm new are both the same
-//    IF CORRECT call Update from userManager
-//       (App) getApplication().getCurrentUser()setUsername ;
-//      userManagerProfileProfile.updateUser(getApplication().getCurrentUser;
-//  4. Make sure the go back button in the change pass and change username activities
-//          takes you back to the profile page ====Done
-//  5. Make sure the logout page takes you back to the login page/startup of the app -----DONE
-//  6. Set appropriate activity finishes in all the three modes= Profile, change username, change password ===DONE
