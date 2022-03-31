@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,7 +21,6 @@ import android.widget.ViewFlipper;
 
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.databinding.ActivityViewBinding;
-import com.comp3350.recip_e.logic.InvalidRecipeException;
 import com.comp3350.recip_e.objects.Recipe;
 
 import java.io.File;
@@ -161,7 +159,7 @@ public class ViewActivity extends DrawerBaseActivity {
     public void setIngredients(ArrayList<String> ingredientList)
     {
         ListView list = findViewById(R.id.ingredients);
-        ArrayAdapter<String> ingredientAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientList);
+        ArrayAdapter<String> ingredientAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_row, ingredientList);
 
         list.setAdapter(ingredientAdapter);
         ingredientAdapter.notifyDataSetChanged();
@@ -171,7 +169,7 @@ public class ViewActivity extends DrawerBaseActivity {
     public void setInstructions(ArrayList<String> instructionList)
     {
         ListView list = findViewById(R.id.instructions);
-        ArrayAdapter<String> instructionAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionList);
+        ArrayAdapter<String> instructionAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_row, instructionList);
 
         list.setAdapter(instructionAdapter);
         instructionAdapter.notifyDataSetChanged();

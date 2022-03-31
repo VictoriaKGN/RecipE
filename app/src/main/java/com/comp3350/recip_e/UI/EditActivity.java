@@ -67,8 +67,8 @@ public class EditActivity extends DrawerBaseActivity {
 
         ingredientArrayList = new ArrayList<String>();
         instructionArrayList = new ArrayList<String>();
-        ingredientArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientArrayList);
-        instructionArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionArrayList);
+        ingredientArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_row, ingredientArrayList);
+        instructionArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_row, instructionArrayList);
 
         ingredientListView = findViewById(R.id.ingredients_container);
         instructionListView = findViewById(R.id.instructions_container);
