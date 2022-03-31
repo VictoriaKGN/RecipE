@@ -7,13 +7,19 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -36,6 +42,15 @@ public class ViewActivity extends DrawerBaseActivity {
         super.onCreate(savedInstanceState);
         activityViewBinding = ActivityViewBinding.inflate(getLayoutInflater());
         setContentView(activityViewBinding.getRoot());
+
+        ImageView recipePic = findViewById(R.id.recipe_pic);
+        recipePic.setClickable(true);
+        recipePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showImagePopup();
+            }
+        });
 
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -242,5 +257,26 @@ public class ViewActivity extends DrawerBaseActivity {
         });
 
         builder.show();
+    }
+
+    private void showImagePopup()
+    {
+        if (currRecipe.getPicture() != null)
+        {
+            Dialog builder = new Dialog(this);
+            builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            builder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    //nothing;
+                }
+            });
+
+            ImageView imageView = new ImageView(this);
+            imageView.setImageURI(Uri.fromFile(new File(currRecipe.getPicture())));
+            builder.addContentView(imageView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            builder.show();
+        }
     }
 }
