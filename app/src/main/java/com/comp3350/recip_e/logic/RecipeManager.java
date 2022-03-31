@@ -59,22 +59,22 @@ public class RecipeManager {
     /**
      * Search for recipes in the database by name
      *
+     * @param user Email of the current user
      * @param searchKey  String used to perform a partial match against a recipe's name
      * @return  A list of all recipes that contain searchKey in the name
      */
-    public List<Recipe> searchRecipeByName(String searchKey) {
-        // TODO Call database search by name function
-        return null;
+    public ArrayList<Recipe> searchRecipeByName(String user, String searchKey) {
+        return database.searchRecipeByName(user, searchKey);
     }
 
     /**
      * Search for recipes in the database by ingredient
      *
+     * @param user Email of the current user
      * @param searchKey    String used to perform a partial match against a recipe's ingredients
      * @return  A list of all recipes that have an ingredient that contains searchKey
      */
-    public List<Recipe> searchRecipeByIngredient(String searchKey) {
-        // TODO Call database search by ingredient function
-        return null;
+    public ArrayList<Recipe> searchRecipeByIngredient(String user, String searchKey) {
+        return database.searchRecipeByIngredient(user, searchKey);
     }
 }
