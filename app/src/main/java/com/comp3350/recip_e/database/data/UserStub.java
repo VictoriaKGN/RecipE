@@ -12,12 +12,19 @@ public class UserStub implements iUserManager {
 
     public UserStub() {
         users = new ArrayList<User>();
+
+        userList.add(new User("dogge@hot.com","Bob","cool978988"));
+        userList.add(new User("gogle@mail.com","Alice","nice124355"));
+        userList.add(new User("nail@ufo.com","Eve","check564423"));
     }
 
     @Override
     public User insertUser(User user) {
-        users.add(user);
-        return null;
+        if(user!=null) {
+            users.add(user);
+        }
+        
+        return user;
     }
 
     @Override
@@ -38,7 +45,6 @@ public class UserStub implements iUserManager {
     }
 
     @Override
-    // TODO Uses username to align with UI needs, change later if needed
     public User selectUser(String email) {
         ListIterator<User> iterator = users.listIterator();
         User curUser = null;
@@ -47,20 +53,25 @@ public class UserStub implements iUserManager {
         while (iterator.hasNext() && !found) {
             curUser = iterator.next();
 
-            if (curUser.getUsername().equals(email)) {
+            if (curUser.getEmail().equals(email)) {
                 found = true;
             }
         }
-
-        if (!found) {
-            curUser = null;
-        }
+        
         return curUser;
     }
 
     @Override
     public User verifyUser(String usrEmail, String password) {
-        return null;
+        User result=null;
+
+        for (User Curr : userList) {
+            if (email.equals(Curr.getUserEmail())&&password.equals(Curr.getUserPassword())) {
+                result = Curr;
+            }
+        }
+
+        return result;
     }
 
     @Override

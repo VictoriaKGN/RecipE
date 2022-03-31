@@ -7,9 +7,10 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.databinding.ActivityEditBinding;
+import com.comp3350.recip_e.objects.Recipe;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -18,8 +19,8 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,8 +29,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -43,12 +42,14 @@ public class EditActivity extends DrawerBaseActivity {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private Uri pictureUri = null;
     private ActivityEditBinding activityEditBinding;
+    private boolean isEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityEditBinding = ActivityEditBinding.inflate(getLayoutInflater());
         setContentView(activityEditBinding.getRoot());
+        isEdit = false;
 
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -62,6 +63,65 @@ public class EditActivity extends DrawerBaseActivity {
                 }
             }
         });
+
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null)
+        {
+            isEdit = bundle.getBoolean("isEdit");
+
+            if (isEdit)
+            {
+                setAllFields(recipeManager.getRecipe(bundle.getInt("RecipeId")));
+            }
+
+            setBtnsTint();
+        }
+    }
+
+    // set all fields
+    private void setAllFields(Recipe toSet)
+    {
+        setRecipeName(toSet.getName());
+        setServings(String.valueOf(toSet.getServings()));
+        setPrepTime(String.valueOf(toSet.getPrepTime()));
+        setCookingTime(String.valueOf(toSet.getCookTime()));
+        //setIngredients(currRecipe.getIngredients());
+        //setInstructions(currRecipe.getInstructions());
+
+        if (toSet.hasPicture())
+        {
+            ImageButton imageBtn = findViewById(R.id.recipe_pic);
+            imageBtn.setImageURI(Uri.fromFile(new File(toSet.getPicture())));
+        }
+    }
+
+    private void setBtnsTint()
+    {
+        ImageButton leftHighlight;
+        ImageButton rightHightlight;
+        ImageButton leftBtn;
+        ImageButton rightBtn;
+
+        if (isEdit)
+        {
+            leftHighlight = findViewById(R.id.edit_recipe_left_button);
+            rightHightlight = findViewById(R.id.edit_recipe_right_button);
+            leftBtn = findViewById(R.id.add_recipe_button);
+            rightBtn = findViewById(R.id.add_recipe_right_button);
+        }
+        else
+        {
+            leftBtn = findViewById(R.id.edit_recipe_left_button);
+            rightBtn = findViewById(R.id.edit_recipe_right_button);
+            leftHighlight = findViewById(R.id.add_recipe_button);
+            rightHightlight = findViewById(R.id.add_recipe_right_button);
+        }
+
+        leftHighlight.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.background, null)));
+        rightHightlight.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.background, null)));
+        leftBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.accent, null)));
+        rightBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.accent, null)));
     }
 
     @Override
@@ -214,7 +274,11 @@ public class EditActivity extends DrawerBaseActivity {
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this);
         builder.setTitle("Discard Changes?");
-        builder.setMessage("Are you sure you want to discard this new recipe? Your progress will be lost.");
+
+        if (isEdit)
+            builder.setMessage("Are you sure you want to discard the new changes? Your progress will be lost.");
+        else
+            builder.setMessage("Are you sure you want to discard this new recipe? Your progress will be lost.");
 
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() { // user likes to proceed with the deletion
             @Override
@@ -292,13 +356,6 @@ public class EditActivity extends DrawerBaseActivity {
     {
         EditText text = findViewById(R.id.recipe_name);
         text.setText(newName);
-    }
-
-    // set the picture of the recipe if there is one
-    public void setPicture(Drawable picture)
-    {
-        ImageView pic = findViewById(R.id.recipe_pic);
-        pic.setBackground(picture);
     }
 
     // set the ingredients of the recipe

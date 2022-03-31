@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.comp3350.recip_e.R;
+import com.comp3350.recip_e.application.App;
 import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 import com.google.android.material.navigation.NavigationView;
@@ -58,7 +59,8 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
             public void onClick(View v)
             {
                 // start profile activity
-
+                Intent intent = new Intent(DrawerBaseActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -81,7 +83,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     private void setRecipeMenu()
     {
         Menu menu = navigationView.getMenu();
-        ArrayList<Recipe> userRecs = recipeManager.getUserRecipes("user@email.com"); //TODO (((App)getApplication()).getCurrentUser().getEmail());
+        ArrayList<Recipe> userRecs = recipeManager.getUserRecipes(((App)getApplication()).getCurrentUser().getEmail());
 
         for (Recipe rec : userRecs)
         {

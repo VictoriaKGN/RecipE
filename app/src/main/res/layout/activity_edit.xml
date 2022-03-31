@@ -8,7 +8,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fillViewport="true"
-    tools:context=".UI.EditActivity">
+    tools:context=".UI.EditActivity"
+    android:layout_gravity="top">
 
     <!-- Tool to assist flipping between the left and right page -->
     <ViewFlipper
@@ -30,16 +31,16 @@
                 android:layout_marginTop="24dp">
 
                 <!-- The add button that is placed next to the +(add) button -->
+
+                <!-- The delete button that is placed next to the +(add) button -->
                 <ImageButton
                     android:id="@+id/add_recipe_button"
                     android:layout_width="70dp"
                     android:layout_height="56dp"
                     android:background="@drawable/accent"
-                    android:backgroundTint="@color/background"
                     android:contentDescription="add new recipe"
                     app:srcCompat="@drawable/add_icon" />
 
-                <!-- The delete button that is placed next to the +(add) button -->
                 <ImageButton
                     android:id="@+id/delete_recipe_button"
                     android:layout_width="70dp"
@@ -51,13 +52,13 @@
                     android:onClick="discardChanges_click"/>
 
                 <ImageButton
-                    android:id="@+id/profile_button_left"
+                    android:id="@+id/edit_recipe_left_button"
                     android:layout_width="70dp"
                     android:layout_height="56dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="2dp"
                     android:background="@drawable/accent"
                     android:contentDescription="profile page"
-                    app:srcCompat="@drawable/profile_icon" />
+                    app:srcCompat="@drawable/edit_icon" />
 
             </LinearLayout>
 
@@ -361,13 +362,13 @@
                     android:onClick="discardChanges_click"/>
 
                 <ImageButton
-                    android:id="@+id/profile_button_right"
+                    android:id="@+id/edit_recipe_right_button"
                     android:layout_width="70dp"
                     android:layout_height="56dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="2dp"
                     android:background="@drawable/accent"
                     android:contentDescription="profile page"
-                    app:srcCompat="@drawable/profile_icon" />
+                    app:srcCompat="@drawable/edit_icon" />
 
             </LinearLayout>
 

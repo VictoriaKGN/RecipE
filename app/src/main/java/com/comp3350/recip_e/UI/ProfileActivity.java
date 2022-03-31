@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.application.App;
 import com.comp3350.recip_e.logic.UserManager;
-import com.comp3350.recip_e.logic.exceptions.EmailDoesNotExistException;
-import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
 import com.comp3350.recip_e.objects.User;
 
 import android.content.Intent;
@@ -17,12 +15,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -37,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_drawer_base);
 
         dialog = null;
         profileMode = true;

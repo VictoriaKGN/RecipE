@@ -12,11 +12,10 @@ Paying off technical debt
 
 2. Pushed part of view feature to Iteration 2
 
-    - In the rush to meet the Iteration 1 deadline, one of our [user stories](https://code.cs.umanitoba.ca/winter-2022-a02/group-7/digital-cookbook/-/issues/15) was overlooked and had to be pushed to Iteration 2. We are paying off this technical debt now by having to implement it along side the rest of our Iteration 2 user stories and features.
+    - In the rush to meet the Iteration 1 deadline, one of our [user stories](https://code.cs.umanitoba.ca/winter-2022-a02/group-7/digital-cookbook/-/issues/15) was overlooked and had to be pushed to Iteration 2. We are [paying off this technical debt](https://code.cs.umanitoba.ca/winter-2022-a02/group-7/digital-cookbook/-/commit/699593e0b0bf67b4a3abadc3c5f272722b559ad4#d871c5aac6592d4f09f2ce77e12068b4e9fa4323_246_262) now by having to implement it along side the rest of our Iteration 2 user stories and features.
 
     - This was deliberate and prudent technical debt. It was deliberate because we chose to push this user story to the next iteration. It was prudent because we didn't want it to hold up our deliverable.
 
-    - **NEEDS A LINK TO COMPLETED COMMIT**
 
 
 SOLID
