@@ -26,7 +26,6 @@ import android.widget.ViewFlipper;
 
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.databinding.ActivityViewBinding;
-import com.comp3350.recip_e.logic.InvalidRecipeException;
 import com.comp3350.recip_e.objects.Recipe;
 
 import java.io.File;
@@ -66,7 +65,7 @@ public class ViewActivity extends DrawerBaseActivity {
                             Bundle bundle = intent.getExtras();
                             Recipe newRecipe = null;
 
-                            if(bundle.getString("RECIPE_PICTURE") != null) {
+                            /*if(bundle.getString("RECIPE_PICTURE") != null) {
                                 try {
                                     //newRecipe = new Recipe(bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
                                             //bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
@@ -93,7 +92,7 @@ public class ViewActivity extends DrawerBaseActivity {
                                 recipeManager.addRecipe(newRecipe);
                                 currRecipe = newRecipe;
                                 setAllFields();
-                            }
+                            }*/
                         }
                     }
                 }
@@ -117,6 +116,7 @@ public class ViewActivity extends DrawerBaseActivity {
     }
 
     // ********************************** set methods ***************************************
+
     // set all fields
     public void setAllFields()
     {
@@ -212,6 +212,9 @@ public class ViewActivity extends DrawerBaseActivity {
     public void addRecipe_click(View view)
     {
         Intent intent = new Intent(ViewActivity.this, EditActivity.class);
+        Bundle newBundle = new Bundle();
+        newBundle.putBoolean("isEdit", false);
+        intent.putExtras(newBundle);
         activityLauncher.launch(intent);
     }
 
@@ -220,6 +223,16 @@ public class ViewActivity extends DrawerBaseActivity {
     {
         ViewFlipper flipper = findViewById(R.id.view_flipper);
         flipper.showNext();
+    }
+
+    public void edit_recipe_click(View view)
+    {
+        Intent intent = new Intent(ViewActivity.this, EditActivity.class);
+        Bundle newBundle = new Bundle();
+        newBundle.putBoolean("isEdit", true);
+        newBundle.putInt("RecipeId", currRecipe.getID());
+        intent.putExtras(newBundle);
+        activityLauncher.launch(intent);
     }
 
     // changes the view to the left side
