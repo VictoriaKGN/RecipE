@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.logic.RecipeManager;
@@ -59,6 +61,23 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
             {
                 // start profile activity
 
+            }
+        });
+
+        SearchView searchBar = navigationView.getHeaderView(0).findViewById(R.id.search_bar);
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String s)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s)
+            {
+                Toast.makeText(DrawerBaseActivity.this, "text changed", Toast.LENGTH_SHORT).show();
+                return false;
             }
         });
     }

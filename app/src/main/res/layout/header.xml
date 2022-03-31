@@ -21,8 +21,11 @@
     <SearchView
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:queryHint="Search by name or ingredients"
+        android:iconifiedByDefault="false"
+        android:paddingLeft="-20dp"
+        android:paddingRight="-20dp">
     </SearchView>
 
 </LinearLayout>
