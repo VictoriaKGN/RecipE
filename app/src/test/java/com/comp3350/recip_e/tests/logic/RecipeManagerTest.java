@@ -44,8 +44,8 @@ public class RecipeManagerTest {
         Recipe recipe = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 4, 30, 30, "default/path", "user@email.com");
         int lastRecipeID = 3;
 
-        recipeManager.addRecipe(recipe);
-        assertEquals(recipeManager.getRecipe(lastRecipeID).getID(), lastRecipeID);
+        Recipe checkRecipe = recipeManager.addRecipe(recipe);
+        assertEquals(checkRecipe.getID(), lastRecipeID);
         recipeManager.deleteRecipe(lastRecipeID);
         assertNull(recipeManager.getRecipe(lastRecipeID));
 
