@@ -38,7 +38,6 @@ public class UserStub implements IuserManager {
     }
 
     @Override
-    // TODO Uses username to align with UI needs, change later if needed
     public User selectUser(String email) {
         ListIterator<User> iterator = users.listIterator();
         User curUser = null;
@@ -47,7 +46,7 @@ public class UserStub implements IuserManager {
         while (iterator.hasNext() && !found) {
             curUser = iterator.next();
 
-            if (curUser.getUsername().equals(email)) {
+            if (curUser.getEmail().equals(email)) {
                 found = true;
             }
         }
