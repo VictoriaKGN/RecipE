@@ -56,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
         Button changePassword = dialog.findViewById(R.id.changePassword);
         Button changeUsername = dialog.findViewById(R.id.changeUsername);
         Button logOut = dialog.findViewById(R.id.logout);
+        Button back = dialog.findViewById(R.id.back);
         Button doneUsername = dialog.findViewById(R.id.doneUsername);
         Button donePassword = dialog.findViewById(R.id.donePassword);
         Button goBackPassword = dialog.findViewById(R.id.goBackPassword);
@@ -72,46 +73,68 @@ public class ProfileActivity extends AppCompatActivity {
         if (profileMode)
         {
             header.setText(getResources().getString(R.string.profileHead));
-            changeUsername.setText(getResources().getString(R.string.changeUsername));
-            changePassword.setText(getResources().getString(R.string.changePassword));
-            logOut.setText(getResources().getString(R.string.logout));
+            changeUsername.setVisibility(View.VISIBLE);
+            changePassword.setVisibility(View.VISIBLE);
+            logOut.setVisibility(View.VISIBLE);
+            back.setVisibility(View.VISIBLE);
+
             oldPassword.setVisibility(View.GONE);
             newPassword.setVisibility(View.GONE);
             confirmNewPassword.setVisibility(View.GONE);
+            goBackPassword.setVisibility(View.GONE);
+            donePassword.setVisibility(View.GONE);
+
             oldUsername.setVisibility(View.GONE);
             newUsername.setVisibility(View.GONE);
             confirmNewUsername.setVisibility(View.GONE);
+            goBackUsername.setVisibility(View.GONE);
+            doneUsername.setVisibility(View.GONE);
         }
         else if (changePasswordMode)
         {
             header.setText(getResources().getString(R.string.changePassword));
             oldPassword.setVisibility(View.VISIBLE);
+            oldPassword.setText("");
             newPassword.setVisibility(View.VISIBLE);
+            newPassword.setText("");
             confirmNewPassword.setVisibility(View.VISIBLE);
+            confirmNewPassword.setText("");
+            goBackPassword.setVisibility(View.VISIBLE);
+            donePassword.setVisibility(View.VISIBLE);
+
             changePassword.setVisibility(View.GONE);
             changeUsername.setVisibility(View.GONE);
             logOut.setVisibility(View.GONE);
-            doneUsername.setVisibility(View.GONE);
-            donePassword.setVisibility(View.VISIBLE);
-            goBackPassword.setVisibility(View.VISIBLE);
+            back.setVisibility(View.GONE);
+
+            oldUsername.setVisibility(View.GONE);
+            newUsername.setVisibility(View.GONE);
+            confirmNewUsername.setVisibility(View.GONE);
             goBackUsername.setVisibility(View.GONE);
+            doneUsername.setVisibility(View.GONE);
         }
         else if (changeUsernameMode)
         {
-
             header.setText(getResources().getString(R.string.changeUsername));
             oldUsername.setVisibility(View.VISIBLE);
+            oldUsername.setText("");
             newUsername.setVisibility(View.VISIBLE);
+            newUsername.setText("");
             confirmNewUsername.setVisibility(View.VISIBLE);
+            confirmNewUsername.setText("");
+            goBackUsername.setVisibility(View.VISIBLE);
+            doneUsername.setVisibility(View.VISIBLE);
+
             changePassword.setVisibility(View.GONE);
             changeUsername.setVisibility(View.GONE);
             logOut.setVisibility(View.GONE);
-            doneUsername.setVisibility(View.VISIBLE);
-            donePassword.setVisibility(View.GONE);
+            back.setVisibility(View.GONE);
+
+            oldPassword.setVisibility(View.GONE);
+            newPassword.setVisibility(View.GONE);
+            confirmNewPassword.setVisibility(View.GONE);
             goBackPassword.setVisibility(View.GONE);
-            goBackUsername.setVisibility(View.VISIBLE);
-
-
+            donePassword.setVisibility(View.GONE);
         }
     }
 
@@ -140,7 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (changePasswordMode)
         {
-            if(!isValid(oldPasswordText, "Please fill the old password field...") && !isValid(newPasswordText, "Please fill the new password field...") && !isValid(confirmPasswordText, "Please fill the confirm new password field...") )
+            if(isValid(oldPasswordText, "Please fill the old password field...") && isValid(newPasswordText, "Please fill the new password field...") && isValid(confirmPasswordText, "Please fill the confirm new password field...") )
             {
                 if (oldPasswordText.equals(loggedUser.getPassword())) // first need to check that the old password is indeed the correct password
                 {
@@ -148,6 +171,9 @@ public class ProfileActivity extends AppCompatActivity {
                     {
                         loggedUser.setPassword(newPasswordText);
                         userManagerProfile.updateUser(loggedUser);
+                        profileMode = true;
+                        changePasswordMode = false;
+                        changeMode_click();
                     }
                     else
                     {
@@ -162,7 +188,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         else if (changeUsernameMode)
         {
-            if(!isValid(oldUsernameText, "Please fill the old username field...") && !isValid(newUsernameText, "Please fill the new username field...") && !isValid(confirmPasswordText, "Please fill the confirm new username field...") )
+            if(isValid(oldUsernameText, "Please fill the old username field...") && isValid(newUsernameText, "Please fill the new username field...") && isValid(confirmNewUsernameText, "Please fill the confirm new username field...") )
             {
                 if (oldUsernameText.equals(loggedUser.getUsername())) // first need to check that the old username is indeed the correct password
                 {
@@ -170,6 +196,9 @@ public class ProfileActivity extends AppCompatActivity {
                     {
                         loggedUser.setUsername(newUsernameText);
                         userManagerProfile.updateUser(loggedUser);
+                        profileMode = true;
+                        changeUsernameMode = false;
+                        changeMode_click();
                     }
                     else
                     {
@@ -297,12 +326,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     private boolean isValid(String input, String message)
     {
-        boolean retVal = false;
+        boolean retVal = true;
 
         if(input.isEmpty() || input.length() == 0 || input.equals("") || input == null)
         {
             Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_SHORT).show();
-            retVal = true;
+            retVal = false;
         }
 
         return retVal;

@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (signInMode)
         {
-            if(!isValid(emailText, "Please fill the email field...") && !isValid(passwordText, "Please fill the password field..."))
+            if(isValid(emailText, "Please fill the email field...") && isValid(passwordText, "Please fill the password field..."))
             {
                 User user = new User(emailText, usernameText, passwordText);
 
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 catch (EmailDoesNotExistException e)
                 {
-                    Toast.makeText(LoginActivity.this, "The given Email does not exist...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "The given email does not exist...", Toast.LENGTH_SHORT).show();
                 }
                 catch (IncorrectPasswordException e)
                 {
@@ -112,8 +112,8 @@ public class LoginActivity extends AppCompatActivity {
         }
         else
         {
-            if (!isValid(emailText, "Please fill the email field...") && !isValid(usernameText, "Please fill the username field")
-                    && !isValid(passwordText, "Please fill the password field") && !isValid(confText, "Please fill the confirmation password field"))
+            if (isValid(emailText, "Please fill the email field...") && isValid(usernameText, "Please fill the username field")
+                    && isValid(passwordText, "Please fill the password field") && isValid(confText, "Please fill the confirmation password field"))
             {
                 if (!userManager.usernameExists(usernameText) && !userManager.emailExists(emailText))
                 {
@@ -187,12 +187,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isValid(String input, String message)
     {
-        boolean retVal = false;
+        boolean retVal = true;
 
         if(input.isEmpty() || input.length() == 0 || input.equals("") || input == null)
         {
             Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-            retVal = true;
+            retVal = false;
         }
 
         return retVal;
