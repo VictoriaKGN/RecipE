@@ -24,10 +24,8 @@ public class recipePersisHsqlDB {
     }
 
     private Recipe fromResultSet(ResultSet rs) throws SQLException{
-        final int id=rs.getInt("RecipeId");
+        final int id=rs.getInt("recipeID");
         final String name=rs.getString("name");
-        //final String ingredients=rs.getString("ingredients");
-        //final String instructions=rs.getString("instructions");
         final String picture=rs.getString("picture");
         final int serving=rs.getInt("servings");
         final int prepTime=rs.getInt("prepTime");
@@ -38,6 +36,18 @@ public class recipePersisHsqlDB {
         objResult.setID(id);
 
         return objResult;
+    }
+
+    private String resultIngredient(ResultSet rs) throws SQLException
+    {
+        final String ingredient = rs.getString("ingredient");
+        return ingredient;
+    }
+
+    private String resultInstruction(ResultSet rs) throws SQLException
+    {
+        final String instruction = rs.getString("instruction");
+        return instruction;
     }
 
     private void sqlSetHelper(String prepSt, Recipe recipe){
@@ -72,7 +82,6 @@ public class recipePersisHsqlDB {
             while(!nextIngredient.equals(""))
             {
                 final PreparedStatement st = c.prepareStatement(ingrQuery);
-                //st.setString(1, "Ingredients");
                 st.setString(1, nextIngredient);
                 st.setInt(2, recipe.getID());
                 st.executeUpdate();
@@ -86,7 +95,6 @@ public class recipePersisHsqlDB {
             while(!nextInstruction.equals(""))
             {
                 final PreparedStatement st = c.prepareStatement(instQuery);
-                //st.setString(1, "Instructions");
                 st.setString(1, nextInstruction);
                 st.setInt(2, recipe.getID());
                 st.setInt(3, counter);
@@ -105,24 +113,30 @@ public class recipePersisHsqlDB {
     {
         try(final Connection c = connection())
         {
-            final Statement st = c.createStatement();
-
             while (rs.next())
             {
                 final Recipe recipe = fromResultSet(rs);
-                final ResultSet rt = st.executeQuery("SELECT ingredient FROM Ingredients where recipeId = " + recipe.getID());
-                final ResultSet ru = st.executeQuery("SELECT instruction FROM Instructions where recipeId = " + recipe.getID() + " order by instructionNum");
+
+                final PreparedStatement st = c.prepareStatement("SELECT ingredient FROM Ingredients where recipeID = ?");
+                st.setInt(1, recipe.getID());
+                final ResultSet rt = st.executeQuery();
+
+                final PreparedStatement su = c.prepareStatement("SELECT instruction FROM Instructions where recipeID = ? order by instructionNum");
+                su.setInt(1,recipe.getID());
+                final ResultSet ru = su.executeQuery();
+                //final ResultSet rt = st.executeQuery("SELECT ingredient FROM Ingredients where recipeID = " + recipe.getID());
+                //final ResultSet ru = st.executeQuery("SELECT instruction FROM Instructions where recipeID = " + recipe.getID() + " order by instructionNum");
                 final ArrayList<String> ingredients = new ArrayList<>();
                 final ArrayList<String> instructions = new ArrayList<>();
 
                 while (rt.next()) {
-                    String ingredient = "" + fromResultSet(rt);
+                    String ingredient = resultIngredient(rt);
                     ingredients.add(ingredient);
                 }
                 recipe.updateIngredients(ingredients);
 
                 while (ru.next()) {
-                    String instruction = "" + fromResultSet(rt);
+                    String instruction = resultInstruction(ru);
                     instructions.add(instruction);
                 }
                 recipe.updateInstructions(instructions);
@@ -137,8 +151,39 @@ public class recipePersisHsqlDB {
         return recipes;
     }
 
+    private int getNextID()
+    {
+        try(final Connection c = connection())
+        {
+            final Statement st = c.createStatement();
+            final ResultSet rs = st.executeQuery("SELECT * FROM Recipes order by recipeID");
+            int counter = 0;
+            boolean found = false;
+
+            while(rs.next() && !found)
+            {
+                final Recipe recipe = fromResultSet(rs);
+
+                if(!(recipe.getID() == counter))
+                {
+                    found = true;
+                }
+                else
+                {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+        catch(SQLException e)
+        {
+            throw new hsqlDBException(e);
+        }
+    }
+
     public void insertRecipe(Recipe recipe){
         String insertQuery="INSERT INTO Recipes VALUE(?,?,?,?,?,?,?)";
+        recipe.setID(getNextID());
         sqlSetHelper(insertQuery,recipe);
 
         String ingredientQuery = "INSERT INTO Ingredients VALUE(?,?)";
@@ -146,13 +191,12 @@ public class recipePersisHsqlDB {
         weakEntHelper(ingredientQuery, instructionQuery, recipe);
     }
 
-    //new Recipe(name,ingredients,instructions,serving,prepTime,cookTime,'picture');
     public void updateRecipe(Recipe recipe){
-        String updateQuery="UPDATE Recipes SET name = ?,serving=?,prepTime=?,cookTime=?,picture=?, userID = ? where recipeId = ?";
+        String updateQuery="UPDATE Recipes SET name = ?,serving=?,prepTime=?,cookTime=?,picture=?, userID = ? where recipeID = ?";
         sqlSetHelper(updateQuery,recipe);
 
-        String ingredientQuery = "UPDATE Ingredients SET ingredient = ? where recipeId = ?";
-        String instructionQuery = "UPDATE Instructions SET instruction = ? where recipeId = ? and instructionNum = ?";
+        String ingredientQuery = "UPDATE Ingredients SET ingredient = ? where recipeID = ?";
+        String instructionQuery = "UPDATE Instructions SET instruction = ? where recipeID = ? and instructionNum = ?";
         weakEntHelper(ingredientQuery, instructionQuery, recipe);
     }
 
@@ -160,7 +204,7 @@ public class recipePersisHsqlDB {
     {
         try(final Connection c = connection())
         {
-            String deleteQuery = "DELETE FROM Recipes where recipeId = ?";
+            String deleteQuery = "DELETE FROM Recipes where recipeID = ?";
             final PreparedStatement st = c.prepareStatement(deleteQuery);
             st.setInt(1, recipe.getID());
 
@@ -179,8 +223,9 @@ public class recipePersisHsqlDB {
 
         try(final Connection c = connection())
         {
-            final Statement st = c.createStatement();
-            final ResultSet rs = st.executeQuery("SELECT * FROM Recipes where userID = " + user.getUserEmail());
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where userID = ?");
+            st.setString(1, user.getUserEmail());
+            final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
 
@@ -200,8 +245,9 @@ public class recipePersisHsqlDB {
 
         try(final Connection c = connection())
         {
-            final Statement st = c.createStatement();
-            final ResultSet rs = st.executeQuery("SELECT * FROM Recipes where name LIKE '%" + keyword + "%'");
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where name LIKE '%?%'");
+            st.setString(1, keyword);
+            final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
 
@@ -221,8 +267,9 @@ public class recipePersisHsqlDB {
 
         try(final Connection c = connection())
         {
-            final Statement st = c.createStatement();
-            final ResultSet rs = st.executeQuery("SELECT name, serving, prepTime, cookTime, picture, recipeId FROM Recipes natural join Ingredients where ingredient LIKE '%" + keyword + "%'");
+            final PreparedStatement st = c.prepareStatement("SELECT name, serving, prepTime, cookTime, picture, recipeID FROM Recipes natural join Ingredients where ingredient LIKE '%?%'");
+            st.setString(1, keyword);
+            final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
 
