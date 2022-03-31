@@ -95,7 +95,8 @@
                     android:layout_width="204dp"
                     android:layout_height="204dp"
                     android:layout_marginLeft="32dp"
-                    android:layout_marginTop="24dp" />
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="@color/accent" />
 
                 <View
                     android:layout_width="0dp"

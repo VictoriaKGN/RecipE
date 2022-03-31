@@ -169,10 +169,11 @@ public class ViewActivity extends DrawerBaseActivity {
         {
             Bitmap myBitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
             pic.setImageBitmap(myBitmap);
+            pic.setScaleType(ImageView.ScaleType.FIT_XY);
         }
         else
         {
-            pic.setImageResource(android.R.color.transparent);
+            pic.setBackgroundResource(R.drawable.default_picture_icon);
         }
     }
 
