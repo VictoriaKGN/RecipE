@@ -278,6 +278,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                ((App)getApplication()).removeCurrentUser();
                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
