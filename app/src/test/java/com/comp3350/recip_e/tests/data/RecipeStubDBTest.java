@@ -58,8 +58,8 @@ public class RecipeStubDBTest {
     {
         System.out.println("\nBeginning recipe stub database tests\n");
 
-        assertNotNull("should retrieve a recipe without a picture", db.getRecipe(0, false));
-        assertNotNull("should retrieve a recipe with a picture", db.getRecipe(1, true));
+        assertNotNull("should retrieve a recipe without a picture", db.getRecipe(0));
+        assertNotNull("should retrieve a recipe with a picture", db.getRecipe(1));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class RecipeStubDBTest {
     {
         Recipe test = db.addRecipe(recipeWPic);
 
-        assertNotNull("should be able to access added recipes", db.getRecipe(3, true));
+        assertNotNull("should be able to access added recipes", db.getRecipe(3));
         assertTrue("name should match the added recipe", name2.equals(test.getName()));
 
         ArrayList<String> testIngreds = test.getIngredients();
@@ -93,7 +93,7 @@ public class RecipeStubDBTest {
         Recipe test = db.addRecipe(recipeNoPic);
 
         assertTrue("the recipe should be deleted", db.delRecipe(3));
-        assertNull("should not be able to access the recipe anymore", db.getRecipe(3,false));
+        assertNull("should not be able to access the recipe anymore", db.getRecipe(3));
         assertFalse("should not be able to delete again", db.delRecipe(3));
         assertFalse("should not be able to delete a recipe that doesn't exist", db.delRecipe(-1));
 

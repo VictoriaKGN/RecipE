@@ -12,7 +12,7 @@ import com.comp3350.recip_e.objects.Recipe;
 import com.comp3350.recip_e.tests.utils.TestUtils;
 import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.database.iRecipeManager;
-//import com.comp3350.recip_e.database.data.recipePersisHsqlDB;
+import com.comp3350.recip_e.database.data.recipePersisHsqlDB;
 //import db exception?
 
 import static org.junit.Assert.assertEquals;
@@ -27,9 +27,9 @@ public class RecipeIT {
 
     @Before
     public void setUp() throws IOException {
-        //this.tempDB = TestUtils.copyDB();
-        //final iRecipeManager database = new recipePersisHsqlDB(this.tempDB.getAbsolutePath().replace(".script", ""));
-        //this.recipeManager = new RecipeManager(database);
+        this.tempDB = TestUtils.copyDB();
+        final iRecipeManager database = new recipePersisHsqlDB(this.tempDB.getAbsolutePath().replace(".script", ""));
+        this.recipeManager = new RecipeManager(database);
     }
 
 
@@ -70,6 +70,6 @@ public class RecipeIT {
 
     @After
     public void tearDown() {
-        //this.tempDB.delete();
+        this.tempDB.delete();
     }
 }

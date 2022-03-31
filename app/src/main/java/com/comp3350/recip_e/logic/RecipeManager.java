@@ -34,7 +34,7 @@ public class RecipeManager {
      * @return The recipe with the given id
      */
     public Recipe getRecipe(int id) {
-        return database.getRecipe(id, true);
+        return database.getRecipe(id);
     }
 
     /**

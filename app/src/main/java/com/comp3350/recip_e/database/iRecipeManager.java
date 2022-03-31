@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface iRecipeManager {
     //get the whole recipe information.
-    Recipe getRecipe(int recipeId,boolean withPic);
+    Recipe getRecipe(int recipeId);
 
     //add a new recipe to the fake database( local json file), will return a Recipe Object.
     Recipe addRecipe(Recipe recipe);

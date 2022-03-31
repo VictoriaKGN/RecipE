@@ -20,7 +20,8 @@ import static org.junit.Assert.*;
 import com.comp3350.recip_e.database.iUserManager;
 import com.comp3350.recip_e.logic.UserManager;
 import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
-import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
+import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException; ///email???
+import com.comp3350.recip_e.database.data.userPersisHsqlDB;
 import com.comp3350.recip_e.objects.User;
 import com.comp3350.recip_e.tests.utils.TestUtils;
 
@@ -34,9 +35,9 @@ public class UserIT {
 
     @Before
     public void setUp() throws IOException {
-        //this.tempDB = TestUtils.copyDB();
-        //final iUserManager database = new userPersisHsqlDB(this.tempDB.getAbsolutePath().replace(".script", ""));
-        //this.userManager = new UserManager(database);
+        this.tempDB = TestUtils.copyDB();
+        final iUserManager database = new userPersisHsqlDB(this.tempDB.getAbsolutePath().replace(".script", ""));
+        this.userManager = new UserManager(database);
     }
 
     @Test
@@ -109,6 +110,6 @@ public class UserIT {
 
     @After
     public void tearDown() {
-        //this.tempDB.delete();
+        this.tempDB.delete();
     }
 }

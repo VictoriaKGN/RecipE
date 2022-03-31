@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 import com.comp3350.recip_e.database.data.UserStub;
 import com.comp3350.recip_e.logic.UserManager;
 import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
-import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
+import com.comp3350.recip_e.logic.exceptions.EmailDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 public class UserManagerTest {
@@ -91,7 +91,7 @@ public class UserManagerTest {
         User fakeUser = new User("", "", "");
         User wrongPassword = new User(email, username, "4321");
 
-        assertThrows(UsernameDoesNotExistException.class, () -> userManager.validateUser(fakeUser));
+        assertThrows(EmailDoesNotExistException.class, () -> userManager.validateUser(fakeUser));
         assertThrows(IncorrectPasswordException.class, () -> userManager.validateUser(wrongPassword));
 
         System.out.println("Finished testValidateUser");

@@ -34,7 +34,7 @@ public class RecipeStub implements iRecipeManager {
     }
 
     @Override
-    public Recipe getRecipe(int recipeId, boolean withPic) {
+    public Recipe getRecipe(int recipeId) {
         Recipe recipe = null;
 
         for (Recipe cur : recipes) {

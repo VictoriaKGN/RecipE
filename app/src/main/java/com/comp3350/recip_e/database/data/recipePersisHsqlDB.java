@@ -184,7 +184,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
 
 
     @Override
-    public Recipe getRecipe(int recipeID, boolean withPic) {
+    public Recipe getRecipe(int recipeID) {
         //TODO---------------
         return null;
     }
@@ -232,7 +232,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
             throw new hsqlDBException(e);
         }
 
-        if (this.getRecipe(recipeID, false) == null)
+        if (this.getRecipe(recipeID) == null)
             deleted = true;
 
         return deleted;
