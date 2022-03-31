@@ -40,14 +40,12 @@ public class recipePersisHsqlDB {
 
     private String resultIngredient(ResultSet rs) throws SQLException
     {
-        final String ingredient = rs.getString("ingredient");
-        return ingredient;
+        return rs.getString("ingredient");
     }
 
     private String resultInstruction(ResultSet rs) throws SQLException
     {
-        final String instruction = rs.getString("instruction");
-        return instruction;
+        return rs.getString("instruction");
     }
 
     private void sqlSetHelper(String prepSt, Recipe recipe){
@@ -215,6 +213,30 @@ public class recipePersisHsqlDB {
         {
             throw new hsqlDBException(e);
         }
+    }
+
+    public Recipe getRecipe(int recipeID)
+    {
+        Recipe recipe;
+        ArrayList<Recipe> tempStorage = new ArrayList<>();
+
+        try(final Connection c = connection())
+        {
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where recipeID = ?");
+            st.setInt(1, recipeID);
+            final ResultSet rs = st.executeQuery();
+
+            tempStorage = getHelper(rs, tempStorage);
+            recipe = tempStorage.get(0);
+
+            rs.close();
+            st.close();
+        }
+        catch(SQLException e)
+        {
+            throw new hsqlDBException(e);
+        }
+        return recipe;
     }
 
     public ArrayList<Recipe> getUserRecipes(User user)
