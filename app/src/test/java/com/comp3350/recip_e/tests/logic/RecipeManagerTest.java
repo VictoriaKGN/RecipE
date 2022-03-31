@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.comp3350.recip_e.database.data.RecipeStub;
 import com.comp3350.recip_e.logic.RecipeManager;
 import com.comp3350.recip_e.objects.Recipe;
 
@@ -14,21 +15,22 @@ import java.util.Objects;
 
 public class RecipeManagerTest {
     private RecipeManager recipeManager;
+    private RecipeStub database;
 
     @Before
     public void setup() {
-        recipeManager = new RecipeManager();
+        database = new RecipeStub();
+        recipeManager = new RecipeManager(database);
     }
 
     @Test
     public void testGetFirstRecipe() {
         String name = recipeManager.getFirstRecipe().getName();
-        assertEquals("test recipe 1", name);
+        assertTrue("test recipe 1".equals(name));
     }
 
     @Test
     public void testGetRecipe() {
-        // TODO Needs hardcoded test data
         System.out.println("\nStarting testGetRecipe\n");
         Recipe recipe = recipeManager.getRecipe(0);
 

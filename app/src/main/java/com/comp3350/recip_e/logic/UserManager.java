@@ -1,16 +1,20 @@
 package com.comp3350.recip_e.logic;
 
 import com.comp3350.recip_e.application.Services;
-import com.comp3350.recip_e.database.IuserManager;
+import com.comp3350.recip_e.database.iUserManager;
 import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
 import com.comp3350.recip_e.logic.exceptions.EmailDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 public class UserManager {
-    private IuserManager database;
+    private iUserManager database;
 
     public UserManager() {
         database = Services.getUserPersistence();
+    }
+
+    public UserManager(final iUserManager persistence) {
+        this.database = persistence;
     }
 
     /**

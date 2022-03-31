@@ -2,18 +2,21 @@ package com.comp3350.recip_e.logic;
 
 import com.comp3350.recip_e.application.Services;
 
-import com.comp3350.recip_e.database.recipeManager;
+import com.comp3350.recip_e.database.iRecipeManager;
 
-import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.objects.Recipe;
-import java.util.List;
+
 import java.util.ArrayList;
 
 public class RecipeManager {
-    private recipeManager database;
+    private iRecipeManager database;
 
     public RecipeManager() {
         database = Services.getRecipePersistence();
+    }
+
+    public RecipeManager(final iRecipeManager persistence) {
+        this.database = persistence;
     }
 
     /**
