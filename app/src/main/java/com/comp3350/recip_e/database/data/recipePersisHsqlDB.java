@@ -77,19 +77,22 @@ public class recipePersisHsqlDB implements iRecipeManager {
         {
             recipe.resetNextIngredient();
             String nextIngredient = recipe.getNextIngredient();
+            int counter = 1;
 
             while(!nextIngredient.equals(""))
             {
                 final PreparedStatement st = c.prepareStatement(ingrQuery);
                 st.setString(1, nextIngredient);
                 st.setInt(2, recipe.getID());
+                st.setInt(3, counter);
                 st.executeUpdate();
                 nextIngredient = recipe.getNextIngredient();
+                counter++;
             }
 
             recipe.resetNextInstruction();
             String nextInstruction = recipe.getNextInstruction();
-            int counter = 1;
+            counter = 1;
 
             while(!nextInstruction.equals(""))
             {
@@ -187,7 +190,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
         recipe.setID(getNextID());
         sqlSetHelper(insertQuery,recipe);
 
-        String ingredientQuery = "INSERT INTO Ingredients VALUES(?,?)";
+        String ingredientQuery = "INSERT INTO Ingredients VALUES(?,?,?)";
         String instructionQuery = "INSERT INTO Instructions VALUES (?,?,?)";
         weakEntHelper(ingredientQuery, instructionQuery, recipe);
 
@@ -199,7 +202,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
         String updateQuery="UPDATE Recipes SET name = ?,servings=?,prepTime=?,cookTime=?,picture=?, userID = ? where recipeID = ?";
         sqlSetHelper(updateQuery,recipe);
 
-        String ingredientQuery = "UPDATE Ingredients SET ingredient = ? where recipeID = ?";
+        String ingredientQuery = "UPDATE Ingredients SET ingredient = ? where recipeID = ? and ingredientNum = ?";
         String instructionQuery = "UPDATE Instructions SET instruction = ? where recipeID = ? and instructionNum = ?";
         weakEntHelper(ingredientQuery, instructionQuery, recipe);
     }
@@ -294,6 +297,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
+            //System.out.println("" + recipes.size());
 
             rs.close();
             st.close();
