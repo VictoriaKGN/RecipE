@@ -243,23 +243,19 @@
                 android:layout_marginRight="24dp"
                 android:background="@drawable/background">
 
-                <ScrollView
-                    android:id="@+id/ingredients_container"
+                <ListView
+                    android:id="@+id/ingredients"
                     android:layout_width="match_parent"
                     android:layout_height="325dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
                     android:layout_marginBottom="32dp"
                     android:fillViewport="true"
-                    android:scrollbarFadeDuration="0">
-
-                    <TextView
-                        android:id="@+id/ingredients"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textSize="20sp" />
-
-                </ScrollView>
+                    android:scrollbarFadeDuration="0"
+                    android:layout_gravity="top"
+                    android:textSize="20sp"
+                    android:choiceMode="none">
+                </ListView>
 
             </LinearLayout>
 
@@ -376,23 +372,19 @@
                 android:layout_marginRight="80dp"
                 android:background="@drawable/background">
 
-                <ScrollView
-                    android:id="@+id/instructions_container"
+                <ListView
+                    android:id="@+id/instructions"
                     android:layout_width="match_parent"
                     android:layout_height="552dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
                     android:layout_marginBottom="32dp"
                     android:fillViewport="true"
-                    android:scrollbarFadeDuration="0">
-
-                    <TextView
-                        android:id="@+id/instructions"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textSize="20sp" />
-
-                </ScrollView>
+                    android:scrollbarFadeDuration="0"
+                    android:layout_gravity="top"
+                    android:textSize="20sp"
+                    android:choiceMode="none">
+                </ListView>
 
             </LinearLayout>
 

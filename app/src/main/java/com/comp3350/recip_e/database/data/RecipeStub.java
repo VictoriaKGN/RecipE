@@ -17,8 +17,8 @@ public class RecipeStub implements iRecipeManager {
         ingredients = new ArrayList<String>();
         instructions = new ArrayList<String>();
 
-        for(int i = 1; i <= 3; i++) {
-            ingredients.add((i*100) + "ml ingredients");
+        for (int i = 1; i <= 3; i++) {
+            ingredients.add((i * 100) + "ml ingredients");
             instructions.add(i + ". Test instruction.");
         }
 
@@ -90,6 +90,40 @@ public class RecipeStub implements iRecipeManager {
             }
         }
 
+        return userRecipes;
+    }
+
+    @Override
+    public ArrayList<Recipe> searchRecipeByName(String user, String searchKey) {
+        ArrayList<Recipe> userRecipes = new ArrayList<Recipe>();
+
+        for (Recipe cur : recipes) {
+            if (cur.getUserID().equals(user) && cur.getName().contains(searchKey)) {
+                userRecipes.add(cur);
+            }
+        }
+        return userRecipes;
+    }
+
+    @Override
+    public ArrayList<Recipe> searchRecipeByIngredient(String user, String searchKey) {
+        ArrayList<Recipe> userRecipes = new ArrayList<Recipe>();
+        Iterator<String> iterator;
+        boolean added;
+
+        for (Recipe cur : recipes) {
+            if (cur.getUserID().equals(user)) {
+                added = false;
+                iterator = cur.getIngredients().listIterator();
+
+                while (iterator.hasNext() && !added) {
+                    if (iterator.next().contains(searchKey)) {
+                        userRecipes.add(cur);
+                        added = true;
+                    }
+                }
+            }
+        }
         return userRecipes;
     }
 }

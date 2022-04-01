@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,9 +15,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.comp3350.recip_e.databinding.ActivityViewBinding;
 import com.comp3350.recip_e.objects.Recipe;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class ViewActivity extends DrawerBaseActivity {
 
@@ -51,48 +53,26 @@ public class ViewActivity extends DrawerBaseActivity {
             }
         });
 
+        currRecipe = null;
+
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result)
                 {
                     if (result.getResultCode() == 7)
                     {
-                        Intent intent = result.getData();
+                        Bundle extras = result.getData().getExtras();
 
-                        if (intent != null)
+                        if (extras != null)
                         {
-                            // extract all the data
-                            Bundle bundle = intent.getExtras();
-                            Recipe newRecipe = null;
+                            // extract the new recipe
+                            int newRecipeID = extras.getInt("NEW_RECIPE_ID");
+                            Toast.makeText(ViewActivity.this, Integer.toString(newRecipeID), Toast.LENGTH_SHORT).show();
+                            Recipe newRecipe = recipeManager.getRecipe(newRecipeID);
 
-                            /*if(bundle.getString("RECIPE_PICTURE") != null) {
-                                try {
-                                    //newRecipe = new Recipe(bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                                            //bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"), bundle.getString("RECIPE_PICTURE"));
-                                } catch (InvalidRecipeException exc)
-                                {
-                                    Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    //newRecipe = new Recipe (bundle.getString("RECIPE_NAME"), bundle.getString("INGREDIENTS"), bundle.getString("INSTRUCTIONS"),
-                                            //bundle.getInt("NUM_SERVES"), bundle.getInt("PREP_TIME"), bundle.getInt("COOK_TIME"));
-                                } catch (InvalidRecipeException exc)
-                                {
-                                    Toast.makeText(ViewActivity.this, "The recipe was not valid. Progress is lost ...", Toast.LENGTH_SHORT).show();
-                                }
+                            currRecipe = newRecipe;
+                            setAllFields();
 
-                            }
-
-                            if (newRecipe != null)
-                            {
-                                recipeManager.addRecipe(newRecipe);
-                                currRecipe = newRecipe;
-                                setAllFields();
-                            }*/
                         }
                     }
                 }
@@ -116,7 +96,6 @@ public class ViewActivity extends DrawerBaseActivity {
     }
 
     // ********************************** set methods ***************************************
-
     // set all fields
     public void setAllFields()
     {
@@ -126,8 +105,8 @@ public class ViewActivity extends DrawerBaseActivity {
             setServings(String.valueOf(currRecipe.getServings()));
             setPrepTime(String.valueOf(currRecipe.getPrepTime()));
             setCookingTime(String.valueOf(currRecipe.getCookTime()));
-            //setIngredients(currRecipe.getIngredients());
-            //setInstructions(currRecipe.getInstructions());
+            setIngredients(currRecipe.getIngredients());
+            setInstructions(currRecipe.getInstructions());
 
             if (currRecipe.hasPicture())
             {
@@ -140,8 +119,8 @@ public class ViewActivity extends DrawerBaseActivity {
             setServings("");
             setPrepTime("");
             setCookingTime("");
-            setIngredients("");
-            setInstructions("");
+            setIngredients(new ArrayList<String>());
+            setInstructions(new ArrayList<String>());
             setPicture("");
         }
     }
@@ -193,17 +172,23 @@ public class ViewActivity extends DrawerBaseActivity {
     }
 
     // set the ingredients of the recipe
-    public void setIngredients(String ings)
+    public void setIngredients(ArrayList<String> ingredientList)
     {
-        TextView text = findViewById(R.id.ingredients);
-        text.setText(ings);
+        ListView list = findViewById(R.id.ingredients);
+        ArrayAdapter<String> ingredientAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_row, ingredientList);
+
+        list.setAdapter(ingredientAdapter);
+        ingredientAdapter.notifyDataSetChanged();
     }
 
     // set the instructions of the recipe
-    public void setInstructions(String ins)
+    public void setInstructions(ArrayList<String> instructionList)
     {
-        TextView text = findViewById(R.id.instructions);
-        text.setText(ins);
+        ListView list = findViewById(R.id.instructions);
+        ArrayAdapter<String> instructionAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_row, instructionList);
+
+        list.setAdapter(instructionAdapter);
+        instructionAdapter.notifyDataSetChanged();
     }
 
     // ********************************** button clicks ***************************************
