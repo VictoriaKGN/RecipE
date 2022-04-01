@@ -14,6 +14,24 @@ Beyond the kitchen, Recip-E will help users downsize their paper cookbook collec
 Finally, Recip-E’s success will be measured by several criteria. Firstly, a targeted user survey will provide feedback on the overall usability of the app. We can use this feedback to enhance the user experience. Secondly, the overall number of users and any ratings volunteered by said users will indicate how widely adopted the app is. Thirdly, the average number of recipes per user will indicate the app’s general usage. For example, a high average will imply that users are generally using the app to digitize their recipe collections, as intended, while a low number will imply that perhaps users are only using the app to preserve and/or share a few core recipes. Finally, the average number of times users open the app daily will indicate how successful the app has been in replacing other recipe sources.
 
 
+## Notes to Graders
+
+Our app is designed for tablet devices. It comes with three pre-installed user profiles and four recipes. Users can only view recipes that are associated with their profile, however, the default recipes are available to all users.
+
+The pre-installed users are:
+| email | password |
+| ------ | ------ |
+| dogge@hot.com | cool978988 |
+| gogle@mail.com | nice124355 |
+| nail@ufo.com | check564423 |
+
+The default recipes are:
+- Bacon-Wrapped Venison Tenderloin with Garlic Cream Sauce
+- Easy Meatloaf
+- Homemade Mac and Cheese
+- Pork, Pear, and Walnut Salad
+
+
 ## Architecture
 
 Can be found in this same directory ([see above](ARCHITECTURE.md)).
