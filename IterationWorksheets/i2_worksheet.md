@@ -21,7 +21,7 @@ Paying off technical debt
 SOLID
 ----------------
 
-find violation in group 6. Explain and link.
+We evaluated group 6 and found them in violation of the Dependency Inversion Principle. We found that they are using the Android dependent [SQLiteOpenHelper](https://code.cs.umanitoba.ca/winter-2022-a02/group-6/ezy/-/commit/026dfb2880d914fb87419f5714846d53826a8187#9b843a5c42cd1d2845cf2ffd13b2265fcef59955_0_1) in their persistence layer. As the professors have stated both in class and on Piazza, this will couple their persistence layer too tightly with Android, making it very difficult to switch to another platform. Additionally, their database has no interface. Both of these accrue massive technical debt. We have left them an issue [here](https://code.cs.umanitoba.ca/winter-2022-a02/group-6/ezy/-/issues/36).
 
 
 Retrospective
