@@ -44,7 +44,7 @@ public class UserIT {
     public void testAddUser() {
         System.out.println("\nStarting testAddUser\n");
 
-        User testUser = userManager.getUser(username);
+        User testUser = userManager.getUser(email);
 
         assertNotNull("User does not exist", testUser);
         assertTrue("Usernames should be equal", username.equals(testUser.getUsername()));
@@ -60,7 +60,7 @@ public class UserIT {
 
         String newPassword = "4321";
         userManager.updateUser(new User(email, username, newPassword));
-        User testUser = userManager.getUser(username);
+        User testUser = userManager.getUser(email);
         User badUser = new User("user@mail.com","this Guy", "0000000");
         userManager.updateUser(badUser);
         badUser = userManager.getUser(badUser.getUsername());
@@ -96,6 +96,8 @@ public class UserIT {
     @Test
     public void testValidateUser() {
         System.out.println("\n Starting testValidateUser\n");
+
+        user = new User(email, username, password);
 
         userManager.validateUser(user);
         User fakeUser = new User("", "", "");

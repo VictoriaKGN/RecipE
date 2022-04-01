@@ -20,11 +20,11 @@ public class UserManager {
     /**
      * Get a single user from the database
      *
-     * @param username Username of the user to get
+     * @param useremail Username of the user to get
      * @return The user with the given username
      */
-    public User getUser(String username) {
-        return database.selectUser(username);
+    public User getUser(String useremail) {
+        return database.selectUser(useremail);
     }
 
     /**

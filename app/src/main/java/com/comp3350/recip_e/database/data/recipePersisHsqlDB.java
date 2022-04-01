@@ -183,12 +183,12 @@ public class recipePersisHsqlDB implements iRecipeManager {
 
     @Override
     public Recipe addRecipe(Recipe recipe){
-        String insertQuery="INSERT INTO Recipes VALUE(?,?,?,?,?,?,?)";
+        String insertQuery="INSERT INTO Recipes (name, servings, prepTime, cookTime, picture, userID, recipeID) VALUES(?,?,?,?,?,?,?)";
         recipe.setID(getNextID());
         sqlSetHelper(insertQuery,recipe);
 
-        String ingredientQuery = "INSERT INTO Ingredients VALUE(?,?)";
-        String instructionQuery = "INSERT INTO Instructions VALUE (?,?,?)";
+        String ingredientQuery = "INSERT INTO Ingredients VALUES(?,?)";
+        String instructionQuery = "INSERT INTO Instructions VALUES (?,?,?)";
         weakEntHelper(ingredientQuery, instructionQuery, recipe);
 
         return recipe;
