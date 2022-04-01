@@ -14,7 +14,7 @@ public interface iRecipeManager {
     void updateRecipe(Recipe recipe);
 
     //delete a current recipe from fake database.
-    boolean delRecipe(String user, int recipeId);
+    boolean delRecipe(int recipeId, String userID);
 
     //return the path of the local picture depends on the Id, for Iter-1 is one pic each recipe.
     //String getCoverPic(int recipeId);

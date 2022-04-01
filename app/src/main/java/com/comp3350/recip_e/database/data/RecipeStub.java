@@ -60,7 +60,7 @@ public class RecipeStub implements iRecipeManager {
     }
 
     @Override
-    public boolean delRecipe(String user, int recipeId) {
+    public boolean delRecipe(int recipeId, String userID) {
         Iterator<Recipe> iterator = recipes.listIterator();
         boolean removed = false;
         Recipe recipe;
