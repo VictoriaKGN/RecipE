@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import com.comp3350.recip_e.R;
+import com.comp3350.recip_e.application.App;
 import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.databinding.ActivityEditBinding;
 import com.comp3350.recip_e.objects.Recipe;
@@ -57,6 +58,7 @@ public class EditActivity extends DrawerBaseActivity {
     private int selectedInstructionIndex;
     private ActivityEditBinding activityEditBinding;
     private boolean isEdit;
+    private int recipeID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class EditActivity extends DrawerBaseActivity {
         isEdit = false;
         selectedIngredientIndex = -1;
         selectedInstructionIndex = -1;
+        recipeID = -1;
 
         ingredientArrayList = new ArrayList<String>();
         instructionArrayList = new ArrayList<String>();
@@ -152,7 +155,8 @@ public class EditActivity extends DrawerBaseActivity {
 
             if (isEdit)
             {
-                setAllFields(recipeManager.getRecipe(bundle.getInt("RecipeId")));
+                recipeID = bundle.getInt("RecipeId");
+                setAllFields(recipeManager.getRecipe(recipeID));
             }
 
             setBtnsTint();
@@ -166,8 +170,8 @@ public class EditActivity extends DrawerBaseActivity {
         setServings(String.valueOf(toSet.getServings()));
         setPrepTime(String.valueOf(toSet.getPrepTime()));
         setCookingTime(String.valueOf(toSet.getCookTime()));
-        //setIngredients(currRecipe.getIngredients());
-        //setInstructions(currRecipe.getInstructions());
+        setIngredients(toSet.getIngredients());
+        setInstructions(toSet.getInstructions());
 
         if (toSet.hasPicture())
         {
@@ -179,14 +183,14 @@ public class EditActivity extends DrawerBaseActivity {
     private void setBtnsTint()
     {
         ImageButton leftHighlight;
-        ImageButton rightHightlight;
+        ImageButton rightHighlight;
         ImageButton leftBtn;
         ImageButton rightBtn;
 
         if (isEdit)
         {
             leftHighlight = findViewById(R.id.edit_recipe_left_button);
-            rightHightlight = findViewById(R.id.edit_recipe_right_button);
+            rightHighlight = findViewById(R.id.edit_recipe_right_button);
             leftBtn = findViewById(R.id.add_recipe_button);
             rightBtn = findViewById(R.id.add_recipe_right_button);
         }
@@ -195,11 +199,11 @@ public class EditActivity extends DrawerBaseActivity {
             leftBtn = findViewById(R.id.edit_recipe_left_button);
             rightBtn = findViewById(R.id.edit_recipe_right_button);
             leftHighlight = findViewById(R.id.add_recipe_button);
-            rightHightlight = findViewById(R.id.add_recipe_right_button);
+            rightHighlight = findViewById(R.id.add_recipe_right_button);
         }
 
         leftHighlight.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.background, null)));
-        rightHightlight.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.background, null)));
+        rightHighlight.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.background, null)));
         leftBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.accent, null)));
         rightBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.accent, null)));
     }
@@ -344,7 +348,8 @@ public class EditActivity extends DrawerBaseActivity {
     // set the ingredients of the recipe
     public void setIngredients(ArrayList<String> ingredientList)
     {
-        ArrayAdapter<String> ingredientAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, ingredientList);
+        ingredientArrayList = ingredientList;
+        ArrayAdapter<String> ingredientAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_row, ingredientArrayList);
 
         ingredientListView.setAdapter(ingredientAdapter);
         ingredientAdapter.notifyDataSetChanged();
@@ -353,7 +358,8 @@ public class EditActivity extends DrawerBaseActivity {
     // set the instructions of the recipe
     public void setInstructions(ArrayList<String> instructionList)
     {
-        ArrayAdapter<String> instructionAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, instructionList);
+        instructionArrayList = instructionList;
+        ArrayAdapter<String> instructionAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_row, instructionArrayList);
 
         instructionListView.setAdapter(instructionAdapter);
         instructionAdapter.notifyDataSetChanged();
@@ -654,25 +660,36 @@ public class EditActivity extends DrawerBaseActivity {
         {
             String path = saveImage(pictureUri);
 
-            try
+            if (isEdit)
             {
-                Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, "user@email.com");
-                // TODO: change the user to ((App)getApplication()).getCurrentUser().getEmail()
-
-                Recipe recipe = recipeManager.addRecipe(newRecipe);
+                Recipe toUpdate = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, ((App) getApplication()).getCurrentUser().getEmail());
+                toUpdate.setID(recipeID);
+                recipeManager.updateRecipe(toUpdate);
 
                 Intent intent = new Intent();
-
                 Bundle extras = new Bundle();
-                extras.putInt("NEW_RECIPE_ID", recipe.getID());
+                extras.putInt("NEW_RECIPE_ID", recipeID);
 
                 intent.putExtras(extras);
                 setResult(7, intent);
                 finish();
             }
-            catch (InvalidRecipeException exc)
+            else
             {
-                Toast.makeText(EditActivity.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+                try {
+                    Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, ((App)getApplication()).getCurrentUser().getEmail());
+                    Recipe recipe = recipeManager.addRecipe(newRecipe);
+
+                    Intent intent = new Intent();
+                    Bundle extras = new Bundle();
+                    extras.putInt("NEW_RECIPE_ID", recipe.getID());
+
+                    intent.putExtras(extras);
+                    setResult(7, intent);
+                    finish();
+                } catch (InvalidRecipeException exc) {
+                    Toast.makeText(EditActivity.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

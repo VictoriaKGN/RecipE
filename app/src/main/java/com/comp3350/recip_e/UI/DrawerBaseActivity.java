@@ -87,14 +87,14 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
                 ArrayList<Recipe> recipe_list = null;
 
                 if (isNameSearch = true)        // search by name
-                    recipe_list = recipeManager.searchRecipeByName("user@email.com", s);
+                    recipe_list = recipeManager.searchRecipeByName(((App)getApplication()).getCurrentUser().getEmail(), s);
                 else if (isNameSearch != true)  // search by ingredient
-                    recipe_list = recipeManager.searchRecipeByIngredient("user@email.com", s);
-                //TODO (((App)getApplication()).getCurrentUser().getEmail());
+                    recipe_list = recipeManager.searchRecipeByIngredient(((App)getApplication()).getCurrentUser().getEmail(), s);
 
                 for (Recipe rec : recipe_list) {
                     menu.add(0, rec.getID(), 0, rec.getName());
                 }
+
                 return false;
             }
         });
@@ -131,10 +131,12 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     }
 
     // set drawer menu items
-    private void setRecipeMenu()
+    protected void setRecipeMenu()
     {
         Menu menu = navigationView.getMenu();
         ArrayList<Recipe> userRecs = recipeManager.getUserRecipes(((App)getApplication()).getCurrentUser().getEmail());
+
+        menu.clear();
 
         for (Recipe rec : userRecs)
         {

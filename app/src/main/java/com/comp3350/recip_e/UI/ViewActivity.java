@@ -68,7 +68,6 @@ public class ViewActivity extends DrawerBaseActivity {
                         {
                             // extract the new recipe
                             int newRecipeID = extras.getInt("NEW_RECIPE_ID");
-                            Toast.makeText(ViewActivity.this, Integer.toString(newRecipeID), Toast.LENGTH_SHORT).show();
                             Recipe newRecipe = recipeManager.getRecipe(newRecipeID);
 
                             currRecipe = newRecipe;
@@ -84,14 +83,13 @@ public class ViewActivity extends DrawerBaseActivity {
 
         if (bundle != null)
         {
-
             int recipeID = bundle.getInt("RecipeID");
             currRecipe = recipeManager.getRecipe(recipeID);
             setAllFields();
         }
         else
         {
-            currRecipe = recipeManager.getFirstRecipe();
+            currRecipe = recipeManager.getUserRecipes(((App)getApplication()).getCurrentUser().getEmail()).get(0);
             setAllFields();
         }
     }
@@ -100,6 +98,7 @@ public class ViewActivity extends DrawerBaseActivity {
     // set all fields
     public void setAllFields()
     {
+        setRecipeMenu();
         if (currRecipe != null)
         {
             setRecipeName(currRecipe.getName());
