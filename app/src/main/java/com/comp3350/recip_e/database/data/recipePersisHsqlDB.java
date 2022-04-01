@@ -246,7 +246,7 @@ public class recipePersisHsqlDB {
         try(final Connection c = connection())
         {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where userID = ?");
-            st.setString(1, user.getUserEmail());
+            st.setString(1, user.getEmail());
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
