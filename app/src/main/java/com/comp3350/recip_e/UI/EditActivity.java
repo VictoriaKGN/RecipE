@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import com.comp3350.recip_e.R;
+import com.comp3350.recip_e.application.App;
 import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.databinding.ActivityEditBinding;
 import com.comp3350.recip_e.objects.Recipe;
@@ -656,7 +657,7 @@ public class EditActivity extends DrawerBaseActivity {
 
             try
             {
-                Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, "user@email.com");
+                Recipe newRecipe = new Recipe(rec_text, ingredientArrayList, instructionArrayList, Integer.parseInt(serveNum_text), Integer.parseInt(timePrep_text), Integer.parseInt(timeCook_text), path, ((App)getApplication()).getCurrentUser().getEmail());
                 // TODO: change the user to ((App)getApplication()).getCurrentUser().getEmail()
 
                 Recipe recipe = recipeManager.addRecipe(newRecipe);
