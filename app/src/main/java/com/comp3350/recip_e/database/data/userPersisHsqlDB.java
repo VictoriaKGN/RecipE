@@ -42,7 +42,7 @@ public class userPersisHsqlDB implements iUserManager {
     }
 
     public User insertUser(User user) {
-        String prepSt = "INSERT INTO USERS VALUE(?,?,?)";
+        String prepSt = "INSERT INTO USERS VALUES(?,?,?)";
         sqlSetHelper(prepSt, user);
 
         return user;
@@ -119,6 +119,9 @@ public class userPersisHsqlDB implements iUserManager {
             if(rt.next()){
                 exist=true;
             }
+
+            rt.close();
+            st.close();
         }catch (final SQLException e){
             throw new hsqlDBException(e);
         }
