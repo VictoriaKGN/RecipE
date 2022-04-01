@@ -291,8 +291,8 @@ public class recipePersisHsqlDB implements iRecipeManager {
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where name LIKE ? and (userID = ? or userID IS NULL)");
-            st.setString(1, "%" + keyword + "%");
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where LCASE(name) LIKE ? and (userID = ? or userID IS NULL)");
+            st.setString(1, "%" + keyword.toLowerCase() + "%");
             st.setString(2, userID);
             final ResultSet rs = st.executeQuery();
 
@@ -315,8 +315,8 @@ public class recipePersisHsqlDB implements iRecipeManager {
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT DISTINCT userID, name, servings, prepTime, cookTime, picture, recipeID from (SELECT name, servings, prepTime, cookTime, picture, recipeID, userID FROM Recipes natural join Ingredients where ingredient LIKE ? and (userID = ? or userID IS NULL))");
-            st.setString(1, "%" + keyword + "%");
+            final PreparedStatement st = c.prepareStatement("SELECT DISTINCT userID, name, servings, prepTime, cookTime, picture, recipeID from (SELECT name, servings, prepTime, cookTime, picture, recipeID, userID FROM Recipes natural join Ingredients where LCASE(ingredient) LIKE ? and (userID = ? or userID IS NULL))");
+            st.setString(1, "%" + keyword.toLowerCase() + "%");
             st.setString(2, userID);
             final ResultSet rs = st.executeQuery();
 
