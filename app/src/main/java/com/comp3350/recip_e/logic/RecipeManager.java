@@ -42,9 +42,17 @@ public class RecipeManager {
      *
      * @param recipe The recipe to add
      */
-    public Recipe addRecipe(Recipe recipe) throws InvalidRecipeException {
-        //RecipeValidator.validate(recipe);
+    public Recipe addRecipe(Recipe recipe) {
         return database.addRecipe(recipe);
+    }
+
+    /**
+     * Updates an existing recipe in the database
+     *
+     * @param recipe The recipe to update
+     */
+    public void updateRecipe(Recipe recipe) {
+        database.updateRecipe(recipe);
     }
 
     /**

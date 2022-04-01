@@ -56,8 +56,22 @@ public class RecipeStub implements iRecipeManager {
 
     @Override
     public void updateRecipe(Recipe recipe) {
-        //TODO--------------
+        Iterator<Recipe> iterator = recipes.listIterator();
+        Recipe currRecipe = iterator.next();
+
+        while (currRecipe != null && !currRecipe.equals(recipe)) {
+            currRecipe = iterator.next();
+        }
+
+        currRecipe.setName(recipe.getName());
+        currRecipe.setCookTime(recipe.getCookTime());
+        currRecipe.setPicture(recipe.getPicture());
+        currRecipe.setServings(recipe.getServings());
+        currRecipe.setPrepTime(recipe.getPrepTime());
+        currRecipe.updateIngredients(recipe.getIngredients());
+        currRecipe.updateInstructions(recipe.getInstructions());
     }
+
 
     @Override
     public boolean delRecipe(int recipeId, String userID) {

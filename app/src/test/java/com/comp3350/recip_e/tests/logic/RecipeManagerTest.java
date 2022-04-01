@@ -55,6 +55,16 @@ public class RecipeManagerTest {
     }
 
     @Test
+    public void testUpdateRecipe() {
+        System.out.println("\nStarting testUpdateRecipe\n");
+
+        Recipe oldRecipe = recipeManager.getRecipe(0);
+        
+
+        System.out.println("Finished testUpdateRecipe");
+    }
+
+    @Test
     public void testSearchRecipeByName() {
         System.out.println("\nStarting testSearchRecipeByName\n");
         ArrayList<Recipe> recipes;
