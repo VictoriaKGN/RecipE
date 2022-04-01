@@ -48,7 +48,7 @@ public class RecipeManagerTest {
 
         Recipe checkRecipe = recipeManager.addRecipe(recipe);
         assertEquals(checkRecipe.getID(), lastRecipeID);
-        recipeManager.deleteRecipe(lastRecipeID);
+        recipeManager.deleteRecipe("", lastRecipeID);
         assertNull(recipeManager.getRecipe(lastRecipeID));
 
         System.out.println("Finished testAddDeleteRecipe");

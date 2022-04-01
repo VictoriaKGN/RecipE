@@ -52,8 +52,8 @@ public class RecipeManager {
      *
      * @param id The id of the recipe to delete
      */
-    public void deleteRecipe(int id) {
-        database.delRecipe(id);
+    public void deleteRecipe(String user, int id) {
+        database.delRecipe(user, id);
     }
 
     public ArrayList<Recipe> getUserRecipes(String user) {
