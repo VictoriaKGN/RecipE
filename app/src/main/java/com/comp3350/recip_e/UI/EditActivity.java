@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import com.comp3350.recip_e.R;
-import com.comp3350.recip_e.logic.InvalidRecipeException;
+import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.databinding.ActivityEditBinding;
 import com.comp3350.recip_e.objects.Recipe;
 
