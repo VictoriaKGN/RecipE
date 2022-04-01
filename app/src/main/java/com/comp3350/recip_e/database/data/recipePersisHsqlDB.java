@@ -205,18 +205,20 @@ public class recipePersisHsqlDB implements iRecipeManager {
     }
 
     @Override
-    public boolean delRecipe(int recipeID)
+    public void deleteRecipe(Recipe recipe, String userID)
     {
         boolean deleted = false;
 
         try(final Connection c = connection())
         {
-            String deleteQuery = "DELETE FROM Recipes where recipeID = ?";
-            final PreparedStatement st = c.prepareStatement(deleteQuery);
-            st.setInt(1, recipeID);
+            if(recipe.getUserID().equals(userID) || recipe.getUserID() == null) {
+                String deleteQuery = "DELETE FROM Recipes where recipeID = ?";
+                final PreparedStatement st = c.prepareStatement(deleteQuery);
+                st.setInt(1, recipe.getID());
 
-            st.executeUpdate();
-            st.close();
+                st.executeUpdate();
+                st.close();
+            }
         }
         catch(SQLException e)
         {
@@ -254,14 +256,14 @@ public class recipePersisHsqlDB implements iRecipeManager {
     }
 
     @Override
-    public ArrayList<Recipe> getUserRecipes(String user)
+    public ArrayList<Recipe> getUserRecipes(String userID)
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where userID = ?");
-            st.setString(1, user);//user.getEmail());
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where userID = ? or userID IS NULL");
+            st.setString(1, userID);
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
@@ -276,16 +278,16 @@ public class recipePersisHsqlDB implements iRecipeManager {
         return recipes;
     }
 
-    //TODO: tie recipe to user
     @Override
-    public ArrayList<Recipe> searchRecipeByName(String user, String keyword)
+    public ArrayList<Recipe> searchName(String keyword, String userID)
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where name LIKE '%?%'");
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where name LIKE '%?%' and (userID = ? or userID IS NULL)");
             st.setString(1, keyword);
+            st.setString(2, userID);
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
@@ -300,17 +302,16 @@ public class recipePersisHsqlDB implements iRecipeManager {
         return recipes;
     }
 
-
-    //TODO: tie recipe to user
     @Override
-    public ArrayList<Recipe> searchRecipeByIngredient(String user, String keyword)
+    public ArrayList<Recipe> searchIngredients(String keyword, String userID)
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT name, serving, prepTime, cookTime, picture, recipeID FROM Recipes natural join Ingredients where ingredient LIKE '%?%'");
+            final PreparedStatement st = c.prepareStatement("SELECT name, serving, prepTime, cookTime, picture, recipeID FROM Recipes natural join Ingredients where ingredient LIKE '%?%' and (userID = ? or userID IS NULL)");
             st.setString(1, keyword);
+            st.setString(2, userID);
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
