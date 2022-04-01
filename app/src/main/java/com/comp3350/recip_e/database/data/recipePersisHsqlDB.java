@@ -297,7 +297,6 @@ public class recipePersisHsqlDB implements iRecipeManager {
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
-            //System.out.println("" + recipes.size());
 
             rs.close();
             st.close();
