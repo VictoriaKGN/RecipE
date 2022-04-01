@@ -243,7 +243,10 @@ public class recipePersisHsqlDB implements iRecipeManager {
             final ResultSet rs = st.executeQuery();
 
             tempStorage = getHelper(rs, tempStorage);
-            recipe = tempStorage.get(0);
+            if (tempStorage.size() > 0)
+                recipe = tempStorage.get(0);
+            else
+                recipe = null;
 
             rs.close();
             st.close();
