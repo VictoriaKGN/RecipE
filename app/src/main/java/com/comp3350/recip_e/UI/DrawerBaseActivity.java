@@ -80,7 +80,19 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
             @Override
             public boolean onQueryTextChange(String s)
             {
-                Toast.makeText(DrawerBaseActivity.this, "text changed", Toast.LENGTH_SHORT).show();
+                Menu menu = navigationView.getMenu();
+                menu.clear();
+                ArrayList<Recipe> recipe_list = null;
+
+                if (isNameSearch = true)        // search by name
+                    recipe_list = recipeManager.searchRecipeByName("user@email.com", s);
+                else if (isNameSearch != true)  // search by ingredient
+                    recipe_list = recipeManager.searchRecipeByIngredient("user@email.com", s);
+                //TODO (((App)getApplication()).getCurrentUser().getEmail());
+
+                for (Recipe rec : recipe_list) {
+                    menu.add(0, rec.getID(), 0, rec.getName());
+                }
                 return false;
             }
         });
