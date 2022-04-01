@@ -84,7 +84,7 @@ public class RecipeStubDBTest {
         assertEquals("cook time should match the added recipe", cook, test.getCookTime());
         assertTrue("picture should exist", test.hasPicture());
 
-        db.delRecipe("", 3);
+        db.delRecipe(3, "");
     }
 
     @Test
@@ -92,10 +92,10 @@ public class RecipeStubDBTest {
     {
         Recipe test = db.addRecipe(recipeNoPic);
 
-        assertTrue("the recipe should be deleted", db.delRecipe("", 3));
+        assertTrue("the recipe should be deleted", db.delRecipe(3, ""));
         assertNull("should not be able to access the recipe anymore", db.getRecipe(3));
-        assertFalse("should not be able to delete again", db.delRecipe("", 3));
-        assertFalse("should not be able to delete a recipe that doesn't exist", db.delRecipe("", -1));
+        assertFalse("should not be able to delete again", db.delRecipe(3, ""));
+        assertFalse("should not be able to delete a recipe that doesn't exist", db.delRecipe(-1, ""));
 
         System.out.println("\nEnd of recipe stub database tests\n");
     }

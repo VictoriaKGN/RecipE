@@ -68,7 +68,7 @@ public class userPersisHsqlDB implements iUserManager {
 
     @Override
     public User selectUser(String userEmail){
-        try(Connection c=connection()){
+        try(final Connection c=connection()){
             final PreparedStatement st=c.prepareStatement("SELECT * FROM Users WHERE UserEmail=?");
             st.setString(1,userEmail);
 

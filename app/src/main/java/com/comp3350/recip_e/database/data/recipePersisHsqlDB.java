@@ -205,16 +205,16 @@ public class recipePersisHsqlDB implements iRecipeManager {
     }
 
     @Override
-    public void deleteRecipe(Recipe recipe, String userID)
+    public boolean delRecipe(int recipeID, String userID)
     {
         boolean deleted = false;
 
         try(final Connection c = connection())
         {
-            if(recipe.getUserID().equals(userID) || recipe.getUserID() == null) {
+            if(this.getRecipe(recipeID).getUserID().equals(userID) || this.getRecipe(recipeID).getUserID() == null) {
                 String deleteQuery = "DELETE FROM Recipes where recipeID = ?";
                 final PreparedStatement st = c.prepareStatement(deleteQuery);
-                st.setInt(1, recipe.getID());
+                st.setInt(1, recipeID);
 
                 st.executeUpdate();
                 st.close();
@@ -279,7 +279,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
     }
 
     @Override
-    public ArrayList<Recipe> searchName(String keyword, String userID)
+    public ArrayList<Recipe> searchRecipeByName(String userID, String keyword)
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
 
@@ -303,7 +303,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
     }
 
     @Override
-    public ArrayList<Recipe> searchIngredients(String keyword, String userID)
+    public ArrayList<Recipe> searchRecipeByIngredient(String userID, String keyword)
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
 
