@@ -160,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
                 try
                 {
                     userManager.validateUser(user);
-                    userManager.addUser(user);
                     ((App)this.getApplication()).setCurrentUser(user);
                     Intent intent = new Intent(LoginActivity.this, ViewActivity.class);
                     startActivity(intent);
