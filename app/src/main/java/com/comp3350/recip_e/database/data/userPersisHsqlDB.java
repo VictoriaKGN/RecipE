@@ -12,7 +12,8 @@ import java.sql.SQLException;
 public class userPersisHsqlDB implements iUserManager {
     private final String dbpath;
 
-    public userPersisHsqlDB(String dbpath){ this.dbpath=dbpath;}
+    public userPersisHsqlDB(String dbpath){
+        this.dbpath=dbpath;}
 
     private Connection connection() throws SQLException {
         return DriverManager.getConnection("jdbc:hsqldb:file:"+ dbpath + ";shutdown=true", "SA", "");
@@ -41,14 +42,14 @@ public class userPersisHsqlDB implements iUserManager {
     }
 
     public User insertUser(User user) {
-        String prepSt = "INSERT INTO Users VALUE(?,?,?)";
+        String prepSt = "INSERT INTO USERS VALUES(?,?,?)";
         sqlSetHelper(prepSt, user);
 
         return user;
     }
 
     public User updateUser(User user){
-        String prepSt= "UPDATE Users SET userName = ?,userPassword = ? WHERE UserEmail = ?";
+        String prepSt= "UPDATE USERS SET userName = ?,userPassword = ? WHERE UserEmail = ?";
         try(Connection c= connection()) {
             final PreparedStatement st=c.prepareStatement(prepSt);
             st.setString(1,user.getUsername());
@@ -65,12 +66,15 @@ public class userPersisHsqlDB implements iUserManager {
     }
 
     public User selectUser(String userEmail){
-        try(Connection c=connection()){
-            final PreparedStatement st=c.prepareStatement("SELECT * FROM Users WHERE UserEmail=?");
+        try(final Connection c=connection()){
+            final PreparedStatement st=c.prepareStatement("SELECT * FROM USERS WHERE userEmail=?");
             st.setString(1,userEmail);
 
             final ResultSet rs=st.executeQuery();
-            User usr=fromResultSet(rs);
+            User usr = null;
+            if(rs.next()) {
+                usr = fromResultSet(rs);
+            }
 
             rs.close();
             st.close();
@@ -84,7 +88,7 @@ public class userPersisHsqlDB implements iUserManager {
     public User verifyUser(String usrEmail, String password){
         User matchedUser= null;
         try(Connection c=connection()){
-            final PreparedStatement st=c.prepareStatement("SELECT * FROM User WHERE userEmail =?");
+            final PreparedStatement st=c.prepareStatement("SELECT * FROM USERS WHERE userEmail =?");
             st.setString(1,usrEmail);
 
             final ResultSet rt=st.executeQuery();
@@ -115,6 +119,9 @@ public class userPersisHsqlDB implements iUserManager {
             if(rt.next()){
                 exist=true;
             }
+
+            rt.close();
+            st.close();
         }catch (final SQLException e){
             throw new hsqlDBException(e);
         }
@@ -123,12 +130,12 @@ public class userPersisHsqlDB implements iUserManager {
     }
 
     public boolean usernameExists(String username){
-       final String nameCheck="SELECT * FROM USER WHERE userName = ?";
+       final String nameCheck="SELECT * FROM USERS WHERE userName = ?";
         return existChecker(nameCheck,username);
     }
 
     public boolean emailExists(String email){
-        final String emailCheck="SELECT * FROM USER WHERE UserEmail = ?";
+        final String emailCheck="SELECT * FROM USERS WHERE UserEmail = ?";
         return existChecker(emailCheck,email);
     }
 

@@ -28,6 +28,7 @@ import android.widget.ViewFlipper;
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.databinding.ActivityViewBinding;
 import com.comp3350.recip_e.objects.Recipe;
+import com.comp3350.recip_e.application.App;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -241,7 +242,7 @@ public class ViewActivity extends DrawerBaseActivity {
             public void onClick(DialogInterface dialogInterface, int i)
             {
                 Toast.makeText(ViewActivity.this, "Recipe deleted...", Toast.LENGTH_SHORT).show();
-                recipeManager.deleteRecipe(currRecipe.getID());
+                recipeManager.deleteRecipe(currRecipe.getID(), ((App)getApplication()).getCurrentUser().getEmail());
                 currRecipe = null;
                 setAllFields();
             }

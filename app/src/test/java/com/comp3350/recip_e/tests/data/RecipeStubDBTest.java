@@ -58,58 +58,16 @@ public class RecipeStubDBTest {
     {
         System.out.println("\nBeginning recipe stub database tests\n");
 
-        assertNotNull("should retrieve a recipe without a picture", db.getRecipe(0, false));
-        assertNotNull("should retrieve a recipe with a picture", db.getRecipe(1, true));
+        assertNotNull("should retrieve a recipe without a picture", db.getRecipe(0));
+        assertNotNull("should retrieve a recipe with a picture", db.getRecipe(1));
     }
-
-    /*****
-    @Test
-    public void getRecipeName()
-    {
-        assertTrue("names should match", name1.equals(db.getRecipeName(0)));
-    }
-
-    @Test
-    public void getIngredients()
-    {
-        ArrayList<String> gotIngredients = db.getIngredients(0);
-        for (int i = 0; i < 3; i++)
-        {
-            assertTrue("ingredients should be the same",ingred.get(i).equals());
-        }
-    }
-
-    @Test
-    public void getDirection()
-    {
-        assertTrue("directions should be the same", "Step 1:\nCombine flour and cayenne pepper in a large resealable plastic bag. Add a few chicken strips at a time and shake to coat.\nStep 2:\nMelt butter in a large, nonstick skillet over medium heat. Add chicken and cook until browned on all sides, 4 to 6 minutes.\nStep 3:\nCombine lime juice, honey, brown sugar, and Worcestershire sauce in a bowl; pour over the chicken. Continue to cook until juices run clear and the sauce is thickened, 3 to 5 more minutes.\n".equals(db.getDirection(0)));
-    }
-
-    @Test
-    public void getServing()
-    {
-        assertTrue("servings should match", "2".equals(db.getServing(0)));
-    }
-
-    @Test
-    public void getPrepTime()
-    {
-        assertTrue("prep time should be the same", "10".equals(db.getPrepTime(0)));
-    }
-
-    @Test
-    public void getCookTime()
-    {
-        assertTrue("cook time should be the same", "10".equals(db.getCookTime(0)));
-    }
-     ******/
 
     @Test
     public void addRecipe()
     {
         Recipe test = db.addRecipe(recipeWPic);
 
-        assertNotNull("should be able to access added recipes", db.getRecipe(3, true));
+        assertNotNull("should be able to access added recipes", db.getRecipe(3));
         assertTrue("name should match the added recipe", name2.equals(test.getName()));
 
         ArrayList<String> testIngreds = test.getIngredients();
@@ -126,7 +84,7 @@ public class RecipeStubDBTest {
         assertEquals("cook time should match the added recipe", cook, test.getCookTime());
         assertTrue("picture should exist", test.hasPicture());
 
-        db.delRecipe(3);
+        db.delRecipe(3, "");
     }
 
     @Test
@@ -134,10 +92,10 @@ public class RecipeStubDBTest {
     {
         Recipe test = db.addRecipe(recipeNoPic);
 
-        assertTrue("the recipe should be deleted", db.delRecipe(3));
-        assertNull("should not be able to access the recipe anymore", db.getRecipe(3,false));
-        assertFalse("should not be able to delete again", db.delRecipe(3));
-        assertFalse("should not be able to delete a recipe that doesn't exist", db.delRecipe(-1));
+        assertTrue("the recipe should be deleted", db.delRecipe(3, ""));
+        assertNull("should not be able to access the recipe anymore", db.getRecipe(3));
+        assertFalse("should not be able to delete again", db.delRecipe(3, ""));
+        assertFalse("should not be able to delete a recipe that doesn't exist", db.delRecipe(-1, ""));
 
         System.out.println("\nEnd of recipe stub database tests\n");
     }

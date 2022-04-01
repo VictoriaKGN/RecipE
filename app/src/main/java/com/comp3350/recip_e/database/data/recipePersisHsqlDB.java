@@ -2,6 +2,7 @@ package com.comp3350.recip_e.database.data;
 
 import com.comp3350.recip_e.objects.Recipe;
 import com.comp3350.recip_e.objects.User;
+import com.comp3350.recip_e.database.iRecipeManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 
-public class recipePersisHsqlDB {
+public class recipePersisHsqlDB implements iRecipeManager {
     private final String dbpath;
 
     public recipePersisHsqlDB(String path){
@@ -179,16 +180,21 @@ public class recipePersisHsqlDB {
         }
     }
 
-    public void insertRecipe(Recipe recipe){
-        String insertQuery="INSERT INTO Recipes VALUE(?,?,?,?,?,?,?)";
+
+    @Override
+    public Recipe addRecipe(Recipe recipe){
+        String insertQuery="INSERT INTO Recipes (name, servings, prepTime, cookTime, picture, userID, recipeID) VALUES(?,?,?,?,?,?,?)";
         recipe.setID(getNextID());
         sqlSetHelper(insertQuery,recipe);
 
-        String ingredientQuery = "INSERT INTO Ingredients VALUE(?,?)";
-        String instructionQuery = "INSERT INTO Instructions VALUE (?,?,?)";
+        String ingredientQuery = "INSERT INTO Ingredients VALUES(?,?)";
+        String instructionQuery = "INSERT INTO Instructions VALUES (?,?,?)";
         weakEntHelper(ingredientQuery, instructionQuery, recipe);
+
+        return recipe;
     }
 
+    @Override
     public void updateRecipe(Recipe recipe){
         String updateQuery="UPDATE Recipes SET name = ?,serving=?,prepTime=?,cookTime=?,picture=?, userID = ? where recipeID = ?";
         sqlSetHelper(updateQuery,recipe);
@@ -198,21 +204,31 @@ public class recipePersisHsqlDB {
         weakEntHelper(ingredientQuery, instructionQuery, recipe);
     }
 
-    public void deleteRecipe(Recipe recipe)
+    @Override
+    public boolean delRecipe(int recipeID, String userID)
     {
+        boolean deleted = false;
+
         try(final Connection c = connection())
         {
-            String deleteQuery = "DELETE FROM Recipes where recipeID = ?";
-            final PreparedStatement st = c.prepareStatement(deleteQuery);
-            st.setInt(1, recipe.getID());
+            if(this.getRecipe(recipeID).getUserID().equals(userID) || this.getRecipe(recipeID).getUserID() == null) {
+                String deleteQuery = "DELETE FROM Recipes where recipeID = ?";
+                final PreparedStatement st = c.prepareStatement(deleteQuery);
+                st.setInt(1, recipeID);
 
-            st.executeUpdate();
-            st.close();
+                st.executeUpdate();
+                st.close();
+            }
         }
         catch(SQLException e)
         {
             throw new hsqlDBException(e);
         }
+
+        if (this.getRecipe(recipeID) == null)
+            deleted = true;
+
+        return deleted;
     }
 
     public Recipe getRecipe(int recipeID)
@@ -227,7 +243,10 @@ public class recipePersisHsqlDB {
             final ResultSet rs = st.executeQuery();
 
             tempStorage = getHelper(rs, tempStorage);
-            recipe = tempStorage.get(0);
+            if (tempStorage.size() > 0)
+                recipe = tempStorage.get(0);
+            else
+                recipe = null;
 
             rs.close();
             st.close();
@@ -239,14 +258,15 @@ public class recipePersisHsqlDB {
         return recipe;
     }
 
-    public ArrayList<Recipe> getUserRecipes(User user)
+    @Override
+    public ArrayList<Recipe> getUserRecipes(String userID)
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where userID = ?");
-            st.setString(1, user.getEmail());
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where userID = ? or userID IS NULL");
+            st.setString(1, userID);
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
@@ -261,14 +281,16 @@ public class recipePersisHsqlDB {
         return recipes;
     }
 
-    public ArrayList<Recipe> searchName(String keyword)
+    @Override
+    public ArrayList<Recipe> searchRecipeByName(String userID, String keyword)
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where name LIKE '%?%'");
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM Recipes where name LIKE '%?%' and (userID = ? or userID IS NULL)");
             st.setString(1, keyword);
+            st.setString(2, userID);
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);
@@ -283,14 +305,16 @@ public class recipePersisHsqlDB {
         return recipes;
     }
 
-    public ArrayList<Recipe> searchIngredients(String keyword)
+    @Override
+    public ArrayList<Recipe> searchRecipeByIngredient(String userID, String keyword)
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT name, serving, prepTime, cookTime, picture, recipeID FROM Recipes natural join Ingredients where ingredient LIKE '%?%'");
+            final PreparedStatement st = c.prepareStatement("SELECT name, serving, prepTime, cookTime, picture, recipeID FROM Recipes natural join Ingredients where ingredient LIKE '%?%' and (userID = ? or userID IS NULL)");
             st.setString(1, keyword);
+            st.setString(2, userID);
             final ResultSet rs = st.executeQuery();
 
             recipes = getHelper(rs, recipes);

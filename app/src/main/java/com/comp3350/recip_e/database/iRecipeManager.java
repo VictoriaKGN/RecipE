@@ -2,37 +2,26 @@ package com.comp3350.recip_e.database;
 
 import com.comp3350.recip_e.objects.Recipe;
 
+import java.util.ArrayList;
+
 public interface iRecipeManager {
     //get the whole recipe information.
-    Recipe getRecipe(int recipeId,boolean withPic);
-
-//    //reset the stub database to default.
-//    void resetRecipe();
-
-    //get the name of a recipe
-    String getRecipeName(int recipeId);
-
-    //get the ingredients of a recipe
-    String getIngredients(int recipeId);
-
-    //get directions/introductions of a recipe.
-    String getDirection(int recipeId);
-
-    //get the serving size of a recipe
-    String getServing(int recipeId);
-
-    //get the prep time of a recipe
-    String getPrepTime(int recipeId);
-
-    //get the cook time of a recipe
-    String getCookTime(int recipeId);
+    Recipe getRecipe(int recipeId);
 
     //add a new recipe to the fake database( local json file), will return a Recipe Object.
     Recipe addRecipe(Recipe recipe);
 
+    void updateRecipe(Recipe recipe);
+
     //delete a current recipe from fake database.
-    boolean delRecipe(int recipeId);
+    boolean delRecipe(int recipeId, String userID);
 
     //return the path of the local picture depends on the Id, for Iter-1 is one pic each recipe.
-    String getCoverPic(int recipeId);
+    //String getCoverPic(int recipeId);
+
+    ArrayList<Recipe> getUserRecipes(String user);
+
+    ArrayList<Recipe> searchRecipeByName(String user, String searchKey);
+
+    ArrayList<Recipe> searchRecipeByIngredient(String user, String searchKey);
 }

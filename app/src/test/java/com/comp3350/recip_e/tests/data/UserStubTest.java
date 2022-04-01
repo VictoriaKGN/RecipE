@@ -1,4 +1,4 @@
-package com.comp3350.recip_e.tests.objects;
+package com.comp3350.recip_e.tests.data;
 
 import com.comp3350.recip_e.database.data.UserStub;
 import com.comp3350.recip_e.objects.User;
@@ -23,9 +23,9 @@ public class UserStubTest {
         System.out.println("Beginning User stub database Tests\n");
         System.out.println("Testing User object creation\n");
         assertNotNull("User object did not create.",testUser);
-        assertEquals("User Name does not match",testName,testUser.getUserName());
-        assertEquals("User Email does not match",testEmail,testUser.getUserEmail());
-        assertEquals("User Password does not match",testPw,testUser.getUserPassword());
+        assertEquals("User Name does not match",testName,testUser.getUsername());
+        assertEquals("User Email does not match",testEmail,testUser.getEmail());
+        assertEquals("User Password does not match",testPw,testUser.getPassword());
 
         System.out.println("Finished testing User object Creation\n");
 
@@ -40,9 +40,7 @@ public class UserStubTest {
         assertNotNull("User object one did not create.",user1);
         assertNotNull("User object two did not create.",user2);
         assertEquals("User object one does not match",user1,testUserStub.insertUser(user1));
-        assertEquals("Stub User list should have 4 users",4,testUserStub.userListSize());
         assertEquals("User object two does not match",user2,testUserStub.insertUser(user2));
-        assertEquals("Stub User list should have 5 users",5,testUserStub.userListSize());
 
         System.out.println("Finish testing User insertion\n");
     }
@@ -58,8 +56,8 @@ public class UserStubTest {
 
         assertNotNull("Selection should not return null object when it dose exist",user2);
         assertNull("Selection should return a null user object when it does not exist",userNull);
-        assertEquals("Select user method should return the same user1 object",user1,testUserStub.selectUser(user1.getUserEmail()));
-        assertEquals("TSelect user method should return the same user2 object",existUser.getUserEmail(),testUserStub.selectUser(user2.getUserEmail()).getUserEmail());
+        assertEquals("Select user method should return the same user1 object",user1,testUserStub.selectUser(user1.getEmail()));
+        assertEquals("TSelect user method should return the same user2 object",existUser.getEmail(),testUserStub.selectUser(user2.getEmail()).getEmail());
 
         System.out.println("Finished testing user selection\n");
     }
@@ -69,7 +67,7 @@ public class UserStubTest {
         User user1= new User(testEmail,testName,testPw);
         System.out.println("Testing User update.");
         assertNotNull("User1 did not insert into stub database.",testUserStub.insertUser(user1));
-        user1.setUserName("Vail");
+        user1.setUsername("Vail");
 
         User updatedUser=testUserStub.updateUser(user1);
         assertNotNull("Return of the update user did not work.",updatedUser);
@@ -84,10 +82,10 @@ public class UserStubTest {
         System.out.println("Testing User Verification.");
 
         assertNotNull("User1 did not insert into stub database.",testUserStub.insertUser(user1));
-        User verifiedUser=testUserStub.verifyUser(user1.getUserEmail(),user1.getUserPassword());
+        User verifiedUser=testUserStub.verifyUser(user1.getEmail(),user1.getPassword());
         assertNotNull("The result should not be Null.",verifiedUser);
         assertEquals("Verified user should be the same",user1,verifiedUser);
-        verifiedUser=testUserStub.verifyUser(user1.getUserEmail(),"wrongPassword");
+        verifiedUser=testUserStub.verifyUser(user1.getEmail(),"wrongPassword");
         assertNull("Verified object should be null",verifiedUser);
 
         System.out.println("Finished testing user verification.\n");

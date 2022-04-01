@@ -6,13 +6,15 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.comp3350.recip_e.database.data.UserStub;
 import com.comp3350.recip_e.logic.UserManager;
 import com.comp3350.recip_e.logic.exceptions.IncorrectPasswordException;
-import com.comp3350.recip_e.logic.exceptions.UsernameDoesNotExistException;
+import com.comp3350.recip_e.logic.exceptions.EmailDoesNotExistException;
 import com.comp3350.recip_e.objects.User;
 
 public class UserManagerTest {
     private static UserManager userManager;
+    private static UserStub database;
     private static User user;
     private static String username;
     private static String email;
@@ -20,7 +22,8 @@ public class UserManagerTest {
 
     @BeforeClass
     public static void oneTimeSetup() {
-        userManager = new UserManager();
+        database = new UserStub();
+        userManager = new UserManager(database);
         username = "Username";
         email = "email@gmail.com";
         password = "1234";
@@ -49,7 +52,7 @@ public class UserManagerTest {
 
     @Test
     public void testUpdateUser() {
-        System.out.println("\n Starting testUpdateUser\n");
+        System.out.println("\nStarting testUpdateUser\n");
 
         String newPassword = "4321";
         userManager.updateUser(new User(email, username, newPassword));
@@ -64,7 +67,7 @@ public class UserManagerTest {
 
     @Test
     public void testUsernameExists() {
-        System.out.println("\n Starting testUsernameExists\n");
+        System.out.println("\nStarting testUsernameExists\n");
 
         assertTrue(userManager.usernameExists(username));
 
@@ -73,7 +76,7 @@ public class UserManagerTest {
 
     @Test
     public void testEmailExists() {
-        System.out.println("\n Starting testEmailExists\n");
+        System.out.println("\nStarting testEmailExists\n");
 
         assertTrue(userManager.emailExists(email));
 
@@ -82,13 +85,13 @@ public class UserManagerTest {
 
     @Test
     public void testValidateUser() {
-        System.out.println("\n Starting testValidateUser\n");
+        System.out.println("\nStarting testValidateUser\n");
 
         userManager.validateUser(user);
         User fakeUser = new User("", "", "");
         User wrongPassword = new User(email, username, "4321");
 
-        assertThrows(UsernameDoesNotExistException.class, () -> userManager.validateUser(fakeUser));
+        assertThrows(EmailDoesNotExistException.class, () -> userManager.validateUser(fakeUser));
         assertThrows(IncorrectPasswordException.class, () -> userManager.validateUser(wrongPassword));
 
         System.out.println("Finished testValidateUser");

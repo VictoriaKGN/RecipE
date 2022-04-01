@@ -4,9 +4,8 @@ import com.comp3350.recip_e.application.Services;
 
 import com.comp3350.recip_e.database.iRecipeManager;
 
-import com.comp3350.recip_e.logic.exceptions.InvalidRecipeException;
 import com.comp3350.recip_e.objects.Recipe;
-import java.util.List;
+
 import java.util.ArrayList;
 
 public class RecipeManager {
@@ -14,6 +13,10 @@ public class RecipeManager {
 
     public RecipeManager() {
         database = Services.getRecipePersistence();
+    }
+
+    public RecipeManager(final iRecipeManager persistence) {
+        this.database = persistence;
     }
 
     /**
@@ -31,7 +34,7 @@ public class RecipeManager {
      * @return The recipe with the given id
      */
     public Recipe getRecipe(int id) {
-        return database.getRecipe(id, true);
+        return database.getRecipe(id);
     }
 
     /**
@@ -49,8 +52,8 @@ public class RecipeManager {
      *
      * @param id The id of the recipe to delete
      */
-    public void deleteRecipe(int id) {
-        database.delRecipe(id);
+    public void deleteRecipe(int id, String user) {
+        database.delRecipe(id, user);
     }
 
     public ArrayList<Recipe> getUserRecipes(String user) {

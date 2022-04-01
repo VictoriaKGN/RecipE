@@ -5,10 +5,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.comp3350.recip_e.R;
 import com.comp3350.recip_e.application.App;
+import com.comp3350.recip_e.application.Main;
 import com.comp3350.recip_e.logic.UserManager;
 import com.comp3350.recip_e.objects.User;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -20,6 +23,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -42,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
         userManagerProfile = new UserManager();
 
         showDialog();
+
     }
 
     // ********************************** click methods ***************************************

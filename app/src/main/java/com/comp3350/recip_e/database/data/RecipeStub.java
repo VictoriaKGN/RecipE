@@ -34,7 +34,7 @@ public class RecipeStub implements iRecipeManager {
     }
 
     @Override
-    public Recipe getRecipe(int recipeId, boolean withPic) {
+    public Recipe getRecipe(int recipeId) {
         Recipe recipe = null;
 
         for (Recipe cur : recipes) {
@@ -53,8 +53,14 @@ public class RecipeStub implements iRecipeManager {
         return recipe;
     }
 
+
     @Override
-    public boolean delRecipe(int recipeId) {
+    public void updateRecipe(Recipe recipe) {
+        //TODO--------------
+    }
+
+    @Override
+    public boolean delRecipe(int recipeId, String userID) {
         Iterator<Recipe> iterator = recipes.listIterator();
         boolean removed = false;
         Recipe recipe;
@@ -68,10 +74,12 @@ public class RecipeStub implements iRecipeManager {
         return removed;
     }
 
+    /*****
     @Override
     public String getCoverPic(int recipeId) {
         return null;
     }
+    *****/
 
     private int getNextID() {
         return recipes.get(recipes.size() - 1).getID() + 1;
