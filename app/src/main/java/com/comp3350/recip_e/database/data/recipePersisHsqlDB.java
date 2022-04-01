@@ -196,7 +196,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
 
     @Override
     public void updateRecipe(Recipe recipe){
-        String updateQuery="UPDATE Recipes SET name = ?,serving=?,prepTime=?,cookTime=?,picture=?, userID = ? where recipeID = ?";
+        String updateQuery="UPDATE Recipes SET name = ?,servings=?,prepTime=?,cookTime=?,picture=?, userID = ? where recipeID = ?";
         sqlSetHelper(updateQuery,recipe);
 
         String ingredientQuery = "UPDATE Ingredients SET ingredient = ? where recipeID = ?";
@@ -312,7 +312,7 @@ public class recipePersisHsqlDB implements iRecipeManager {
 
         try(final Connection c = connection())
         {
-            final PreparedStatement st = c.prepareStatement("SELECT name, serving, prepTime, cookTime, picture, recipeID FROM Recipes natural join Ingredients where ingredient LIKE '%?%' and (userID = ? or userID IS NULL)");
+            final PreparedStatement st = c.prepareStatement("SELECT name, servings, prepTime, cookTime, picture, recipeID FROM Recipes natural join Ingredients where ingredient LIKE '%?%' and (userID = ? or userID IS NULL)");
             st.setString(1, keyword);
             st.setString(2, userID);
             final ResultSet rs = st.executeQuery();

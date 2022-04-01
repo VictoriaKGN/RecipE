@@ -59,9 +59,29 @@ public class RecipeManagerTest {
         System.out.println("\nStarting testUpdateRecipe\n");
 
         Recipe oldRecipe = recipeManager.getRecipe(0);
-        
+        Recipe updatedRecipe = new Recipe(oldRecipe.getName(), oldRecipe.getIngredients(), oldRecipe.getInstructions(), 100, 100, 100,"path/", "user@email.com");
+        updatedRecipe.setID(oldRecipe.getID());
+
+        recipeManager.updateRecipe(updatedRecipe);
+        updatedRecipe = recipeManager.getRecipe(0);
+
+        assertEquals("Servings is not as expected", updatedRecipe.getServings(), 100);
+        assertEquals("Cook time is not as expected", updatedRecipe.getCookTime(), 100);
+        assertEquals("Prep time is not as expected", updatedRecipe.getPrepTime(), 100);
 
         System.out.println("Finished testUpdateRecipe");
+    }
+
+    @Test
+    public void testGetUserRecipes() {
+        System.out.println("\nStarting testGetUserRecipes\n");
+
+        ArrayList<Recipe> myRecipes = recipeManager.getUserRecipes("user@email.com");
+        for (Recipe r : myRecipes) {
+            assertEquals("User does not match recipe user", "user@email.com", r.getUserID());
+        }
+
+        System.out.println("Finished testGetUserRecipes");
     }
 
     @Test
@@ -72,7 +92,7 @@ public class RecipeManagerTest {
         recipes = recipeManager.searchRecipeByName("fake@gmail.com","");
         assertTrue("No recipe with email exist. Should return empty list.", recipes.size() == 0);
         recipes = recipeManager.searchRecipeByName("user@email.com", "asxaDDDFAfdsaafsdaDdad");
-        assertTrue("Nothing should match searchy key. Should return empty list.", recipes.size() == 0);
+        assertTrue("Nothing should match search key. Should return empty list.", recipes.size() == 0);
         recipes = recipeManager.searchRecipeByName("user@email.com","1");
         assertTrue("Should only return 1 recipe.", recipes.size() == 1);
         assertTrue("Recipe should contain search key.", recipes.get(0).getName().contains("1"));
@@ -90,7 +110,7 @@ public class RecipeManagerTest {
         recipes = recipeManager.searchRecipeByIngredient("fake@gmail.com","");
         assertTrue("No recipe with email exist. Should return empty list.", recipes.size() == 0);
         recipes = recipeManager.searchRecipeByIngredient("user@email.com", "asxaDDDFAfdsaafsdaDdad");
-        assertTrue("Nothing should match searchy key. Should return empty list.", recipes.size() == 0);
+        assertTrue("Nothing should match search key. Should return empty list.", recipes.size() == 0);
         recipes = recipeManager.searchRecipeByIngredient("user@email.com","ml ingredients");
         assertTrue("Should return 3 recipes.", recipes.size() == 3);
 
