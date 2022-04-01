@@ -87,7 +87,8 @@ public class Recipe {
     /****Do we even need this?? Or is this RecipeManager's job to create and swap whole object?****/
     public void updateIngredients(ArrayList<String> newIngreds) {
 
-        ingredients.clear();
+        if (ingredients != null)
+            ingredients.clear();
         ingredients = newIngreds;
         resetNextIngredient();
     }
@@ -134,8 +135,8 @@ public class Recipe {
 
     /***don't need this if remaking whole Recipe object*****/
     public void updateInstructions(ArrayList<String> newInstrs) {
-
-        instructions.clear();
+        if (instructions != null)
+            instructions.clear();
         instructions = newInstrs;
         resetNextInstruction();
     }

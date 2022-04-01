@@ -57,7 +57,7 @@ public class RecipeIT {
     public void testAddDeleteRecipe() {
         System.out.println("\nStarting testAddDeleteRecipe\n");
         Recipe recipe = new Recipe("name", new ArrayList<>(), new ArrayList<>(), 4, 30, 30, "default/path", "user@email.com");
-        int lastRecipeID = 3;
+        int lastRecipeID = 4;
 
         Recipe checkRecipe = recipeManager.addRecipe(recipe);
         assertEquals(checkRecipe.getID(), lastRecipeID);
